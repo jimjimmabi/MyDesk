@@ -23,7 +23,10 @@
             --ui-sidebar: #f0f5fc;
             --ui-text: #333333;
             --ui-header: #12437a;
+            --ui-scale: 1;
+            --ui-text-size: 14px;
         }
+        html { font-size: var(--ui-text-size); }
         body {
             font-family: 'Nanum Gothic', 'Noto Sans KR', 'Noto Sans JP', 'Noto Sans SC', sans-serif;
             background-color: var(--ui-bg-1);
@@ -34,6 +37,7 @@
             background-position: 0 0, 12px 12px;
             color: var(--ui-text);
             min-height: 100vh;
+            transition: font-size 0.15s ease;
         }
         body.custom-bg {
             background-image: var(--custom-bg-image);
@@ -60,6 +64,12 @@
         body.pixel-mode select, body.pixel-mode textarea { border-radius: 0 !important; }
         body.pixel-mode .rte-editor { font-family: 'DotGothic16', monospace; }
         body.pixel-mode .rte-editor img, body.pixel-mode .rte-editor audio, body.pixel-mode .rte-editor table { border-radius: 0 !important; }
+
+        /* UI Scale — scales the main window */
+        .app-wrapper {
+            transform-origin: top center;
+            transition: transform 0.15s ease;
+        }
         .accent-bg { background-color: var(--ui-accent) !important; }
         .accent-border { border-color: var(--ui-accent) !important; }
         .accent-text { color: var(--ui-accent) !important; }
@@ -101,7 +111,7 @@
         .rte-toolbar { background: #fafcff; border-bottom: 1px solid #e5e7eb; }
         .rte-editor {
             background: #ffffff; outline: none; overflow-y: auto; padding: 1rem;
-            font-size: 14px; line-height: 1.7; min-height: 100%; word-wrap: break-word; color: #1f2937;
+            font-size: inherit; line-height: 1.7; min-height: 100%; word-wrap: break-word; color: #1f2937;
         }
         .rte-editor:empty:before { content: attr(data-placeholder); color: #9ca3af; font-style: italic; }
         .rte-editor h1 { font-size: 1.9em; font-weight: bold; margin: 0.5em 0 0.3em; color: #12437a; }
@@ -112,13 +122,13 @@
         .rte-editor ul { list-style: disc; }
         .rte-editor ol { list-style: decimal; }
         .rte-editor blockquote { border-left: 4px solid #ff6600; background: #fff7ed; padding: 0.5em 0.8em; margin: 0.5em 0; border-radius: 4px; color: #7c2d12; }
-        .rte-editor pre { background: #1e293b; color: #e2e8f0; padding: 0.8em 1em; border-radius: 6px; font-family: 'Share Tech Mono', monospace; font-size: 12px; overflow-x: auto; margin: 0.5em 0; white-space: pre-wrap; }
+        .rte-editor pre { background: #1e293b; color: #e2e8f0; padding: 0.8em 1em; border-radius: 6px; font-family: 'Share Tech Mono', monospace; font-size: 0.85em; overflow-x: auto; margin: 0.5em 0; white-space: pre-wrap; }
         .rte-editor code { background: #f1f5f9; padding: 0.15em 0.4em; border-radius: 3px; font-family: 'Share Tech Mono', monospace; font-size: 0.9em; color: #be185d; }
         .rte-editor pre code { background: transparent; color: inherit; padding: 0; }
         .rte-editor a { color: #2563eb; text-decoration: underline; cursor: pointer; }
         .rte-editor a:hover { color: #1d4ed8; }
         .rte-editor img { max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #e5e7eb; margin: 0.5em 0; display: block; }
-        .rte-editor table { border-collapse: collapse; width: 100%; margin: 0.8em 0; font-size: 13px; }
+        .rte-editor table { border-collapse: collapse; width: 100%; margin: 0.8em 0; font-size: 0.9em; }
         .rte-editor table th, .rte-editor table td { border: 1px solid #cbd5e1; padding: 0.5em 0.7em; text-align: left; }
         .rte-editor table th { background: #e0edf8; font-weight: bold; color: #12437a; }
         .rte-editor table tr:nth-child(even) td { background: #f8fafc; }
@@ -130,18 +140,17 @@
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             border: 1px solid #7dd3fc; border-radius: 10px; padding: 0.7em 0.9em; margin: 0.6em 0;
             box-shadow: 0 1px 3px rgba(2, 132, 199, 0.08);
-            position: relative;
             resize: vertical;
             overflow: auto;
             min-height: 80px;
             min-width: 220px;
         }
         .rte-editor .audio-block .audio-label {
-            font-size: 11px; color: #0369a1; font-weight: bold; margin-bottom: 0.3em;
+            font-size: 0.75em; color: #0369a1; font-weight: bold; margin-bottom: 0.3em;
             display: flex; align-items: center; gap: 6px;
         }
         .rte-editor .audio-block .audio-label .audio-name { font-weight: normal; color: #0c4a6e; }
-        /* Handles on audio block */
+
         .audio-block-wrap { position: relative; display: block; }
         .audio-block-toolbar {
             position: absolute; top: -10px; right: 8px;
@@ -159,17 +168,10 @@
         .audio-block-toolbar button:hover { background: rgba(255,255,255,0.2); }
         .audio-block-toolbar button.danger:hover { background: #dc2626; }
         .audio-block-wrap .drag-handle {
-            cursor: grab;
-            background: #0284c7;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px 4px 0 0;
-            font-size: 10px;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            user-select: none;
+            cursor: grab; background: #0284c7; color: white;
+            padding: 2px 6px; border-radius: 4px 4px 0 0;
+            font-size: 10px; font-weight: bold;
+            display: inline-flex; align-items: center; gap: 4px; user-select: none;
         }
         .audio-block-wrap .drag-handle:active { cursor: grabbing; }
         .audio-block-wrap.dragging { opacity: 0.5; }
@@ -225,35 +227,6 @@
         .audio-track .track-delete { color: #94a3b8; cursor: pointer; padding: 4px; border-radius: 4px; }
         .audio-track .track-delete:hover { color: #dc2626; background: #fee2e2; }
 
-        /* Permission banner */
-        .perm-banner { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 8px 12px; font-size: 11px; color: #78350f; display: flex; align-items: center; gap: 8px; }
-        .perm-banner.ok { background: #d1fae5; border-left-color: #10b981; color: #065f46; }
-        .perm-banner.denied { background: #fee2e2; border-left-color: #ef4444; color: #7f1d1d; }
-
-        /* Voice recorder popup */
-        .voice-recorder-popup {
-            position: fixed; bottom: 20px; right: 20px;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            color: white; border: 2px solid #334155; border-radius: 12px;
-            padding: 14px 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 1000; min-width: 260px;
-            animation: slideUpFade 0.25s ease-out;
-        }
-        @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .voice-recorder-popup .rec-header { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: bold; color: #94a3b8; margin-bottom: 10px; }
-        .voice-recorder-popup .rec-dot { width: 10px; height: 10px; border-radius: 50%; background: #ef4444; animation: pulseRed 1s infinite; }
-        @keyframes pulseRed { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(239,68,68,0.6); } 50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(239,68,68,0); } }
-        .voice-recorder-popup .rec-time { font-family: 'Share Tech Mono', monospace; font-size: 26px; font-weight: bold; text-align: center; color: #f87171; letter-spacing: 1px; margin-bottom: 10px; }
-        .voice-recorder-popup .rec-wave { display: flex; align-items: center; justify-content: center; gap: 3px; height: 28px; margin-bottom: 10px; }
-        .voice-recorder-popup .rec-wave span { width: 3px; background: #22d3ee; border-radius: 2px; animation: waveAnim 1s ease-in-out infinite; }
-        @keyframes waveAnim { 0%, 100% { height: 6px; } 50% { height: 24px; } }
-        .voice-recorder-popup .rec-actions { display: flex; gap: 8px; }
-        .voice-recorder-popup .rec-btn { flex: 1; padding: 8px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; border: none; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .voice-recorder-popup .rec-btn-stop { background: #ef4444; color: white; }
-        .voice-recorder-popup .rec-btn-stop:hover { background: #dc2626; }
-        .voice-recorder-popup .rec-btn-cancel { background: #334155; color: #cbd5e1; }
-        .voice-recorder-popup .rec-btn-cancel:hover { background: #475569; }
-
         /* Settings */
         .settings-tab { padding: 8px 12px; font-size: 12px; font-weight: bold; cursor: pointer; border-bottom: 2px solid transparent; color: #64748b; transition: all 0.15s; }
         .settings-tab:hover { color: #12437a; background: #f1f5f9; }
@@ -283,354 +256,391 @@
         .avatar-emoji { font-size: 26px; line-height: 1; cursor: pointer; transition: transform 0.15s; user-select: none; padding: 4px; border-radius: 6px; border: 2px solid transparent; }
         .avatar-emoji:hover { transform: scale(1.15); background: #e0edf8; }
         .avatar-emoji.selected { border-color: var(--ui-accent); background: #fff7ed; transform: scale(1.1); }
+
+        /* Small edit button next to brand */
+        .brand-edit-btn {
+            width: 22px; height: 22px;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.25);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+            transition: all 0.15s;
+            padding: 0;
+        }
+        .brand-edit-btn:hover {
+            background: white;
+            color: var(--ui-accent);
+            transform: scale(1.08);
+        }
+
+        /* Slider */
+        .ui-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #cbd5e1;
+            outline: none;
+        }
+        .ui-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--ui-accent);
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .ui-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--ui-accent);
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body class="p-2 sm:p-4 flex flex-col items-center justify-start min-h-screen lang-en">
 
-    <header class="w-full max-w-7xl bg-white/95 backdrop-blur border border-[#4a72a9] rounded shadow-lg px-3 py-2 mb-3 flex flex-wrap items-center justify-between gap-2 text-xs">
-        <div class="flex items-center gap-3 flex-wrap">
-            <div class="accent-bg text-white px-2.5 py-1 rounded font-bold dot-font text-sm flex items-center gap-1 shadow-sm" id="brandBadge">
-                <i class="fa-solid fa-star text-yellow-200"></i> <span id="brandText">MYDESK <3</span>
-            </div>
-            <span class="text-gray-600 font-semibold hidden sm:inline"><span data-i18n="header.today">TODAY</span> <span class="text-red-500 font-bold" id="todayVisits">3,492</span> | <span data-i18n="header.total">TOTAL</span> <span class="text-blue-600 font-bold">245,118</span></span>
-            <span class="backup-badge"><i class="fa-solid fa-database"></i> <span data-i18n="header.backupReady">BACKUP READY</span></span>
-        </div>
-        <div class="flex items-center gap-2 flex-wrap">
-            <div class="flex items-center bg-[#eef3f9] border border-[#a4c2f4] rounded px-1 py-0.5 gap-0.5 shadow-inner" title="Language">
-                <i class="fa-solid fa-globe text-[#2c599d] text-xs px-1"></i>
-                <button onclick="setLanguage('en')" id="langBtn-en" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="English">EN</button>
-                <button onclick="setLanguage('zh')" id="langBtn-zh" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="中文">中</button>
-                <button onclick="setLanguage('ja')" id="langBtn-ja" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="日本語">日</button>
-                <button onclick="setLanguage('ko')" id="langBtn-ko" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="한국어">한</button>
-            </div>
-            <div class="flex items-center bg-[#eef3f9] border border-[#a4c2f4] rounded px-3 py-1 gap-3 shadow-inner">
-                <div class="flex items-center gap-1.5 text-[#0f4c81]">
-                    <i class="fa-solid fa-compact-disc text-amber-500 text-sm animate-spin" style="animation-duration: 4s;"></i>
-                    <span class="font-bold truncate max-w-[110px] sm:max-w-[150px]" id="bgmTitle">Epik High - Fly (Retro Ver)</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <button onclick="togglePlayBGM()" id="bgmPlayBtn" class="accent-bg accent-bg-hover text-white px-2 py-0.5 rounded text-[11px] shadow">
-                        <i class="fa-solid fa-play" id="bgmIcon"></i>
-                    </button>
-                    <select id="bgmSelect" onchange="changeBGM(this.value)" class="text-[11px] border border-[#7a9fd1] rounded bg-white px-1 py-0.5">
-                        <option value="epik">Epik High - Fly</option>
-                        <option value="younha">Younha - Password 486</option>
-                        <option value="wondergirls">Wonder Girls - Tell Me</option>
-                        <option value="bigbang">Big Bang - Lies</option>
-                    </select>
-                </div>
-            </div>
-            <button onclick="openSettings()" class="bg-white border border-[#7a9fd1] hover:bg-blue-50 text-[#12437a] px-2 py-1 rounded text-[11px] font-bold shadow-sm flex items-center gap-1" title="Settings">
-                <i class="fa-solid fa-gear"></i> <span data-i18n="btn.settings">Settings</span>
-            </button>
-        </div>
-    </header>
-
-    <main class="w-full max-w-7xl retro-window bg-[#f4f7fb] flex flex-col md:flex-row h-[84vh] overflow-hidden shadow-2xl">
-
-        <aside class="w-full md:w-72 retro-sidebar flex flex-col flex-shrink-0 border-r border-[#a4c2f4]">
-            <!-- AVATAR/PROFILE RESTORED -->
-            <div class="p-3 bg-[#e4eff9] border-b border-[#b4d0f0] text-center relative">
-                <div class="w-full h-24 bg-[#dbeafe] border border-blue-300 rounded flex items-center justify-center relative overflow-hidden shadow-inner mb-2 cursor-pointer group" id="avatarDisplay" onclick="openAvatarModal()" title="Click to customize avatar">
-                    <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#12437a_1px,transparent_1px)] [background-size:10px_10px]"></div>
-                    <div class="text-2xl select-none flex items-center gap-2" id="avatarEmojis">
-                        <span id="avatarMain">👩‍💻</span><span class="text-base" id="avatarDeco1">☕</span><span class="text-base" id="avatarDeco2">🎧</span>
-                    </div>
-                    <div class="absolute bottom-1 right-1 text-[9px] text-blue-900/60 dot-font font-bold" id="avatarLabel">MYDESK&lt;3</div>
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all flex items-center justify-center">
-                        <span class="opacity-0 group-hover:opacity-100 text-white text-[10px] font-bold bg-black/50 px-2 py-1 rounded" data-i18n="avatar.edit">✎ Edit Avatar</span>
-                    </div>
-                </div>
-                <input type="text" id="userMood" value="♫ Coding & organizing memories..." onchange="saveMood(this.value)" class="w-full text-center text-[11px] bg-yellow-50 border border-blue-200 rounded px-1 py-0.5 text-gray-700 font-semibold focus:outline-none" placeholder="Your mood...">
-                <div class="flex justify-center gap-1 mt-1.5">
-                    <button onclick="openAvatarModal()" class="text-[10px] bg-white border border-blue-300 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-50 font-bold" data-i18n="avatar.customize">👤 Avatar</button>
-                    <button onclick="openProfileModal()" class="text-[10px] bg-white border border-blue-300 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-50 font-bold" data-i18n="avatar.profile">✎ Profile</button>
-                </div>
-            </div>
-
-            <div class="p-2 bg-[#d8e3f0] border-b border-[#a4c2f4] grid grid-cols-2 gap-1 text-xs">
-                <button id="tabBtn-documents" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-file-lines"></i> <span data-i18n="tab.docs">Docs & Pages</span>
-                </button>
-                <button id="tabBtn-todo" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-list-check"></i> <span data-i18n="tab.todo">To-Do List</span>
-                </button>
-                <button id="tabBtn-calendar" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-calendar-days"></i> <span data-i18n="tab.calendar">Calendar</span>
-                </button>
-                <button id="tabBtn-pomodoro" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-clock"></i> <span data-i18n="tab.pomodoro">Focus Timer</span>
-                </button>
-            </div>
-
-            <div id="sidebarContextContainer" class="flex-1 overflow-y-auto p-2 bg-white"></div>
-
-            <div class="p-2 bg-[#eef3f9] border-t border-[#a4c2f4] flex flex-col gap-1.5 text-[11px]">
-                <div class="flex justify-between items-center gap-1">
-                    <button onclick="exportAllWorkspaceJSON()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1.5 rounded shadow flex items-center justify-center gap-1 font-bold" title="Backup entire workspace to JSON">
-                        <i class="fa-solid fa-download"></i> <span data-i18n="btn.backup">Backup</span>
-                    </button>
-                    <label class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1.5 rounded shadow cursor-pointer flex items-center justify-center gap-1 font-bold" title="Restore workspace from JSON backup">
-                        <i class="fa-solid fa-upload"></i> <span data-i18n="btn.restore">Restore</span>
-                        <input type="file" id="importFile" onchange="importWorkspaceJSON(event)" accept=".json" class="hidden">
-                    </label>
-                </div>
-                <div class="flex justify-between items-center px-1">
-                    <span class="text-gray-500 text-[10px]"><i class="fa-regular fa-circle-check text-green-500"></i> <span data-i18n="backup.fullExport">Full database export</span></span>
-                    <button onclick="resetWorkspace()" class="text-red-500 hover:underline text-[10px]" data-i18n="btn.reset">Reset</button>
-                </div>
-            </div>
-        </aside>
-
-        <div class="flex-1 flex flex-col bg-white overflow-hidden relative">
-
-            <!-- DOCUMENTS -->
-            <div id="view-documents" class="flex-1 flex flex-col h-full overflow-hidden workspace-view">
-                <div class="bg-[#f0f4f9] border-b border-[#a4c2f4] px-4 py-2.5 flex flex-wrap justify-between items-center gap-2">
-                    <div class="flex items-center gap-2 flex-1 max-w-lg">
-                        <input type="text" id="activeDocTitle" oninput="updateActiveTitle(this.value)" placeholder="Page Title..." data-i18n-placeholder="docs.pageTitle" class="font-bold text-sm sm:text-base bg-transparent border-b border-transparent hover:border-blue-300 focus:border-[#2178b5] focus:outline-none w-full text-[#12437a]">
-                    </div>
-                    <div class="flex items-center gap-2 text-xs">
-                        <span id="saveStatus" class="text-green-600 font-bold text-[11px]" data-i18n="docs.saved">Saved locally</span>
-                        <button onclick="exportDocTxt()" class="accent-bg accent-bg-hover text-white px-2.5 py-1 rounded shadow flex items-center gap-1" title="Export .txt"><i class="fa-solid fa-file-arrow-down"></i> .txt</button>
-                        <button onclick="exportDocHtml()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded shadow flex items-center gap-1" title="Export .html"><i class="fa-solid fa-globe"></i> .html</button>
-                        <button onclick="exportDocJson()" class="bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1 rounded shadow flex items-center gap-1" title="Export .json"><i class="fa-solid fa-code"></i> .json</button>
-                        <button onclick="deleteActiveDocument()" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded shadow flex items-center gap-1" data-i18n-title="docs.delete"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>
-
-                <div id="micPermBanner" class="perm-banner hidden">
-                    <i class="fa-solid fa-microphone-slash"></i>
-                    <span id="micPermText">Microphone access required for voice recording.</span>
-                    <button onclick="requestMicPermission()" class="ml-auto bg-amber-600 hover:bg-amber-700 text-white px-2 py-0.5 rounded text-[10px] font-bold">
-                        <i class="fa-solid fa-key"></i> <span data-i18n="mic.grant">Grant Permission</span>
+    <div class="app-wrapper w-full flex flex-col items-center" id="appWrapper">
+        <header class="w-full max-w-7xl bg-white/95 backdrop-blur border border-[#4a72a9] rounded shadow-lg px-3 py-2 mb-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-3 flex-wrap">
+                <div class="accent-bg text-white px-2.5 py-1 rounded font-bold dot-font text-sm flex items-center gap-1 shadow-sm" id="brandBadge">
+                    <i class="fa-solid fa-star text-yellow-200"></i> <span id="brandText">MYDESK <3</span>
+                    <button onclick="openAvatarModal()" class="brand-edit-btn" title="Edit avatar & profile" data-i18n-title="avatar.edit">
+                        <i class="fa-solid fa-pen"></i>
                     </button>
                 </div>
-
-                <div class="rte-toolbar px-3 py-1.5 flex flex-wrap items-center gap-1 text-xs">
-                    <select onchange="rteExec('formatBlock', this.value); this.selectedIndex=0;" class="px-1.5 py-1 bg-white border border-gray-300 rounded text-[11px] hover:bg-gray-100">
-                        <option value="">Paragraph ▾</option>
-                        <option value="h1">Heading 1</option>
-                        <option value="h2">Heading 2</option>
-                        <option value="h3">Heading 3</option>
-                        <option value="p">Paragraph</option>
-                        <option value="pre">Code Block</option>
-                        <option value="blockquote">Quote</option>
-                    </select>
-                    <span class="text-gray-300">|</span>
-                    <button onclick="rteExec('bold')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 font-bold" title="Bold (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
-                    <button onclick="rteExec('italic')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 italic" title="Italic (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
-                    <button onclick="rteExec('underline')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 underline" title="Underline (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
-                    <button onclick="rteExec('strikeThrough')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 line-through" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
-                    <span class="text-gray-300">|</span>
-                    <button onclick="rteExec('insertUnorderedList')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Bullet list"><i class="fa-solid fa-list-ul"></i></button>
-                    <button onclick="rteExec('insertOrderedList')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Numbered list"><i class="fa-solid fa-list-ol"></i></button>
-                    <button onclick="rteInsertCallout()" class="px-2 py-1 bg-yellow-50 border border-yellow-300 rounded hover:bg-yellow-100 text-amber-700 font-bold" title="Callout">💡</button>
-                    <span class="text-gray-300">|</span>
-                    <button onclick="rteInsertLink()" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Hyperlink (Ctrl+K)"><i class="fa-solid fa-link text-blue-600"></i></button>
-                    <button onclick="document.getElementById('rteImageInput').click()" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Image"><i class="fa-solid fa-image text-emerald-600"></i></button>
-                    <button data-rte-table-trigger class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Table"><i class="fa-solid fa-table text-purple-600"></i></button>
-                    <button onclick="document.getElementById('rteAudioInput').click()" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Audio File"><i class="fa-solid fa-music text-pink-600"></i></button>
-                    <button onclick="toggleVoiceRecording()" id="rteVoiceBtn" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Record Voice"><i class="fa-solid fa-microphone text-red-600"></i></button>
-                    <button onclick="openAudioPanel()" class="px-2 py-1 bg-blue-50 border border-blue-300 rounded hover:bg-blue-100 text-blue-700 font-bold relative" title="Open Audio Library">
-                        <i class="fa-solid fa-headphones"></i>
-                        <span id="audioCountBadge" class="absolute -top-1.5 -right-1.5 accent-bg text-white text-[9px] rounded-full px-1.5 min-w-[16px] text-center font-bold">0</span>
-                    </button>
-                    <span class="text-gray-300">|</span>
-                    <button onclick="rteExec('undo')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
-                    <button onclick="rteExec('redo')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
-                    <button onclick="rteExec('removeFormat')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Clear formatting"><i class="fa-solid fa-eraser"></i></button>
-                    <span class="text-gray-300">|</span>
-                    <button onclick="rteInsertEmotion('★')" class="px-2 py-1 bg-yellow-50 border border-yellow-300 rounded text-amber-700 font-bold">★</button>
-                    <button onclick="rteInsertEmotion('♪')" class="px-2 py-1 bg-yellow-50 border border-yellow-300 rounded text-amber-700 font-bold">♪</button>
-
-                    <input type="file" id="rteImageInput" accept="image/*" class="hidden" onchange="handleRteImage(event)">
-                    <input type="file" id="rteAudioInput" accept="audio/*" class="hidden" onchange="handleRteAudio(event)">
-
-                    <span id="rteTableForm" class="hidden ml-1 bg-blue-50 border border-blue-300 rounded px-2 py-0.5 flex items-center gap-1">
-                        <input type="number" id="rteTableRows" value="3" min="1" max="20" class="w-10 text-center text-[11px] border border-gray-300 rounded px-0.5">
-                        <span class="text-[10px]">×</span>
-                        <input type="number" id="rteTableCols" value="3" min="1" max="10" class="w-10 text-center text-[11px] border border-gray-300 rounded px-0.5">
-                        <button onclick="rteInsertTable()" class="bg-purple-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">Insert</button>
-                        <button onclick="document.getElementById('rteTableForm').classList.add('hidden')" class="text-gray-500 text-[10px] px-1">✕</button>
-                    </span>
-                </div>
-
-                <div class="flex-1 bg-white overflow-hidden relative" style="min-height: 0;">
-                    <div id="rteEditor" class="rte-editor" contenteditable="true" data-placeholder="Write notes Notion-style..."></div>
-                </div>
-
-                <div id="audioPanel" class="audio-panel hidden">
-                    <div class="px-4 py-2 flex justify-between items-center border-b border-[#b4d0f0]">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-headphones text-[#2c599d]"></i>
-                            <span class="font-bold text-xs text-[#12437a]" data-i18n="audio.library">Audio Library</span>
-                            <span id="audioPanelCount" class="text-[10px] text-gray-500 bg-white px-2 py-0.5 rounded-full border border-[#a4c2f4]">0 tracks</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button onclick="scanAudioFromDocs()" class="text-[10px] bg-white border border-[#7a9fd1] text-[#12437a] px-2 py-0.5 rounded hover:bg-blue-50 font-bold" title="Refresh from documents">
-                                <i class="fa-solid fa-rotate"></i> <span data-i18n="audio.refresh">Refresh</span>
-                            </button>
-                            <button onclick="closeAudioPanel()" class="text-gray-500 hover:text-red-500 text-xs font-bold px-1">✕</button>
-                        </div>
-                    </div>
-                    <div id="audioPanelList" class="p-3 space-y-2 overflow-y-auto" style="max-height: 200px;"></div>
-                </div>
-
-                <div class="bg-[#f0f4f9] border-t border-[#a4c2f4] px-4 py-1.5 flex justify-between items-center text-[11px] text-gray-500">
-                    <span id="docStats">0 words | 0 characters | 0 lines</span>
-                    <span id="rteVoiceStatus"></span>
-                    <span data-i18n="docs.footer">MYDESK Notion Docs • Offline Mode</span>
-                </div>
-
-                <div id="globalPlayer" class="global-player hidden">
-                    <div class="gp-play" onclick="toggleGlobalPlay()">
-                        <i class="fa-solid fa-play" id="gpPlayIcon"></i>
-                    </div>
-                    <div class="gp-info">
-                        <div class="gp-title" id="gpTitle">No track selected</div>
-                        <div class="gp-time" id="gpTime">0:00 / 0:00</div>
-                        <div class="gp-progress" onclick="seekGlobalAudio(event)">
-                            <div class="gp-progress-bar" id="gpProgressBar"></div>
-                        </div>
-                    </div>
-                    <div class="gp-controls">
-                        <div class="gp-btn" onclick="globalAudioSkip(-5)" title="-5s"><i class="fa-solid fa-rotate-left"></i></div>
-                        <div class="gp-btn" onclick="globalAudioSkip(5)" title="+5s"><i class="fa-solid fa-rotate-right"></i></div>
-                        <div class="gp-btn" onclick="toggleGlobalLoop()" id="gpLoopBtn" title="Loop"><i class="fa-solid fa-repeat"></i></div>
-                        <div class="gp-btn" onclick="globalAudioVolume(0)" title="Mute"><i class="fa-solid fa-volume-xmark" id="gpVolIcon"></i></div>
-                        <div class="gp-volume">
-                            <input type="range" id="gpVolumeSlider" min="0" max="100" value="100" onchange="globalAudioVolume(this.value)" oninput="globalAudioVolume(this.value)">
-                        </div>
-                    </div>
-                </div>
+                <span class="text-gray-600 font-semibold hidden sm:inline"><span data-i18n="header.today">TODAY</span> <span class="text-red-500 font-bold" id="todayVisits">3,492</span> | <span data-i18n="header.total">TOTAL</span> <span class="text-blue-600 font-bold">245,118</span></span>
+                <span class="backup-badge"><i class="fa-solid fa-database"></i> <span data-i18n="header.backupReady">BACKUP READY</span></span>
             </div>
-
-            <!-- TODO -->
-            <div id="view-todo" class="flex-1 flex flex-col h-full overflow-hidden workspace-view hidden bg-[#fcfdff]">
-                <div class="bg-[#f0f4f9] border-b border-[#a4c2f4] px-4 py-3 flex justify-between items-center flex-wrap gap-2">
-                    <div>
-                        <h2 class="font-bold text-sm text-[#12437a] flex items-center gap-1.5"><i class="fa-solid fa-list-check text-blue-600"></i> <span data-i18n="todo.title">MYDESK Task Manager & To-Do Board</span></h2>
-                        <p class="text-[11px] text-gray-500" data-i18n="todo.subtitle">Organize your daily tasks, projects, and goals with priority tags.</p>
-                    </div>
-                    <button onclick="openNewTaskModal()" class="accent-bg accent-bg-hover text-white px-3 py-1.5 rounded text-xs shadow flex items-center gap-1 font-bold">
-                        <i class="fa-solid fa-plus"></i> <span data-i18n="todo.addTask">Add Task</span>
-                    </button>
+            <div class="flex items-center gap-2 flex-wrap">
+                <div class="flex items-center bg-[#eef3f9] border border-[#a4c2f4] rounded px-1 py-0.5 gap-0.5 shadow-inner" title="Language">
+                    <i class="fa-solid fa-globe text-[#2c599d] text-xs px-1"></i>
+                    <button onclick="setLanguage('en')" id="langBtn-en" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="English">EN</button>
+                    <button onclick="setLanguage('zh')" id="langBtn-zh" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="中文">中</button>
+                    <button onclick="setLanguage('ja')" id="langBtn-ja" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="日本語">日</button>
+                    <button onclick="setLanguage('ko')" id="langBtn-ko" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="한국어">한</button>
                 </div>
-                <div class="p-4 flex-1 overflow-y-auto">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4 bg-[#eef3f9] p-2.5 rounded border border-[#a4c2f4] text-xs">
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-gray-700" data-i18n="todo.filter">Filter:</span>
-                            <button onclick="filterTasks('all')" id="filter-all" class="px-2 py-1 accent-bg text-white rounded font-bold" data-i18n="todo.all">All</button>
-                            <button onclick="filterTasks('active')" id="filter-active" class="px-2 py-1 bg-white border border-gray-300 rounded text-gray-700" data-i18n="todo.active">Active</button>
-                            <button onclick="filterTasks('completed')" id="filter-completed" class="px-2 py-1 bg-white border border-gray-300 rounded text-gray-700" data-i18n="todo.completed">Completed</button>
-                        </div>
-                        <div class="flex items-center gap-3 text-gray-600 font-semibold">
-                            <span><span data-i18n="todo.total">Total</span>: <span id="taskCountTotal">0</span></span>
-                            <span><span data-i18n="todo.done">Done</span>: <span id="taskCountDone" class="text-green-600">0</span></span>
-                        </div>
+                <div class="flex items-center bg-[#eef3f9] border border-[#a4c2f4] rounded px-3 py-1 gap-3 shadow-inner">
+                    <div class="flex items-center gap-1.5 text-[#0f4c81]">
+                        <i class="fa-solid fa-compact-disc text-amber-500 text-sm animate-spin" style="animation-duration: 4s;"></i>
+                        <span class="font-bold truncate max-w-[110px] sm:max-w-[150px]" id="bgmTitle">Epik High - Fly (Retro Ver)</span>
                     </div>
-                    <div id="tasksListContainer" class="space-y-2"></div>
-                </div>
-            </div>
-
-            <!-- CALENDAR -->
-            <div id="view-calendar" class="flex-1 flex flex-col h-full overflow-hidden workspace-view hidden bg-[#fcfdff]">
-                <div class="bg-[#f0f4f9] border-b border-[#a4c2f4] px-4 py-3 flex justify-between items-center flex-wrap gap-2">
-                    <div>
-                        <h2 class="font-bold text-sm text-[#12437a] flex items-center gap-1.5"><i class="fa-solid fa-calendar-days text-blue-600"></i> <span data-i18n="cal.title">MYDESK Retro Calendar</span></h2>
-                        <p class="text-[11px] text-gray-500" data-i18n="cal.subtitle">Click the month/year below to jump quickly. Click a date to add notes.</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="changeMonth(-1)" class="bg-white border border-[#7a9fd1] px-2.5 py-1 rounded text-xs hover:bg-gray-100 font-bold" data-i18n-title="cal.prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
-                        <button id="calendarMonthTitle" onclick="toggleJumpPanel()" class="month-title-btn bg-white border border-[#7a9fd1] hover:bg-blue-50 px-3 py-1 rounded font-bold text-xs sm:text-sm text-[#12437a] min-w-[140px] text-center flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
-                            <i class="fa-solid fa-magnifying-glass text-[10px] text-blue-600"></i>
-                            <span id="calendarMonthTitleText">October 2026</span>
-                            <i class="fa-solid fa-caret-down text-[10px] text-blue-600"></i>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="togglePlayBGM()" id="bgmPlayBtn" class="accent-bg accent-bg-hover text-white px-2 py-0.5 rounded text-[11px] shadow">
+                            <i class="fa-solid fa-play" id="bgmIcon"></i>
                         </button>
-                        <button onclick="changeMonth(1)" class="bg-white border border-[#7a9fd1] px-2.5 py-1 rounded text-xs hover:bg-gray-100 font-bold" data-i18n-title="cal.nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+                        <select id="bgmSelect" onchange="changeBGM(this.value)" class="text-[11px] border border-[#7a9fd1] rounded bg-white px-1 py-0.5">
+                            <option value="epik">Epik High - Fly</option>
+                            <option value="younha">Younha - Password 486</option>
+                            <option value="wondergirls">Wonder Girls - Tell Me</option>
+                            <option value="bigbang">Big Bang - Lies</option>
+                        </select>
                     </div>
                 </div>
+                <button onclick="openSettings()" class="bg-white border border-[#7a9fd1] hover:bg-blue-50 text-[#12437a] px-2 py-1 rounded text-[11px] font-bold shadow-sm flex items-center gap-1" title="Settings">
+                    <i class="fa-solid fa-gear"></i> <span data-i18n="btn.settings">Settings</span>
+                </button>
+            </div>
+        </header>
 
-                <div class="bg-[#eef3f9] border-b border-[#a4c2f4] px-4 py-2 flex flex-wrap items-center gap-2 text-[11px]">
-                    <label class="accent-bg accent-bg-hover text-white px-3 py-1 rounded shadow cursor-pointer flex items-center gap-1 font-bold" title="Import .ics or .cal file into calendar">
-                        <i class="fa-solid fa-file-import"></i> <span data-i18n="cal.importIcs">Import .ics / .cal</span>
-                        <input type="file" id="icalImportFile" accept=".ics,.ical,.cal,.txt" class="hidden" onchange="importICalFile(event)">
-                    </label>
-                    <button onclick="exportCalendarICS()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded shadow flex items-center gap-1 font-bold" title="Export calendar as .ics file">
-                        <i class="fa-solid fa-file-export"></i> <span data-i18n="cal.exportIcs">Export .ics</span>
-                    </button>
-                    <span id="icalStatus" class="text-[10px] text-gray-500 ml-auto"></span>
+        <main class="w-full max-w-7xl retro-window bg-[#f4f7fb] flex flex-col md:flex-row h-[84vh] overflow-hidden shadow-2xl">
+
+            <aside class="w-full md:w-72 retro-sidebar flex flex-col flex-shrink-0 border-r border-[#a4c2f4]">
+                <div class="p-3 bg-[#e4eff9] border-b border-[#b4d0f0] text-center relative">
+                    <div class="w-full h-24 bg-[#dbeafe] border border-blue-300 rounded flex items-center justify-center relative overflow-hidden shadow-inner mb-2">
+                        <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#12437a_1px,transparent_1px)] [background-size:10px_10px]"></div>
+                        <div class="text-2xl select-none flex items-center gap-2" id="avatarEmojis">
+                            <span id="avatarMain">👩‍💻</span><span class="text-base" id="avatarDeco1">☕</span><span class="text-base" id="avatarDeco2">🎧</span>
+                        </div>
+                        <div class="absolute bottom-1 right-1 text-[9px] text-blue-900/60 dot-font font-bold" id="avatarLabel">MYDESK&lt;3</div>
+                    </div>
+                    <input type="text" id="userMood" value="♫ Coding & organizing memories..." onchange="saveMood(this.value)" class="w-full text-center text-[11px] bg-yellow-50 border border-blue-200 rounded px-1 py-0.5 text-gray-700 font-semibold focus:outline-none" placeholder="Your mood...">
                 </div>
 
-                <div id="jumpPanel" class="hidden jump-panel bg-[#eef3f9] border-b border-[#a4c2f4] px-4 py-3">
-                    <div class="max-w-3xl mx-auto">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[11px] font-bold text-[#12437a] flex items-center gap-1">
-                                <i class="fa-solid fa-bolt text-amber-500"></i> <span data-i18n="cal.jumpPanelTitle">Quick Jump — Year & Month</span>
-                            </span>
-                            <button onclick="closeJumpPanel()" class="text-gray-500 hover:text-red-500 text-xs font-bold px-1">✕ <span data-i18n="cal.close">Close</span></button>
+                <div class="p-2 bg-[#d8e3f0] border-b border-[#a4c2f4] grid grid-cols-2 gap-1 text-xs">
+                    <button id="tabBtn-documents" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-file-lines"></i> <span data-i18n="tab.docs">Docs & Pages</span>
+                    </button>
+                    <button id="tabBtn-todo" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-list-check"></i> <span data-i18n="tab.todo">To-Do List</span>
+                    </button>
+                    <button id="tabBtn-calendar" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-calendar-days"></i> <span data-i18n="tab.calendar">Calendar</span>
+                    </button>
+                    <button id="tabBtn-pomodoro" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-clock"></i> <span data-i18n="tab.pomodoro">Focus Timer</span>
+                    </button>
+                </div>
+
+                <div id="sidebarContextContainer" class="flex-1 overflow-y-auto p-2 bg-white"></div>
+
+                <div class="p-2 bg-[#eef3f9] border-t border-[#a4c2f4] flex flex-col gap-1.5 text-[11px]">
+                    <div class="flex justify-between items-center gap-1">
+                        <button onclick="exportAllWorkspaceJSON()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1.5 rounded shadow flex items-center justify-center gap-1 font-bold" title="Backup entire workspace to JSON">
+                            <i class="fa-solid fa-download"></i> <span data-i18n="btn.backup">Backup</span>
+                        </button>
+                        <label class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1.5 rounded shadow cursor-pointer flex items-center justify-center gap-1 font-bold" title="Restore workspace from JSON backup">
+                            <i class="fa-solid fa-upload"></i> <span data-i18n="btn.restore">Restore</span>
+                            <input type="file" id="importFile" onchange="importWorkspaceJSON(event)" accept=".json" class="hidden">
+                        </label>
+                    </div>
+                    <div class="flex justify-between items-center px-1">
+                        <span class="text-gray-500 text-[10px]"><i class="fa-regular fa-circle-check text-green-500"></i> <span data-i18n="backup.fullExport">Full database export</span></span>
+                        <button onclick="resetWorkspace()" class="text-red-500 hover:underline text-[10px]" data-i18n="btn.reset">Reset</button>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="flex-1 flex flex-col bg-white overflow-hidden relative">
+
+                <!-- DOCUMENTS -->
+                <div id="view-documents" class="flex-1 flex flex-col h-full overflow-hidden workspace-view">
+                    <div class="bg-[#f0f4f9] border-b border-[#a4c2f4] px-4 py-2.5 flex flex-wrap justify-between items-center gap-2">
+                        <div class="flex items-center gap-2 flex-1 max-w-lg">
+                            <input type="text" id="activeDocTitle" oninput="updateActiveTitle(this.value)" placeholder="Page Title..." data-i18n-placeholder="docs.pageTitle" class="font-bold text-sm sm:text-base bg-transparent border-b border-transparent hover:border-blue-300 focus:border-[#2178b5] focus:outline-none w-full text-[#12437a]">
                         </div>
-                        <div class="flex items-center gap-2 mb-3">
-                            <label class="text-[11px] font-bold text-gray-600 w-12" data-i18n="cal.year">Year:</label>
-                            <div class="flex items-center gap-1.5 flex-wrap" id="yearQuickRow"></div>
-                            <div class="flex items-center gap-1 ml-auto">
-                                <button onclick="jumpYear(-1)" class="bg-white border border-[#7a9fd1] hover:bg-blue-50 rounded w-7 h-7 text-xs font-bold">−</button>
-                                <input type="number" id="jumpYearInput" min="1900" max="2200" class="w-20 text-center text-xs px-2 py-1 border border-[#7a9fd1] rounded bg-white focus:outline-none" onchange="jumpToYear(this.value)">
-                                <button onclick="jumpYear(1)" class="bg-white border border-[#7a9fd1] hover:bg-blue-50 rounded w-7 h-7 text-xs font-bold">+</button>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span id="saveStatus" class="text-green-600 font-bold text-[11px]" data-i18n="docs.saved">Saved locally</span>
+                            <button onclick="exportDocTxt()" class="accent-bg accent-bg-hover text-white px-2.5 py-1 rounded shadow flex items-center gap-1" title="Export .txt"><i class="fa-solid fa-file-arrow-down"></i> .txt</button>
+                            <button onclick="exportDocHtml()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded shadow flex items-center gap-1" title="Export .html"><i class="fa-solid fa-globe"></i> .html</button>
+                            <button onclick="exportDocJson()" class="bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1 rounded shadow flex items-center gap-1" title="Export .json"><i class="fa-solid fa-code"></i> .json</button>
+                            <button onclick="deleteActiveDocument()" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded shadow flex items-center gap-1" data-i18n-title="docs.delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="rte-toolbar px-3 py-1.5 flex flex-wrap items-center gap-1 text-xs">
+                        <select onchange="rteExec('formatBlock', this.value); this.selectedIndex=0;" class="px-1.5 py-1 bg-white border border-gray-300 rounded text-[11px] hover:bg-gray-100">
+                            <option value="">Paragraph ▾</option>
+                            <option value="h1">Heading 1</option>
+                            <option value="h2">Heading 2</option>
+                            <option value="h3">Heading 3</option>
+                            <option value="p">Paragraph</option>
+                            <option value="pre">Code Block</option>
+                            <option value="blockquote">Quote</option>
+                        </select>
+                        <span class="text-gray-300">|</span>
+                        <button onclick="rteExec('bold')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 font-bold" title="Bold (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+                        <button onclick="rteExec('italic')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 italic" title="Italic (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+                        <button onclick="rteExec('underline')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 underline" title="Underline (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
+                        <button onclick="rteExec('strikeThrough')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 line-through" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
+                        <span class="text-gray-300">|</span>
+                        <button onclick="rteExec('insertUnorderedList')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Bullet list"><i class="fa-solid fa-list-ul"></i></button>
+                        <button onclick="rteExec('insertOrderedList')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Numbered list"><i class="fa-solid fa-list-ol"></i></button>
+                        <button onclick="rteInsertCallout()" class="px-2 py-1 bg-yellow-50 border border-yellow-300 rounded hover:bg-yellow-100 text-amber-700 font-bold" title="Callout">💡</button>
+                        <span class="text-gray-300">|</span>
+                        <button onclick="rteInsertLink()" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Hyperlink (Ctrl+K)"><i class="fa-solid fa-link text-blue-600"></i></button>
+                        <button onclick="document.getElementById('rteImageInput').click()" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Image"><i class="fa-solid fa-image text-emerald-600"></i></button>
+                        <button data-rte-table-trigger class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Table"><i class="fa-solid fa-table text-purple-600"></i></button>
+                        <button onclick="document.getElementById('rteAudioInput').click()" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Audio File"><i class="fa-solid fa-music text-pink-600"></i></button>
+                        <button onclick="openAudioPanel()" class="px-2 py-1 bg-blue-50 border border-blue-300 rounded hover:bg-blue-100 text-blue-700 font-bold relative" title="Open Audio Library">
+                            <i class="fa-solid fa-headphones"></i>
+                            <span id="audioCountBadge" class="absolute -top-1.5 -right-1.5 accent-bg text-white text-[9px] rounded-full px-1.5 min-w-[16px] text-center font-bold">0</span>
+                        </button>
+                        <span class="text-gray-300">|</span>
+                        <button onclick="rteExec('undo')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+                        <button onclick="rteExec('redo')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button onclick="rteExec('removeFormat')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Clear formatting"><i class="fa-solid fa-eraser"></i></button>
+                        <span class="text-gray-300">|</span>
+                        <button onclick="rteInsertEmotion('★')" class="px-2 py-1 bg-yellow-50 border border-yellow-300 rounded text-amber-700 font-bold">★</button>
+                        <button onclick="rteInsertEmotion('♪')" class="px-2 py-1 bg-yellow-50 border border-yellow-300 rounded text-amber-700 font-bold">♪</button>
+
+                        <input type="file" id="rteImageInput" accept="image/*" class="hidden" onchange="handleRteImage(event)">
+                        <input type="file" id="rteAudioInput" accept="audio/*" class="hidden" onchange="handleRteAudio(event)">
+
+                        <span id="rteTableForm" class="hidden ml-1 bg-blue-50 border border-blue-300 rounded px-2 py-0.5 flex items-center gap-1">
+                            <input type="number" id="rteTableRows" value="3" min="1" max="20" class="w-10 text-center text-[11px] border border-gray-300 rounded px-0.5">
+                            <span class="text-[10px]">×</span>
+                            <input type="number" id="rteTableCols" value="3" min="1" max="10" class="w-10 text-center text-[11px] border border-gray-300 rounded px-0.5">
+                            <button onclick="rteInsertTable()" class="bg-purple-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">Insert</button>
+                            <button onclick="document.getElementById('rteTableForm').classList.add('hidden')" class="text-gray-500 text-[10px] px-1">✕</button>
+                        </span>
+                    </div>
+
+                    <div class="flex-1 bg-white overflow-hidden relative" style="min-height: 0;">
+                        <div id="rteEditor" class="rte-editor" contenteditable="true" data-placeholder="Write notes Notion-style..."></div>
+                    </div>
+
+                    <div id="audioPanel" class="audio-panel hidden">
+                        <div class="px-4 py-2 flex justify-between items-center border-b border-[#b4d0f0]">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-headphones text-[#2c599d]"></i>
+                                <span class="font-bold text-xs text-[#12437a]" data-i18n="audio.library">Audio Library</span>
+                                <span id="audioPanelCount" class="text-[10px] text-gray-500 bg-white px-2 py-0.5 rounded-full border border-[#a4c2f4]">0 tracks</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <button onclick="scanAudioFromDocs()" class="text-[10px] bg-white border border-[#7a9fd1] text-[#12437a] px-2 py-0.5 rounded hover:bg-blue-50 font-bold" title="Refresh from documents">
+                                    <i class="fa-solid fa-rotate"></i> <span data-i18n="audio.refresh">Refresh</span>
+                                </button>
+                                <button onclick="closeAudioPanel()" class="text-gray-500 hover:text-red-500 text-xs font-bold px-1">✕</button>
                             </div>
                         </div>
-                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-1.5" id="monthQuickGrid"></div>
-                        <div class="mt-3 flex justify-end">
-                            <button onclick="jumpToToday()" class="accent-bg accent-bg-hover text-white px-3 py-1 rounded text-[11px] font-bold shadow flex items-center gap-1">
-                                <i class="fa-solid fa-crosshairs"></i> <span data-i18n="cal.jumpToday">Jump to Today</span>
-                            </button>
+                        <div id="audioPanelList" class="p-3 space-y-2 overflow-y-auto" style="max-height: 200px;"></div>
+                    </div>
+
+                    <div class="bg-[#f0f4f9] border-t border-[#a4c2f4] px-4 py-1.5 flex justify-between items-center text-[11px] text-gray-500">
+                        <span id="docStats">0 words | 0 characters | 0 lines</span>
+                        <span data-i18n="docs.footer">MYDESK Notion Docs • Offline Mode</span>
+                    </div>
+
+                    <div id="globalPlayer" class="global-player hidden">
+                        <div class="gp-play" onclick="toggleGlobalPlay()">
+                            <i class="fa-solid fa-play" id="gpPlayIcon"></i>
+                        </div>
+                        <div class="gp-info">
+                            <div class="gp-title" id="gpTitle">No track selected</div>
+                            <div class="gp-time" id="gpTime">0:00 / 0:00</div>
+                            <div class="gp-progress" onclick="seekGlobalAudio(event)">
+                                <div class="gp-progress-bar" id="gpProgressBar"></div>
+                            </div>
+                        </div>
+                        <div class="gp-controls">
+                            <div class="gp-btn" onclick="globalAudioSkip(-5)" title="-5s"><i class="fa-solid fa-rotate-left"></i></div>
+                            <div class="gp-btn" onclick="globalAudioSkip(5)" title="+5s"><i class="fa-solid fa-rotate-right"></i></div>
+                            <div class="gp-btn" onclick="toggleGlobalLoop()" id="gpLoopBtn" title="Loop"><i class="fa-solid fa-repeat"></i></div>
+                            <div class="gp-btn" onclick="globalAudioVolume(0)" title="Mute"><i class="fa-solid fa-volume-xmark" id="gpVolIcon"></i></div>
+                            <div class="gp-volume">
+                                <input type="range" id="gpVolumeSlider" min="0" max="100" value="100" onchange="globalAudioVolume(this.value)" oninput="globalAudioVolume(this.value)">
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="p-4 flex-1 overflow-y-auto flex flex-col">
-                    <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs text-[#12437a] bg-[#eef3f9] p-2 rounded-t border border-[#a4c2f4]" id="weekdayHeader">
-                        <span class="text-red-500" data-i18n="day.sun">Sun</span><span data-i18n="day.mon">Mon</span><span data-i18n="day.tue">Tue</span><span data-i18n="day.wed">Wed</span><span data-i18n="day.thu">Thu</span><span data-i18n="day.fri">Fri</span><span class="text-blue-500" data-i18n="day.sat">Sat</span>
-                    </div>
-                    <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1 flex-1 auto-rows-fr bg-gray-100 p-1 border-x border-b border-[#a4c2f4] rounded-b min-h-[350px]"></div>
-                </div>
-            </div>
-
-            <!-- POMODORO -->
-            <div id="view-pomodoro" class="flex-1 flex-col h-full overflow-hidden workspace-view hidden bg-[#fcfdff] items-center justify-center p-6">
-                <div class="w-full max-w-md bg-[#f0f4f9] border border-[#a4c2f4] rounded-lg p-6 shadow-xl text-center">
-                    <div class="flex justify-center items-center gap-2 mb-4">
-                        <div class="accent-bg text-white px-3 py-1 rounded-full text-xs font-bold dot-font"><i class="fa-solid fa-clock"></i> <span data-i18n="pomo.title">Pomodoro Focus Timer</span></div>
-                    </div>
-                    <div class="flex justify-center gap-2 mb-6 text-xs flex-wrap">
-                        <button onclick="setPomoMode('work')" id="pomoMode-work" class="px-3 py-1.5 rounded font-bold accent-bg text-white shadow" data-i18n="pomo.work">Work (25m)</button>
-                        <button onclick="setPomoMode('shortBreak')" id="pomoMode-shortBreak" class="px-3 py-1.5 rounded font-bold bg-white border border-gray-300 text-gray-700" data-i18n="pomo.shortBreak">Short Break (5m)</button>
-                        <button onclick="setPomoMode('longBreak')" id="pomoMode-longBreak" class="px-3 py-1.5 rounded font-bold bg-white border border-gray-300 text-gray-700" data-i18n="pomo.longBreak">Long Break (15m)</button>
-                    </div>
-                    <div class="bg-white border-2 border-[#7a9fd1] rounded-xl p-6 shadow-inner mb-6">
-                        <div id="pomoClockDisplay" class="mono-font text-5xl sm:text-6xl font-bold text-[#12437a] tracking-wider">25:00</div>
-                        <div id="pomoStatusText" class="text-xs text-gray-500 mt-2 font-semibold" data-i18n="pomo.ready">Ready to focus & stay productive</div>
-                    </div>
-                    <div class="flex justify-center items-center gap-3 mb-6 flex-wrap">
-                        <button onclick="startPomodoro()" id="pomoStartBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-1.5">
-                            <i class="fa-solid fa-play"></i> <span data-i18n="pomo.start">Start</span>
-                        </button>
-                        <button onclick="pausePomodoro()" id="pomoPauseBtn" class="bg-amber-600 hover:bg-amber-700 text-white px-5 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-1.5 hidden">
-                            <i class="fa-solid fa-pause"></i> <span data-i18n="pomo.pause">Pause</span>
-                        </button>
-                        <button onclick="resetPomodoro()" class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-1.5">
-                            <i class="fa-solid fa-rotate-right"></i> <span data-i18n="pomo.reset">Reset</span>
+                <!-- TODO -->
+                <div id="view-todo" class="flex-1 flex flex-col h-full overflow-hidden workspace-view hidden bg-[#fcfdff]">
+                    <div class="bg-[#f0f4f9] border-b border-[#a4c2f4] px-4 py-3 flex justify-between items-center flex-wrap gap-2">
+                        <div>
+                            <h2 class="font-bold text-sm text-[#12437a] flex items-center gap-1.5"><i class="fa-solid fa-list-check text-blue-600"></i> <span data-i18n="todo.title">MYDESK Task Manager & To-Do Board</span></h2>
+                            <p class="text-[11px] text-gray-500" data-i18n="todo.subtitle">Organize your daily tasks, projects, and goals with priority tags.</p>
+                        </div>
+                        <button onclick="openNewTaskModal()" class="accent-bg accent-bg-hover text-white px-3 py-1.5 rounded text-xs shadow flex items-center gap-1 font-bold">
+                            <i class="fa-solid fa-plus"></i> <span data-i18n="todo.addTask">Add Task</span>
                         </button>
                     </div>
-                    <div class="text-xs text-gray-600 font-semibold bg-[#eef3f9] p-2.5 rounded border border-[#b4d0f0]">
-                        <span data-i18n="pomo.completedToday">Completed Focus Sessions Today:</span> <span id="pomoCompletedCount" class="accent-text font-bold text-sm">0</span> 🌟
+                    <div class="p-4 flex-1 overflow-y-auto">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-4 bg-[#eef3f9] p-2.5 rounded border border-[#a4c2f4] text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-gray-700" data-i18n="todo.filter">Filter:</span>
+                                <button onclick="filterTasks('all')" id="filter-all" class="px-2 py-1 accent-bg text-white rounded font-bold" data-i18n="todo.all">All</button>
+                                <button onclick="filterTasks('active')" id="filter-active" class="px-2 py-1 bg-white border border-gray-300 rounded text-gray-700" data-i18n="todo.active">Active</button>
+                                <button onclick="filterTasks('completed')" id="filter-completed" class="px-2 py-1 bg-white border border-gray-300 rounded text-gray-700" data-i18n="todo.completed">Completed</button>
+                            </div>
+                            <div class="flex items-center gap-3 text-gray-600 font-semibold">
+                                <span><span data-i18n="todo.total">Total</span>: <span id="taskCountTotal">0</span></span>
+                                <span><span data-i18n="todo.done">Done</span>: <span id="taskCountDone" class="text-green-600">0</span></span>
+                            </div>
+                        </div>
+                        <div id="tasksListContainer" class="space-y-2"></div>
                     </div>
                 </div>
-            </div>
 
-        </div>
-    </main>
+                <!-- CALENDAR -->
+                <div id="view-calendar" class="flex-1 flex flex-col h-full overflow-hidden workspace-view hidden bg-[#fcfdff]">
+                    <div class="bg-[#f0f4f9] border-b border-[#a4c2f4] px-4 py-3 flex justify-between items-center flex-wrap gap-2">
+                        <div>
+                            <h2 class="font-bold text-sm text-[#12437a] flex items-center gap-1.5"><i class="fa-solid fa-calendar-days text-blue-600"></i> <span data-i18n="cal.title">MYDESK Retro Calendar</span></h2>
+                            <p class="text-[11px] text-gray-500" data-i18n="cal.subtitle">Click the month/year below to jump quickly. Click a date to add notes.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeMonth(-1)" class="bg-white border border-[#7a9fd1] px-2.5 py-1 rounded text-xs hover:bg-gray-100 font-bold" data-i18n-title="cal.prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button id="calendarMonthTitle" onclick="toggleJumpPanel()" class="month-title-btn bg-white border border-[#7a9fd1] hover:bg-blue-50 px-3 py-1 rounded font-bold text-xs sm:text-sm text-[#12437a] min-w-[140px] text-center flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+                                <i class="fa-solid fa-magnifying-glass text-[10px] text-blue-600"></i>
+                                <span id="calendarMonthTitleText">October 2026</span>
+                                <i class="fa-solid fa-caret-down text-[10px] text-blue-600"></i>
+                            </button>
+                            <button onclick="changeMonth(1)" class="bg-white border border-[#7a9fd1] px-2.5 py-1 rounded text-xs hover:bg-gray-100 font-bold" data-i18n-title="cal.nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#eef3f9] border-b border-[#a4c2f4] px-4 py-2 flex flex-wrap items-center gap-2 text-[11px]">
+                        <label class="accent-bg accent-bg-hover text-white px-3 py-1 rounded shadow cursor-pointer flex items-center gap-1 font-bold" title="Import .ics or .cal file into calendar">
+                            <i class="fa-solid fa-file-import"></i> <span data-i18n="cal.importIcs">Import .ics / .cal</span>
+                            <input type="file" id="icalImportFile" accept=".ics,.ical,.cal,.txt" class="hidden" onchange="importICalFile(event)">
+                        </label>
+                        <button onclick="exportCalendarICS()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded shadow flex items-center gap-1 font-bold" title="Export calendar as .ics file">
+                            <i class="fa-solid fa-file-export"></i> <span data-i18n="cal.exportIcs">Export .ics</span>
+                        </button>
+                        <span id="icalStatus" class="text-[10px] text-gray-500 ml-auto"></span>
+                    </div>
+
+                    <div id="jumpPanel" class="hidden jump-panel bg-[#eef3f9] border-b border-[#a4c2f4] px-4 py-3">
+                        <div class="max-w-3xl mx-auto">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[11px] font-bold text-[#12437a] flex items-center gap-1">
+                                    <i class="fa-solid fa-bolt text-amber-500"></i> <span data-i18n="cal.jumpPanelTitle">Quick Jump — Year & Month</span>
+                                </span>
+                                <button onclick="closeJumpPanel()" class="text-gray-500 hover:text-red-500 text-xs font-bold px-1">✕ <span data-i18n="cal.close">Close</span></button>
+                            </div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <label class="text-[11px] font-bold text-gray-600 w-12" data-i18n="cal.year">Year:</label>
+                                <div class="flex items-center gap-1.5 flex-wrap" id="yearQuickRow"></div>
+                                <div class="flex items-center gap-1 ml-auto">
+                                    <button onclick="jumpYear(-1)" class="bg-white border border-[#7a9fd1] hover:bg-blue-50 rounded w-7 h-7 text-xs font-bold">−</button>
+                                    <input type="number" id="jumpYearInput" min="1900" max="2200" class="w-20 text-center text-xs px-2 py-1 border border-[#7a9fd1] rounded bg-white focus:outline-none" onchange="jumpToYear(this.value)">
+                                    <button onclick="jumpYear(1)" class="bg-white border border-[#7a9fd1] hover:bg-blue-50 rounded w-7 h-7 text-xs font-bold">+</button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-1.5" id="monthQuickGrid"></div>
+                            <div class="mt-3 flex justify-end">
+                                <button onclick="jumpToToday()" class="accent-bg accent-bg-hover text-white px-3 py-1 rounded text-[11px] font-bold shadow flex items-center gap-1">
+                                    <i class="fa-solid fa-crosshairs"></i> <span data-i18n="cal.jumpToday">Jump to Today</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 flex-1 overflow-y-auto flex flex-col">
+                        <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs text-[#12437a] bg-[#eef3f9] p-2 rounded-t border border-[#a4c2f4]" id="weekdayHeader">
+                            <span class="text-red-500" data-i18n="day.sun">Sun</span><span data-i18n="day.mon">Mon</span><span data-i18n="day.tue">Tue</span><span data-i18n="day.wed">Wed</span><span data-i18n="day.thu">Thu</span><span data-i18n="day.fri">Fri</span><span class="text-blue-500" data-i18n="day.sat">Sat</span>
+                        </div>
+                        <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1 flex-1 auto-rows-fr bg-gray-100 p-1 border-x border-b border-[#a4c2f4] rounded-b min-h-[350px]"></div>
+                    </div>
+                </div>
+
+                <!-- POMODORO -->
+                <div id="view-pomodoro" class="flex-1 flex-col h-full overflow-hidden workspace-view hidden bg-[#fcfdff] items-center justify-center p-6">
+                    <div class="w-full max-w-md bg-[#f0f4f9] border border-[#a4c2f4] rounded-lg p-6 shadow-xl text-center">
+                        <div class="flex justify-center items-center gap-2 mb-4">
+                            <div class="accent-bg text-white px-3 py-1 rounded-full text-xs font-bold dot-font"><i class="fa-solid fa-clock"></i> <span data-i18n="pomo.title">Pomodoro Focus Timer</span></div>
+                        </div>
+                        <div class="flex justify-center gap-2 mb-6 text-xs flex-wrap">
+                            <button onclick="setPomoMode('work')" id="pomoMode-work" class="px-3 py-1.5 rounded font-bold accent-bg text-white shadow" data-i18n="pomo.work">Work (25m)</button>
+                            <button onclick="setPomoMode('shortBreak')" id="pomoMode-shortBreak" class="px-3 py-1.5 rounded font-bold bg-white border border-gray-300 text-gray-700" data-i18n="pomo.shortBreak">Short Break (5m)</button>
+                            <button onclick="setPomoMode('longBreak')" id="pomoMode-longBreak" class="px-3 py-1.5 rounded font-bold bg-white border border-gray-300 text-gray-700" data-i18n="pomo.longBreak">Long Break (15m)</button>
+                        </div>
+                        <div class="bg-white border-2 border-[#7a9fd1] rounded-xl p-6 shadow-inner mb-6">
+                            <div id="pomoClockDisplay" class="mono-font text-5xl sm:text-6xl font-bold text-[#12437a] tracking-wider">25:00</div>
+                            <div id="pomoStatusText" class="text-xs text-gray-500 mt-2 font-semibold" data-i18n="pomo.ready">Ready to focus & stay productive</div>
+                        </div>
+                        <div class="flex justify-center items-center gap-3 mb-6 flex-wrap">
+                            <button onclick="startPomodoro()" id="pomoStartBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-1.5">
+                                <i class="fa-solid fa-play"></i> <span data-i18n="pomo.start">Start</span>
+                            </button>
+                            <button onclick="pausePomodoro()" id="pomoPauseBtn" class="bg-amber-600 hover:bg-amber-700 text-white px-5 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-1.5 hidden">
+                                <i class="fa-solid fa-pause"></i> <span data-i18n="pomo.pause">Pause</span>
+                            </button>
+                            <button onclick="resetPomodoro()" class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-1.5">
+                                <i class="fa-solid fa-rotate-right"></i> <span data-i18n="pomo.reset">Reset</span>
+                            </button>
+                        </div>
+                        <div class="text-xs text-gray-600 font-semibold bg-[#eef3f9] p-2.5 rounded border border-[#b4d0f0]">
+                            <span data-i18n="pomo.completedToday">Completed Focus Sessions Today:</span> <span id="pomoCompletedCount" class="accent-text font-bold text-sm">0</span> 🌟
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
 
     <!-- Task Modal -->
     <div id="taskModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
@@ -716,35 +726,7 @@
         </div>
     </div>
 
-    <!-- Mic permission modal -->
-    <div id="micPermModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
-            <div class="retro-titlebar">
-                <span>🎤 Microphone Permission Required</span>
-                <button onclick="closeMicPermModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
-            </div>
-            <div class="p-5 space-y-3 text-xs text-gray-700">
-                <div class="flex items-start gap-3">
-                    <div class="bg-amber-100 text-amber-700 rounded-full p-2 flex-shrink-0">
-                        <i class="fa-solid fa-microphone-slash text-lg"></i>
-                    </div>
-                    <div>
-                        <p class="font-bold text-gray-800 mb-1">We need microphone access to record voice notes.</p>
-                        <p class="text-[11px] text-gray-600">Your browser will ask you to allow microphone access.</p>
-                    </div>
-                </div>
-                <div id="micPermStatus" class="text-[11px] text-center font-bold"></div>
-                <div class="flex justify-end gap-2 pt-2">
-                    <button onclick="closeMicPermModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold">Later</button>
-                    <button onclick="requestMicPermission(true)" class="accent-bg accent-bg-hover text-white px-4 py-1.5 rounded font-bold shadow flex items-center gap-1">
-                        <i class="fa-solid fa-key"></i> Grant Microphone Access
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Avatar Modal (RESTORED) -->
+    <!-- Avatar Modal (combined with profile) -->
     <div id="avatarModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[90] p-4">
         <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-lg overflow-hidden max-h-[88vh] flex flex-col">
             <div class="retro-titlebar">
@@ -752,6 +734,21 @@
                 <button onclick="closeAvatarModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
             </div>
             <div class="p-4 space-y-4 text-xs overflow-y-auto">
+
+                <!-- Profile Section -->
+                <div class="bg-[#f0f4f9] border border-[#a4c2f4] rounded p-3 space-y-2">
+                    <div class="font-bold text-[#12437a] text-[13px] mb-1"><i class="fa-solid fa-user-pen"></i> <span data-i18n="profile.sectionTitle">Profile</span></div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1" data-i18n="profile.name">Display Name:</label>
+                        <input type="text" id="profileNameInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="Your name...">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1" data-i18n="profile.brand">Header Brand Text:</label>
+                        <input type="text" id="profileBrandInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="e.g. MYDESK &lt;3">
+                    </div>
+                </div>
+
+                <!-- Avatar Section -->
                 <div>
                     <label class="block font-bold text-gray-700 mb-2"><i class="fa-solid fa-face-smile text-blue-600"></i> <span data-i18n="avatar.main">Main Avatar:</span></label>
                     <div class="grid grid-cols-8 gap-1 bg-[#f0f4f9] p-3 rounded border border-[#a4c2f4]" id="mainAvatarPicker"></div>
@@ -780,35 +777,7 @@
                 <div class="flex justify-end gap-2 pt-2">
                     <button onclick="resetAvatar()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold" data-i18n="avatar.reset">Reset Avatar</button>
                     <button onclick="closeAvatarModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold" data-i18n="modal.cancel">Cancel</button>
-                    <button onclick="saveAvatar()" class="accent-bg accent-bg-hover text-white px-4 py-1.5 rounded font-bold shadow" data-i18n="avatar.save">Save Avatar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Modal (RESTORED) -->
-    <div id="profileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[90] p-4">
-        <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
-            <div class="retro-titlebar">
-                <span><i class="fa-solid fa-user-pen"></i> <span data-i18n="profile.modalTitle">Edit Profile</span></span>
-                <button onclick="closeProfileModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
-            </div>
-            <div class="p-4 space-y-3 text-xs">
-                <div>
-                    <label class="block font-bold text-gray-700 mb-1" data-i18n="profile.name">Display Name:</label>
-                    <input type="text" id="profileNameInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="Your name...">
-                </div>
-                <div>
-                    <label class="block font-bold text-gray-700 mb-1" data-i18n="profile.brand">Header Brand Text:</label>
-                    <input type="text" id="profileBrandInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="e.g. MYDESK &lt;3">
-                </div>
-                <div>
-                    <label class="block font-bold text-gray-700 mb-1" data-i18n="profile.mood">Status Mood:</label>
-                    <input type="text" id="profileMoodInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="Your mood...">
-                </div>
-                <div class="flex justify-end gap-2 pt-2">
-                    <button onclick="closeProfileModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold" data-i18n="modal.cancel">Cancel</button>
-                    <button onclick="saveProfile()" class="accent-bg accent-bg-hover text-white px-4 py-1.5 rounded font-bold shadow" data-i18n="avatar.save">Save</button>
+                    <button onclick="saveAvatar()" class="accent-bg accent-bg-hover text-white px-4 py-1.5 rounded font-bold shadow" data-i18n="avatar.save">Save</button>
                 </div>
             </div>
         </div>
@@ -824,11 +793,13 @@
             <div class="flex border-b border-gray-200 bg-[#f8fafc] overflow-x-auto">
                 <div class="settings-tab active" data-settings-tab="theme" onclick="switchSettingsTab('theme')"><i class="fa-solid fa-palette"></i> <span data-i18n="settings.tab.theme">Theme</span></div>
                 <div class="settings-tab" data-settings-tab="layout" onclick="switchSettingsTab('layout')"><i class="fa-solid fa-table-columns"></i> <span data-i18n="settings.tab.layout">Layout</span></div>
+                <div class="settings-tab" data-settings-tab="ui" onclick="switchSettingsTab('ui')"><i class="fa-solid fa-text-height"></i> <span data-i18n="settings.tab.ui">UI & Text</span></div>
                 <div class="settings-tab" data-settings-tab="background" onclick="switchSettingsTab('background')"><i class="fa-solid fa-image"></i> <span data-i18n="settings.tab.background">Background</span></div>
                 <div class="settings-tab" data-settings-tab="pixel" onclick="switchSettingsTab('pixel')"><i class="fa-solid fa-gamepad"></i> <span data-i18n="settings.tab.pixel">Pixel Mode</span></div>
                 <div class="settings-tab" data-settings-tab="data" onclick="switchSettingsTab('data')"><i class="fa-solid fa-database"></i> <span data-i18n="settings.tab.data">Data</span></div>
             </div>
             <div class="p-4 overflow-y-auto flex-1 text-xs">
+
                 <div class="settings-section active" data-settings-section="theme">
                     <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.accentColor">Accent Color</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
@@ -854,6 +825,7 @@
                         <span class="text-[11px] text-gray-500" data-i18n="settings.headerHint">Used for active tabs and headings.</span>
                     </div>
                 </div>
+
                 <div class="settings-section" data-settings-section="layout">
                     <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.layout.title">Sidebar Position & Size</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
@@ -882,6 +854,53 @@
                         <button onclick="setLayout('hide-sidebar')" class="px-3 py-1.5 bg-white border border-gray-300 rounded font-bold hover:bg-blue-50 text-[11px]" data-i18n="settings.layout.hidden">Hidden</button>
                     </div>
                 </div>
+
+                <!-- NEW: UI & Text tab -->
+                <div class="settings-section" data-settings-section="ui">
+                    <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.ui.title">UI Scaling & Text Size</h3>
+                    <p class="text-[11px] text-gray-500 mb-4" data-i18n="settings.ui.hint">Adjust the overall interface scale and base font size for the entire app.</p>
+
+                    <div class="mb-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="font-bold text-gray-700" data-i18n="settings.ui.scale">UI Scale</label>
+                            <span class="text-[11px] font-bold accent-text" id="uiScaleValue">100%</span>
+                        </div>
+                        <input type="range" id="uiScaleSlider" class="ui-slider" min="70" max="130" step="5" value="100" oninput="setUIScale(this.value)">
+                        <div class="flex justify-between text-[10px] text-gray-500 mt-1">
+                            <span>70%</span><span>100%</span><span>130%</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="font-bold text-gray-700" data-i18n="settings.ui.textSize">Text Size</label>
+                            <span class="text-[11px] font-bold accent-text" id="textSizeValue">14px</span>
+                        </div>
+                        <input type="range" id="textSizeSlider" class="ui-slider" min="10" max="20" step="1" value="14" oninput="setTextSize(this.value)">
+                        <div class="flex justify-between text-[10px] text-gray-500 mt-1">
+                            <span>10px</span><span>14px</span><span>20px</span>
+                        </div>
+                    </div>
+
+                    <h3 class="font-bold text-sm text-[#12437a] mb-3 mt-5" data-i18n="settings.ui.presets">Quick Presets</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="applyUIPreset('compact')" class="px-3 py-1.5 bg-white border border-gray-300 rounded font-bold hover:bg-blue-50 text-[11px]" data-i18n="settings.ui.presetCompact">Compact</button>
+                        <button onclick="applyUIPreset('default')" class="px-3 py-1.5 bg-white border border-gray-300 rounded font-bold hover:bg-blue-50 text-[11px]" data-i18n="settings.ui.presetDefault">Default</button>
+                        <button onclick="applyUIPreset('large')" class="px-3 py-1.5 bg-white border border-gray-300 rounded font-bold hover:bg-blue-50 text-[11px]" data-i18n="settings.ui.presetLarge">Large</button>
+                        <button onclick="applyUIPreset('accessibility')" class="px-3 py-1.5 bg-white border border-gray-300 rounded font-bold hover:bg-blue-50 text-[11px]" data-i18n="settings.ui.presetAccessibility">Accessibility</button>
+                    </div>
+
+                    <div class="mt-5 p-3 bg-[#f0f4f9] border border-[#a4c2f4] rounded">
+                        <div class="text-[10px] text-gray-500 mb-2" data-i18n="settings.ui.previewLabel">Live preview:</div>
+                        <div class="text-[#12437a] font-bold" style="font-size: 1em;">MYDESK Heading</div>
+                        <div style="font-size: 0.875em;" class="text-gray-700 mt-1">This is body text at the current size.</div>
+                        <div class="mt-2 flex gap-2">
+                            <button class="accent-bg text-white px-3 py-1 rounded text-[0.75em] font-bold">Button</button>
+                            <button class="bg-white border border-gray-300 px-3 py-1 rounded text-[0.75em]">Secondary</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="settings-section" data-settings-section="background">
                     <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.bg.title">Custom Background</h3>
                     <p class="text-[11px] text-gray-500 mb-3" data-i18n="settings.bg.hint">Upload an image to use as your workspace background.</p>
@@ -901,6 +920,7 @@
                         <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a]" style="background: radial-gradient(circle, #f0abfc 20%, transparent 20%) 0 0 / 20px 20px, #f5d0fe;" onclick="setPresetBg('polka')"></div>
                     </div>
                 </div>
+
                 <div class="settings-section" data-settings-section="pixel">
                     <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.pixel.title">Cyworld Pixel Mode</h3>
                     <p class="text-[11px] text-gray-500 mb-4" data-i18n="settings.pixel.hint">Toggle pixelated retro styling inspired by 2008 Cyworld.</p>
@@ -909,6 +929,7 @@
                         <span class="font-bold text-[12px]" data-i18n="settings.pixel.enable">Enable Pixel Mode</span>
                     </div>
                 </div>
+
                 <div class="settings-section" data-settings-section="data">
                     <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.data.title">Backup & Restore</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
@@ -977,17 +998,13 @@
                 'alert.restored': '✅ Full workspace restored successfully!', 'alert.invalidBackup': '❌ Invalid backup file: missing required documents or tasks array.',
                 'alert.parseError': '❌ Error parsing JSON backup file.', 'alert.resetConfirm': 'Are you sure you want to reset the entire workspace to default templates?',
                 'alert.keepOnePage': 'You must keep at least one page!', 'alert.backupDownloaded': '✅ Backup downloaded!', 'alert.yearRange': 'Please enter a year between 1900 and 2200.',
-                'mic.grant': 'Grant Permission',
                 'audio.library': 'Audio Library', 'audio.refresh': 'Refresh',
-                'voice.recording': 'Recording...', 'voice.stop': 'Stop & Save', 'voice.cancel': 'Cancel',
-                'voice.saved': 'Voice note saved!', 'voice.cancelled': 'Recording cancelled', 'voice.tooShort': 'Recording too short — try again.',
-                'audio.moveHint': 'Drag to move', 'audio.delHint': 'Delete recording', 'audio.resizeHint': 'Resize',
-                'avatar.edit': '✎ Edit Avatar', 'avatar.customize': '👤 Avatar', 'avatar.profile': '✎ Profile',
-                'avatar.modalTitle': 'Customize Avatar & Profile', 'avatar.main': 'Main Avatar:', 'avatar.deco1': 'Decoration 1 (left):', 'avatar.deco2': 'Decoration 2 (right):',
-                'avatar.label': 'Mini-room Label:', 'avatar.preview': 'PREVIEW', 'avatar.reset': 'Reset Avatar', 'avatar.save': 'Save Avatar',
-                'profile.modalTitle': 'Edit Profile', 'profile.name': 'Display Name:', 'profile.brand': 'Header Brand Text:', 'profile.mood': 'Status Mood:',
+                'avatar.edit': 'Edit avatar & profile', 'avatar.modalTitle': 'Customize Avatar & Profile',
+                'avatar.main': 'Main Avatar:', 'avatar.deco1': 'Decoration 1 (left):', 'avatar.deco2': 'Decoration 2 (right):',
+                'avatar.label': 'Mini-room Label:', 'avatar.preview': 'PREVIEW', 'avatar.reset': 'Reset Avatar', 'avatar.save': 'Save',
+                'profile.sectionTitle': 'Profile', 'profile.name': 'Display Name:', 'profile.brand': 'Header Brand Text:',
                 'settings.title': 'Settings & Customization',
-                'settings.tab.theme': 'Theme', 'settings.tab.layout': 'Layout', 'settings.tab.background': 'Background',
+                'settings.tab.theme': 'Theme', 'settings.tab.layout': 'Layout', 'settings.tab.ui': 'UI & Text', 'settings.tab.background': 'Background',
                 'settings.tab.pixel': 'Pixel Mode', 'settings.tab.data': 'Data',
                 'settings.accentColor': 'Accent Color', 'settings.customAccent': 'Custom accent:', 'settings.resetAccent': 'Reset',
                 'settings.headerColor': 'Header / Tab Color', 'settings.headerHint': 'Used for active tabs and headings.',
@@ -996,6 +1013,12 @@
                 'settings.layout.top': 'Top Bar', 'settings.layout.compact': 'Compact',
                 'settings.layout.width': 'Sidebar Width',
                 'settings.layout.narrow': 'Narrow', 'settings.layout.medium': 'Medium', 'settings.layout.wide': 'Wide', 'settings.layout.hidden': 'Hidden',
+                'settings.ui.title': 'UI Scaling & Text Size',
+                'settings.ui.hint': 'Adjust the overall interface scale and base font size for the entire app.',
+                'settings.ui.scale': 'UI Scale', 'settings.ui.textSize': 'Text Size',
+                'settings.ui.presets': 'Quick Presets',
+                'settings.ui.presetCompact': 'Compact', 'settings.ui.presetDefault': 'Default', 'settings.ui.presetLarge': 'Large', 'settings.ui.presetAccessibility': 'Accessibility',
+                'settings.ui.previewLabel': 'Live preview:',
                 'settings.bg.title': 'Custom Background', 'settings.bg.hint': 'Upload an image to use as your workspace background.',
                 'settings.bg.upload': 'Upload Image', 'settings.bg.clear': 'Remove Custom Background', 'settings.bg.preset': 'Preset Backgrounds',
                 'settings.pixel.title': 'Cyworld Pixel Mode',
@@ -1042,21 +1065,24 @@
                 'alert.restored': '✅ 工作区已成功恢复！', 'alert.invalidBackup': '❌ 无效的备份文件：缺少文档或任务数组。',
                 'alert.parseError': '❌ 解析 JSON 备份文件时出错。', 'alert.resetConfirm': '确定要将整个工作区重置为默认模板吗？',
                 'alert.keepOnePage': '您必须至少保留一个页面！', 'alert.backupDownloaded': '✅ 备份已下载！', 'alert.yearRange': '请输入 1900 至 2200 之间的年份。',
-                'mic.grant': '授予权限', 'audio.library': '音频库', 'audio.refresh': '刷新',
-                'voice.recording': '正在录制...', 'voice.stop': '停止并保存', 'voice.cancel': '取消',
-                'voice.saved': '语音笔记已保存！', 'voice.cancelled': '已取消录制', 'voice.tooShort': '录制时间太短 — 请重试。',
-                'audio.moveHint': '拖动移动', 'audio.delHint': '删除录音', 'audio.resizeHint': '调整大小',
-                'avatar.edit': '✎ 编辑头像', 'avatar.customize': '👤 头像', 'avatar.profile': '✎ 资料',
-                'avatar.modalTitle': '自定义头像与资料', 'avatar.main': '主头像：', 'avatar.deco1': '装饰 1（左）：', 'avatar.deco2': '装饰 2（右）：',
-                'avatar.label': '迷你房间标签：', 'avatar.preview': '预览', 'avatar.reset': '重置头像', 'avatar.save': '保存头像',
-                'profile.modalTitle': '编辑资料', 'profile.name': '显示名称：', 'profile.brand': '标题品牌文字：', 'profile.mood': '状态心情：',
-                'settings.title': '设置与自定义', 'settings.tab.theme': '主题', 'settings.tab.layout': '布局', 'settings.tab.background': '背景',
+                'audio.library': '音频库', 'audio.refresh': '刷新',
+                'avatar.edit': '编辑头像与资料', 'avatar.modalTitle': '自定义头像与资料',
+                'avatar.main': '主头像：', 'avatar.deco1': '装饰 1（左）：', 'avatar.deco2': '装饰 2（右）：',
+                'avatar.label': '迷你房间标签：', 'avatar.preview': '预览', 'avatar.reset': '重置头像', 'avatar.save': '保存',
+                'profile.sectionTitle': '资料', 'profile.name': '显示名称：', 'profile.brand': '标题品牌文字：',
+                'settings.title': '设置与自定义', 'settings.tab.theme': '主题', 'settings.tab.layout': '布局', 'settings.tab.ui': '界面与文字', 'settings.tab.background': '背景',
                 'settings.tab.pixel': '像素模式', 'settings.tab.data': '数据',
                 'settings.accentColor': '强调色', 'settings.customAccent': '自定义强调色：', 'settings.resetAccent': '重置',
                 'settings.headerColor': '标题/标签颜色', 'settings.headerHint': '用于活动标签和标题。',
                 'settings.layout.title': '侧边栏位置与大小', 'settings.layout.left': '侧边栏居左', 'settings.layout.right': '侧边栏居右',
                 'settings.layout.top': '顶部栏', 'settings.layout.compact': '紧凑',
                 'settings.layout.width': '侧边栏宽度', 'settings.layout.narrow': '窄', 'settings.layout.medium': '中', 'settings.layout.wide': '宽', 'settings.layout.hidden': '隐藏',
+                'settings.ui.title': '界面缩放与文字大小',
+                'settings.ui.hint': '调整整个应用的界面缩放和基础字体大小。',
+                'settings.ui.scale': '界面缩放', 'settings.ui.textSize': '文字大小',
+                'settings.ui.presets': '快速预设',
+                'settings.ui.presetCompact': '紧凑', 'settings.ui.presetDefault': '默认', 'settings.ui.presetLarge': '大', 'settings.ui.presetAccessibility': '无障碍',
+                'settings.ui.previewLabel': '实时预览：',
                 'settings.bg.title': '自定义背景', 'settings.bg.hint': '上传图片用作工作区背景。',
                 'settings.bg.upload': '上传图片', 'settings.bg.clear': '移除自定义背景', 'settings.bg.preset': '预设背景',
                 'settings.pixel.title': 'Cyworld 像素模式', 'settings.pixel.hint': '切换受 2008 年 Cyworld 启发的像素复古风格。',
@@ -1102,21 +1128,24 @@
                 'alert.restored': '✅ ワークスペースが正常に復元されました！', 'alert.invalidBackup': '❌ 無効なバックアップファイル。',
                 'alert.parseError': '❌ JSON バックアップファイルの解析エラー。', 'alert.resetConfirm': 'ワークスペース全体をリセットしてもよろしいですか？',
                 'alert.keepOnePage': '少なくとも 1 ページは残す必要があります！', 'alert.backupDownloaded': '✅ バックアップをダウンロードしました！', 'alert.yearRange': '1900 から 2200 の間の年を入力してください。',
-                'mic.grant': '許可する', 'audio.library': 'オーディオライブラリ', 'audio.refresh': '更新',
-                'voice.recording': '録音中...', 'voice.stop': '停止して保存', 'voice.cancel': 'キャンセル',
-                'voice.saved': '音声メモを保存しました！', 'voice.cancelled': '録音をキャンセルしました', 'voice.tooShort': '録音時間が短すぎます。',
-                'audio.moveHint': 'ドラッグして移動', 'audio.delHint': '録音を削除', 'audio.resizeHint': 'サイズ変更',
-                'avatar.edit': '✎ アバター編集', 'avatar.customize': '👤 アバター', 'avatar.profile': '✎ プロフィール',
-                'avatar.modalTitle': 'アバターとプロフィールのカスタマイズ', 'avatar.main': 'メインアバター：', 'avatar.deco1': '装飾 1（左）：', 'avatar.deco2': '装飾 2（右）：',
-                'avatar.label': 'ミニルームラベル：', 'avatar.preview': 'プレビュー', 'avatar.reset': 'アバターをリセット', 'avatar.save': 'アバターを保存',
-                'profile.modalTitle': 'プロフィール編集', 'profile.name': '表示名：', 'profile.brand': 'ヘッダーブランド：', 'profile.mood': 'ステータス気分：',
-                'settings.title': '設定とカスタマイズ', 'settings.tab.theme': 'テーマ', 'settings.tab.layout': 'レイアウト', 'settings.tab.background': '背景',
+                'audio.library': 'オーディオライブラリ', 'audio.refresh': '更新',
+                'avatar.edit': 'アバターとプロフィールを編集', 'avatar.modalTitle': 'アバターとプロフィールのカスタマイズ',
+                'avatar.main': 'メインアバター：', 'avatar.deco1': '装飾 1（左）：', 'avatar.deco2': '装飾 2（右）：',
+                'avatar.label': 'ミニルームラベル：', 'avatar.preview': 'プレビュー', 'avatar.reset': 'アバターをリセット', 'avatar.save': '保存',
+                'profile.sectionTitle': 'プロフィール', 'profile.name': '表示名：', 'profile.brand': 'ヘッダーブランド：',
+                'settings.title': '設定とカスタマイズ', 'settings.tab.theme': 'テーマ', 'settings.tab.layout': 'レイアウト', 'settings.tab.ui': 'UIと文字', 'settings.tab.background': '背景',
                 'settings.tab.pixel': 'ピクセルモード', 'settings.tab.data': 'データ',
                 'settings.accentColor': 'アクセントカラー', 'settings.customAccent': 'カスタム：', 'settings.resetAccent': 'リセット',
                 'settings.headerColor': 'ヘッダー/タブの色', 'settings.headerHint': 'アクティブなタブと見出しに使用。',
                 'settings.layout.title': 'サイドバーの位置とサイズ', 'settings.layout.left': 'サイドバー左', 'settings.layout.right': 'サイドバー右',
                 'settings.layout.top': 'トップバー', 'settings.layout.compact': 'コンパクト',
                 'settings.layout.width': 'サイドバー幅', 'settings.layout.narrow': '狭い', 'settings.layout.medium': '中', 'settings.layout.wide': '広い', 'settings.layout.hidden': '非表示',
+                'settings.ui.title': 'UIスケールと文字サイズ',
+                'settings.ui.hint': 'アプリ全体のUIスケールと基本フォントサイズを調整します。',
+                'settings.ui.scale': 'UIスケール', 'settings.ui.textSize': '文字サイズ',
+                'settings.ui.presets': 'クイックプリセット',
+                'settings.ui.presetCompact': 'コンパクト', 'settings.ui.presetDefault': 'デフォルト', 'settings.ui.presetLarge': '大', 'settings.ui.presetAccessibility': 'アクセシビリティ',
+                'settings.ui.previewLabel': 'ライブプレビュー：',
                 'settings.bg.title': 'カスタム背景', 'settings.bg.hint': 'ワークスペースの背景として使用する画像をアップロード。',
                 'settings.bg.upload': '画像をアップロード', 'settings.bg.clear': 'カスタム背景を削除', 'settings.bg.preset': 'プリセット背景',
                 'settings.pixel.title': 'Cyworld ピクセルモード', 'settings.pixel.hint': '2008 年 Cyworld 風のピクセルスタイルを切り替えます。',
@@ -1162,21 +1191,24 @@
                 'alert.restored': '✅ 워크스페이스가 성공적으로 복원되었습니다!', 'alert.invalidBackup': '❌ 잘못된 백업 파일입니다.',
                 'alert.parseError': '❌ JSON 백업 파일 구문 분석 오류.', 'alert.resetConfirm': '전체 워크스페이스를 초기화하시겠습니까?',
                 'alert.keepOnePage': '최소 한 개의 페이지는 유지해야 합니다!', 'alert.backupDownloaded': '✅ 백업이 다운로드되었습니다!', 'alert.yearRange': '1900에서 2200 사이의 연도를 입력하세요.',
-                'mic.grant': '권한 부여', 'audio.library': '오디오 라이브러리', 'audio.refresh': '새로고침',
-                'voice.recording': '녹음 중...', 'voice.stop': '중지 및 저장', 'voice.cancel': '취소',
-                'voice.saved': '음성 메모 저장됨!', 'voice.cancelled': '녹음 취소됨', 'voice.tooShort': '녹음 시간이 너무 짧습니다.',
-                'audio.moveHint': '드래그하여 이동', 'audio.delHint': '녹음 삭제', 'audio.resizeHint': '크기 조정',
-                'avatar.edit': '✎ 아바타 편집', 'avatar.customize': '👤 아바타', 'avatar.profile': '✎ 프로필',
-                'avatar.modalTitle': '아바타 및 프로필 사용자 지정', 'avatar.main': '메인 아바타:', 'avatar.deco1': '장식 1 (왼쪽):', 'avatar.deco2': '장식 2 (오른쪽):',
-                'avatar.label': '미니룸 라벨:', 'avatar.preview': '미리보기', 'avatar.reset': '아바타 초기화', 'avatar.save': '아바타 저장',
-                'profile.modalTitle': '프로필 편집', 'profile.name': '표시 이름:', 'profile.brand': '헤더 브랜드 텍스트:', 'profile.mood': '상태 기분:',
-                'settings.title': '설정 및 사용자 지정', 'settings.tab.theme': '테마', 'settings.tab.layout': '레이아웃', 'settings.tab.background': '배경',
+                'audio.library': '오디오 라이브러리', 'audio.refresh': '새로고침',
+                'avatar.edit': '아바타 및 프로필 편집', 'avatar.modalTitle': '아바타 및 프로필 사용자 지정',
+                'avatar.main': '메인 아바타:', 'avatar.deco1': '장식 1 (왼쪽):', 'avatar.deco2': '장식 2 (오른쪽):',
+                'avatar.label': '미니룸 라벨:', 'avatar.preview': '미리보기', 'avatar.reset': '아바타 초기화', 'avatar.save': '저장',
+                'profile.sectionTitle': '프로필', 'profile.name': '표시 이름:', 'profile.brand': '헤더 브랜드 텍스트:',
+                'settings.title': '설정 및 사용자 지정', 'settings.tab.theme': '테마', 'settings.tab.layout': '레이아웃', 'settings.tab.ui': 'UI 및 텍스트', 'settings.tab.background': '배경',
                 'settings.tab.pixel': '픽셀 모드', 'settings.tab.data': '데이터',
                 'settings.accentColor': '강조 색상', 'settings.customAccent': '사용자 지정 강조:', 'settings.resetAccent': '초기화',
                 'settings.headerColor': '헤더 / 탭 색상', 'settings.headerHint': '활성 탭과 제목에 사용됩니다.',
                 'settings.layout.title': '사이드바 위치 및 크기', 'settings.layout.left': '사이드바 왼쪽', 'settings.layout.right': '사이드바 오른쪽',
                 'settings.layout.top': '상단 바', 'settings.layout.compact': '컴팩트',
                 'settings.layout.width': '사이드바 너비', 'settings.layout.narrow': '좁게', 'settings.layout.medium': '중간', 'settings.layout.wide': '넓게', 'settings.layout.hidden': '숨김',
+                'settings.ui.title': 'UI 스케일 및 텍스트 크기',
+                'settings.ui.hint': '앱 전체의 UI 스케일과 기본 폰트 크기를 조정합니다.',
+                'settings.ui.scale': 'UI 스케일', 'settings.ui.textSize': '텍스트 크기',
+                'settings.ui.presets': '빠른 프리셋',
+                'settings.ui.presetCompact': '컴팩트', 'settings.ui.presetDefault': '기본', 'settings.ui.presetLarge': '크게', 'settings.ui.presetAccessibility': '접근성',
+                'settings.ui.previewLabel': '실시간 미리보기:',
                 'settings.bg.title': '사용자 지정 배경', 'settings.bg.hint': '워크스페이스 배경으로 사용할 이미지를 업로드하세요.',
                 'settings.bg.upload': '이미지 업로드', 'settings.bg.clear': '사용자 지정 배경 제거', 'settings.bg.preset': '사전 설정 배경',
                 'settings.pixel.title': 'Cyworld 픽셀 모드', 'settings.pixel.hint': '2008년 Cyworld에서 영감을 받은 픽셀 레트로 스타일을 전환합니다.',
@@ -1233,7 +1265,7 @@
         function applyTranslations() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (['docStats','calendarMonthTitleText','calModalDateTitle','rteVoiceStatus','brandText'].includes(el.id)) return;
+                if (['docStats','calendarMonthTitleText','calModalDateTitle','brandText'].includes(el.id)) return;
                 el.innerHTML = t(key);
             });
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = t(el.getAttribute('data-i18n-placeholder')));
@@ -1246,7 +1278,6 @@
         function updateBgmTitle() {
             const sel = document.getElementById('bgmSelect');
             if (!sel) return;
-            const key = 'bgm.' + sel.value;
             const titleEl = document.getElementById('bgmTitle');
             const map = {
                 epik: 'Epik High - Fly (Retro Ver)',
@@ -1270,6 +1301,8 @@
             tempAvatar = { ...avatar };
             renderAvatarPickers();
             document.getElementById('avatarLabelInput').value = tempAvatar.label;
+            document.getElementById('profileNameInput').value = profileName;
+            document.getElementById('profileBrandInput').value = profileBrand;
             updateAvatarPreview();
             document.getElementById('avatarModal').classList.remove('hidden');
             document.getElementById('avatarModal').classList.add('flex');
@@ -1314,10 +1347,15 @@
         function saveAvatar() {
             tempAvatar.label = document.getElementById('avatarLabelInput').value.trim() || 'MYDESK<3';
             avatar = { ...tempAvatar };
+            profileName = document.getElementById('profileNameInput').value.trim();
+            profileBrand = document.getElementById('profileBrandInput').value.trim() || 'MYDESK <3';
             localStorage.setItem('cy_workspace_avatar', JSON.stringify(avatar));
+            localStorage.setItem('cy_workspace_profile_name', profileName);
+            localStorage.setItem('cy_workspace_profile_brand', profileBrand);
             applyAvatar();
+            applyProfile();
             closeAvatarModal();
-            showToast('👤 Avatar saved!');
+            showToast('✅ Saved!');
         }
         function resetAvatar() {
             tempAvatar = { ...DEFAULT_AVATAR };
@@ -1333,31 +1371,6 @@
             if (el('avatarDeco2')) el('avatarDeco2').innerText = a.deco2;
             if (el('avatarLabel')) el('avatarLabel').innerText = a.label;
         }
-
-        function openProfileModal() {
-            document.getElementById('profileNameInput').value = profileName;
-            document.getElementById('profileBrandInput').value = profileBrand;
-            document.getElementById('profileMoodInput').value = userMood;
-            document.getElementById('profileModal').classList.remove('hidden');
-            document.getElementById('profileModal').classList.add('flex');
-            applyTranslations();
-        }
-        function closeProfileModal() {
-            document.getElementById('profileModal').classList.remove('flex');
-            document.getElementById('profileModal').classList.add('hidden');
-        }
-        function saveProfile() {
-            profileName = document.getElementById('profileNameInput').value.trim();
-            profileBrand = document.getElementById('profileBrandInput').value.trim() || 'MYDESK <3';
-            userMood = document.getElementById('profileMoodInput').value.trim();
-            localStorage.setItem('cy_workspace_profile_name', profileName);
-            localStorage.setItem('cy_workspace_profile_brand', profileBrand);
-            localStorage.setItem('cy_workspace_mood', userMood);
-            document.getElementById('userMood').value = userMood;
-            applyProfile();
-            closeProfileModal();
-            showToast('✅ Profile saved!');
-        }
         function applyProfile() {
             const bt = document.getElementById('brandText');
             if (bt) bt.innerText = profileBrand;
@@ -1368,7 +1381,7 @@
             {
                 id: 'doc-1',
                 title: '★ MYDESK Notion Workspace Guide',
-                html: '<h1>Welcome to MYDESK</h1><p>Your 2008 <b>Cyworld Notion-style</b> productivity suite. All data is stored locally in your browser.</p><h2>✨ Features</h2><ul><li><b>Rich Text Editor</b> — bold, italic, headings, lists, quotes</li><li>🖼️ <b>Images</b> — click the image icon to insert</li><li>🎵 <b>Audio & Voice Recording</b> — click the music/mic icons</li><li>📊 <b>Tables</b> — click the table icon</li><li>🔗 <b>Auto-Link Detection</b> — type <code>https://example.com</code> and press space</li><li>🎨 <b>Settings Menu</b> — customize theme, layout, background & pixel mode</li><li>👤 <b>Avatar & Profile</b> — click the avatar box in the sidebar</li><li>🎙️ <b>Movable Audio</b> — drag recordings to reposition, use corner to resize</li></ul><blockquote class="callout">💡 Tip: Recordings can be dragged, resized, and deleted. Click the ⠿ handle to move.</blockquote>',
+                html: '<h1>Welcome to MYDESK</h1><p>Your 2008 <b>Cyworld Notion-style</b> productivity suite. All data is stored locally in your browser.</p><h2>✨ Features</h2><ul><li><b>Rich Text Editor</b> — bold, italic, headings, lists, quotes</li><li>🖼️ <b>Images</b> — click the image icon to insert</li><li>🎵 <b>Audio Files</b> — click the music icon to insert</li><li>📊 <b>Tables</b> — click the table icon</li><li>🔗 <b>Auto-Link Detection</b> — type <code>https://example.com</code> and press space</li><li>🎨 <b>Settings Menu</b> — customize theme, layout, UI scale, background & pixel mode</li><li>👤 <b>Avatar & Profile</b> — click the pencil icon next to MYDESK in the header</li><li>🎧 <b>Movable Audio</b> — drag recordings to reposition, use corner to resize</li></ul><blockquote class="callout">💡 Tip: Settings has a new <b>UI & Text</b> tab to scale the whole interface and text size.</blockquote>',
                 text: 'Welcome to MYDESK — Your 2008 Cyworld Notion-style productivity suite.'
             },
             {
@@ -1401,17 +1414,6 @@
         let pomoIsRunning = false;
         let pomoCompletedToday = parseInt(localStorage.getItem('cy_pomo_count') || '3');
 
-        let mediaRecorder = null;
-        let audioChunks = [];
-        let isRecordingVoice = false;
-        let recordingStartTime = 0;
-        let recordingTimerInterval = null;
-        let micStream = null;
-        let micPermissionState = 'unknown';
-        let voicePopup = null;
-        let voiceCancelFlag = false;
-
-        // Settings state
         let settings = JSON.parse(localStorage.getItem('cy_workspace_settings') || '{}');
         let customBg = localStorage.getItem('cy_workspace_custombg') || '';
         let pixelMode = settings.pixelMode || false;
@@ -1419,60 +1421,40 @@
         let accent = settings.accent || '#ff6600';
         let accentDark = settings.accentDark || '#cc5200';
         let headerColor = settings.headerColor || '#12437a';
+        let uiScale = settings.uiScale || 1;
+        let textSize = settings.textSize || 14;
 
         // ================================================================
-        // MIC
+        // UI SCALING
         // ================================================================
-        async function checkMicPermission() {
-            if (!navigator.permissions || !navigator.permissions.query) { micPermissionState = 'unknown'; updateMicBanner(); return; }
-            try {
-                const status = await navigator.permissions.query({ name: 'microphone' });
-                micPermissionState = status.state;
-                status.onchange = () => { micPermissionState = status.state; updateMicBanner(); };
-                updateMicBanner();
-            } catch (e) { micPermissionState = 'unknown'; updateMicBanner(); }
+        function setUIScale(val) {
+            uiScale = parseInt(val) / 100;
+            document.documentElement.style.setProperty('--ui-scale', uiScale);
+            document.getElementById('appWrapper').style.transform = `scale(${uiScale})`;
+            document.getElementById('uiScaleValue').innerText = val + '%';
+            document.getElementById('uiScaleSlider').value = val;
+            saveSettings();
         }
-        function updateMicBanner() {
-            const banner = document.getElementById('micPermBanner'); if (!banner) return;
-            if (micPermissionState === 'granted') {
-                banner.className = 'perm-banner ok';
-                banner.innerHTML = '<i class="fa-solid fa-microphone"></i><span>Microphone access granted.</span>';
-                banner.classList.remove('hidden');
-                setTimeout(() => { if (micPermissionState === 'granted') banner.classList.add('hidden'); }, 3000);
-            } else if (micPermissionState === 'denied') {
-                banner.className = 'perm-banner denied';
-                banner.innerHTML = '<i class="fa-solid fa-microphone-slash"></i><span>Microphone blocked.</span>';
-                banner.classList.remove('hidden');
-            } else {
-                banner.className = 'perm-banner';
-                banner.innerHTML = '<i class="fa-solid fa-microphone-slash"></i><span>Microphone access required.</span>' +
-                    '<button onclick="requestMicPermission()" class="ml-auto bg-amber-600 hover:bg-amber-700 text-white px-2 py-0.5 rounded text-[10px] font-bold"><i class="fa-solid fa-key"></i> <span data-i18n="mic.grant">Grant Permission</span></button>';
-                banner.classList.remove('hidden');
-            }
-            applyTranslations();
+        function setTextSize(val) {
+            textSize = parseInt(val);
+            document.documentElement.style.setProperty('--ui-text-size', textSize + 'px');
+            document.getElementById('textSizeValue').innerText = textSize + 'px';
+            document.getElementById('textSizeSlider').value = textSize;
+            saveSettings();
         }
-        async function requestMicPermission(fromModal = false) {
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { alert('Microphone not supported.'); return false; }
-            const statusEl = fromModal ? document.getElementById('micPermStatus') : null;
-            if (statusEl) { statusEl.innerText = 'Requesting...'; statusEl.className = 'text-[11px] text-center font-bold text-blue-600'; }
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                // Immediately release - we just want permission
-                stream.getTracks().forEach(t => t.stop());
-                micPermissionState = 'granted';
-                updateMicBanner();
-                if (statusEl) { statusEl.innerText = '✅'; statusEl.className = 'text-[11px] text-center font-bold text-green-600'; }
-                if (fromModal) setTimeout(() => { closeMicPermModal(); updateMicBanner(); }, 800);
-                showToast('🎤 Microphone ready!');
-                return true;
-            } catch (err) {
-                micPermissionState = err.name === 'NotAllowedError' ? 'denied' : 'unknown';
-                updateMicBanner();
-                if (statusEl) { statusEl.innerText = '❌ ' + err.message; statusEl.className = 'text-[11px] text-center font-bold text-red-600'; }
-                return false;
-            }
+        function applyUIPreset(preset) {
+            const presets = {
+                compact: { scale: 85, text: 12 },
+                default: { scale: 100, text: 14 },
+                large: { scale: 110, text: 16 },
+                accessibility: { scale: 120, text: 18 }
+            };
+            const p = presets[preset];
+            if (!p) return;
+            setUIScale(p.scale);
+            setTextSize(p.text);
+            showToast('✨ Preset applied');
         }
-        function closeMicPermModal() { document.getElementById('micPermModal').classList.remove('flex'); document.getElementById('micPermModal').classList.add('hidden'); }
 
         // ================================================================
         // AUDIO LIBRARY / GLOBAL PLAYER
@@ -1515,7 +1497,7 @@
             if (!list) return;
             if (countEl) countEl.innerText = tracks.length + ' track' + (tracks.length === 1 ? '' : 's');
             if (tracks.length === 0) {
-                list.innerHTML = '<div class="text-center text-[11px] text-gray-400 py-6">🎧 No audio found. Record or import in a document.</div>';
+                list.innerHTML = '<div class="text-center text-[11px] text-gray-400 py-6">🎧 No audio found. Import an audio file in a document.</div>';
                 return;
             }
             list.innerHTML = '';
@@ -1645,15 +1627,14 @@
             reader.readAsDataURL(file); event.target.value = '';
         }
 
-        // Insert audio with draggable / resizable / deletable wrapper
         function insertAudioBlock(dataUrl, label) {
-            const safeLabel = escapeHtml(label || 'Audio recording');
+            const safeLabel = escapeHtml(label || 'Audio');
             const id = 'ab-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
             const wrapHtml = `
                 <div class="audio-block-wrap" contenteditable="false" data-audio-id="${id}">
                     <div class="audio-block-toolbar" contenteditable="false">
-                        <button type="button" class="drag-handle" title="${t('audio.moveHint')}"><i class="fa-solid fa-grip-vertical"></i></button>
-                        <button type="button" class="danger" data-audio-del title="${t('audio.delHint')}"><i class="fa-solid fa-trash"></i></button>
+                        <button type="button" class="drag-handle" title="Drag to move"><i class="fa-solid fa-grip-vertical"></i></button>
+                        <button type="button" class="danger" data-audio-del title="Delete"><i class="fa-solid fa-trash"></i></button>
                     </div>
                     <div class="audio-block">
                         <div class="audio-label">🎵 <span class="audio-name">${safeLabel}</span></div>
@@ -1665,159 +1646,6 @@
             autoSaveActiveDoc();
             setupAudioInteractions();
             openAudioPanel();
-        }
-
-        // Voice recording — build popup + insert via insertAudioBlock
-        async function toggleVoiceRecording() {
-            if (isRecordingVoice) { stopVoiceRecording(); return; }
-            if (micPermissionState !== 'granted') {
-                const ok = await requestMicPermission();
-                if (!ok) { document.getElementById('micPermModal').classList.remove('hidden'); document.getElementById('micPermModal').classList.add('flex'); return; }
-            }
-            startVoiceRecording();
-        }
-        function startVoiceRecording() {
-            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-                micStream = stream;
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = []; recordingStartTime = Date.now(); voiceCancelFlag = false;
-                mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
-                mediaRecorder.onstop = function() {
-                    if (voiceCancelFlag) { audioChunks = []; cleanupRecorder(); return; }
-                    const duration = Math.round((Date.now() - recordingStartTime) / 1000);
-                    if (duration < 1) { showToast('⚠️ ' + t('voice.tooShort')); cleanupRecorder(); return; }
-                    const blob = new Blob(audioChunks, { type: 'audio/webm' });
-                    const reader = new FileReader();
-                    reader.onload = function(e) { insertAudioBlock(e.target.result, `Voice recording (${duration}s)`); };
-                    reader.readAsDataURL(blob);
-                    cleanupRecorder();
-                };
-                mediaRecorder.start();
-                isRecordingVoice = true;
-                micPermissionState = 'granted';
-                updateMicBanner();
-                showVoicePopup();
-            }).catch(err => {
-                micPermissionState = err.name === 'NotAllowedError' ? 'denied' : 'unknown';
-                updateMicBanner();
-                document.getElementById('micPermModal').classList.remove('hidden');
-                document.getElementById('micPermModal').classList.add('flex');
-            });
-        }
-        function cleanupRecorder() {
-            isRecordingVoice = false;
-            if (recordingTimerInterval) { clearInterval(recordingTimerInterval); recordingTimerInterval = null; }
-            if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
-            hideVoicePopup();
-        }
-        function stopVoiceRecording() { if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop(); }
-        function cancelVoiceRecording() { voiceCancelFlag = true; if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop(); showToast('🚫 ' + t('voice.cancelled')); }
-        function showVoicePopup() {
-            hideVoicePopup();
-            voicePopup = document.createElement('div');
-            voicePopup.className = 'voice-recorder-popup';
-            voicePopup.id = 'voiceRecorderPopup';
-            voicePopup.innerHTML = `
-                <div class="rec-header">
-                    <div class="rec-dot"></div>
-                    <span data-i18n="voice.recording">Recording...</span>
-                </div>
-                <div class="rec-time" id="recTimeDisplay">00:00</div>
-                <div class="rec-wave" id="recWave">
-                    ${Array.from({length: 12}).map((_,i) => `<span style="animation-delay:${i*0.08}s"></span>`).join('')}
-                </div>
-                <div class="rec-actions">
-                    <button class="rec-btn rec-btn-cancel" onclick="cancelVoiceRecording()">
-                        <i class="fa-solid fa-xmark"></i> <span data-i18n="voice.cancel">Cancel</span>
-                    </button>
-                    <button class="rec-btn rec-btn-stop" onclick="stopVoiceRecording()">
-                        <i class="fa-solid fa-stop"></i> <span data-i18n="voice.stop">Stop & Save</span>
-                    </button>
-                </div>
-            `;
-            document.body.appendChild(voicePopup);
-            applyTranslations();
-            recordingTimerInterval = setInterval(() => {
-                const secs = Math.round((Date.now() - recordingStartTime) / 1000);
-                const m = String(Math.floor(secs / 60)).padStart(2, '0');
-                const s = String(secs % 60).padStart(2, '0');
-                const el = document.getElementById('recTimeDisplay');
-                if (el) el.innerText = m + ':' + s;
-            }, 250);
-        }
-        function hideVoicePopup() {
-            const popup = document.getElementById('voiceRecorderPopup');
-            if (popup) popup.remove();
-            voicePopup = null;
-        }
-
-        // ================================================================
-        // AUDIO BLOCK DRAG / RESIZE / DELETE
-        // ================================================================
-        function setupAudioInteractions() {
-            const editor = rteEditor();
-            if (!editor) return;
-            // Delegate delete clicks
-            editor.querySelectorAll('[data-audio-del]').forEach(btn => {
-                if (btn.dataset.bound) return;
-                btn.dataset.bound = '1';
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault(); e.stopPropagation();
-                    const wrap = btn.closest('.audio-block-wrap');
-                    if (wrap && confirm('Delete this audio recording?')) {
-                        wrap.remove();
-                        autoSaveActiveDoc();
-                        scanAudioFromDocs();
-                        showToast('🗑️ Recording deleted');
-                    }
-                });
-            });
-            // Delegate drag handles
-            editor.querySelectorAll('.drag-handle').forEach(handle => {
-                if (handle.dataset.bound) return;
-                handle.dataset.bound = '1';
-                handle.setAttribute('draggable', 'true');
-                handle.addEventListener('dragstart', function(e) {
-                    const wrap = handle.closest('.audio-block-wrap');
-                    if (!wrap) return;
-                    e.dataTransfer.setData('text/audio-id', wrap.dataset.audioId);
-                    e.dataTransfer.effectAllowed = 'move';
-                    wrap.classList.add('dragging');
-                });
-                handle.addEventListener('dragend', function() {
-                    const wrap = handle.closest('.audio-block-wrap');
-                    if (wrap) wrap.classList.remove('dragging');
-                    document.querySelectorAll('.audio-block.drag-over').forEach(el => el.classList.remove('drag-over'));
-                });
-            });
-            // Drop zone on each audio block
-            editor.querySelectorAll('.audio-block-wrap').forEach(wrap => {
-                if (wrap.dataset.dropBound) return;
-                wrap.dataset.dropBound = '1';
-                wrap.addEventListener('dragover', e => {
-                    e.preventDefault();
-                    const block = wrap.querySelector('.audio-block');
-                    if (block) block.classList.add('drag-over');
-                });
-                wrap.addEventListener('dragleave', e => {
-                    const block = wrap.querySelector('.audio-block');
-                    if (block) block.classList.remove('drag-over');
-                });
-                wrap.addEventListener('drop', e => {
-                    e.preventDefault();
-                    const block = wrap.querySelector('.audio-block');
-                    if (block) block.classList.remove('drag-over');
-                    const draggedId = e.dataTransfer.getData('text/audio-id');
-                    if (!draggedId) return;
-                    const draggedWrap = editor.querySelector(`.audio-block-wrap[data-audio-id="${draggedId}"]`);
-                    if (!draggedWrap || draggedWrap === wrap) return;
-                    // Swap: insert dragged before this wrap
-                    wrap.parentNode.insertBefore(draggedWrap, wrap);
-                    autoSaveActiveDoc();
-                    scanAudioFromDocs();
-                    showToast('↕️ Audio reordered');
-                });
-            });
         }
 
         // ---- TABLE ----
@@ -1920,6 +1748,70 @@
             const a = document.createElement('a'); a.href = url;
             a.download = (doc.title || 'document').replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.json';
             a.click(); URL.revokeObjectURL(url);
+        }
+
+        // ================================================================
+        // AUDIO INTERACTIONS
+        // ================================================================
+        function setupAudioInteractions() {
+            const editor = rteEditor(); if (!editor) return;
+            editor.querySelectorAll('[data-audio-del]').forEach(btn => {
+                if (btn.dataset.bound) return;
+                btn.dataset.bound = '1';
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault(); e.stopPropagation();
+                    const wrap = btn.closest('.audio-block-wrap');
+                    if (wrap && confirm('Delete this audio recording?')) {
+                        wrap.remove();
+                        autoSaveActiveDoc();
+                        scanAudioFromDocs();
+                        showToast('🗑️ Audio deleted');
+                    }
+                });
+            });
+            editor.querySelectorAll('.drag-handle').forEach(handle => {
+                if (handle.dataset.bound) return;
+                handle.dataset.bound = '1';
+                handle.setAttribute('draggable', 'true');
+                handle.addEventListener('dragstart', function(e) {
+                    const wrap = handle.closest('.audio-block-wrap');
+                    if (!wrap) return;
+                    e.dataTransfer.setData('text/audio-id', wrap.dataset.audioId);
+                    e.dataTransfer.effectAllowed = 'move';
+                    wrap.classList.add('dragging');
+                });
+                handle.addEventListener('dragend', function() {
+                    const wrap = handle.closest('.audio-block-wrap');
+                    if (wrap) wrap.classList.remove('dragging');
+                    document.querySelectorAll('.audio-block.drag-over').forEach(el => el.classList.remove('drag-over'));
+                });
+            });
+            editor.querySelectorAll('.audio-block-wrap').forEach(wrap => {
+                if (wrap.dataset.dropBound) return;
+                wrap.dataset.dropBound = '1';
+                wrap.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    const block = wrap.querySelector('.audio-block');
+                    if (block) block.classList.add('drag-over');
+                });
+                wrap.addEventListener('dragleave', () => {
+                    const block = wrap.querySelector('.audio-block');
+                    if (block) block.classList.remove('drag-over');
+                });
+                wrap.addEventListener('drop', e => {
+                    e.preventDefault();
+                    const block = wrap.querySelector('.audio-block');
+                    if (block) block.classList.remove('drag-over');
+                    const draggedId = e.dataTransfer.getData('text/audio-id');
+                    if (!draggedId) return;
+                    const draggedWrap = editor.querySelector(`.audio-block-wrap[data-audio-id="${draggedId}"]`);
+                    if (!draggedWrap || draggedWrap === wrap) return;
+                    wrap.parentNode.insertBefore(draggedWrap, wrap);
+                    autoSaveActiveDoc();
+                    scanAudioFromDocs();
+                    showToast('↕️ Reordered');
+                });
+            });
         }
 
         // ================================================================
@@ -2407,6 +2299,10 @@
             document.getElementById('headerColorPicker').value = headerColor;
             document.getElementById('pixelToggle').classList.toggle('on', pixelMode);
             document.querySelectorAll('.layout-option').forEach(o => o.classList.toggle('selected', o.dataset.layout === layoutClass));
+            document.getElementById('uiScaleSlider').value = Math.round(uiScale * 100);
+            document.getElementById('uiScaleValue').innerText = Math.round(uiScale * 100) + '%';
+            document.getElementById('textSizeSlider').value = textSize;
+            document.getElementById('textSizeValue').innerText = textSize + 'px';
         }
         function setAccentColor(color, dark) {
             accent = color; accentDark = dark;
@@ -2462,7 +2358,7 @@
             else if (name === 'polka') body.style.backgroundImage = 'radial-gradient(circle, #f0abfc 20%, transparent 20%) 0 0 / 20px 20px, #f5d0fe';
         }
         function saveSettings() {
-            localStorage.setItem('cy_workspace_settings', JSON.stringify({ pixelMode, layoutClass, accent, accentDark, headerColor }));
+            localStorage.setItem('cy_workspace_settings', JSON.stringify({ pixelMode, layoutClass, accent, accentDark, headerColor, uiScale, textSize }));
         }
         function loadSettings() {
             if (pixelMode) document.body.classList.add('pixel-mode');
@@ -2470,6 +2366,9 @@
             document.documentElement.style.setProperty('--ui-accent', accent);
             document.documentElement.style.setProperty('--ui-accent-dark', accentDark);
             document.documentElement.style.setProperty('--ui-header', headerColor);
+            document.documentElement.style.setProperty('--ui-text-size', textSize + 'px');
+            const wrapper = document.getElementById('appWrapper');
+            if (wrapper) wrapper.style.transform = `scale(${uiScale})`;
             if (customBg) { document.body.classList.add('custom-bg'); document.body.style.setProperty('--custom-bg-image', `url(${customBg})`); }
         }
         function shadeColor(color, percent) {
@@ -2487,7 +2386,7 @@
                 documents, tasks, calendarEvents,
                 userMood, pomoCompletedToday, currentLang,
                 avatar, profileName, profileBrand,
-                settings: { pixelMode, layoutClass, accent, accentDark, headerColor },
+                settings: { pixelMode, layoutClass, accent, accentDark, headerColor, uiScale, textSize },
                 customBg: customBg,
                 bgmSelectValue: document.getElementById('bgmSelect').value,
                 activeTab, activeDocId, currentYear, currentMonth,
@@ -2527,6 +2426,8 @@
                             accent = settings.accent || '#ff6600';
                             accentDark = settings.accentDark || '#cc5200';
                             headerColor = settings.headerColor || '#12437a';
+                            uiScale = settings.uiScale || 1;
+                            textSize = settings.textSize || 14;
                             saveSettings(); loadSettings();
                         }
                         if (imported.customBg) {
@@ -2658,7 +2559,6 @@
             applyProfile();
             switchTab('documents');
             renderCalendar(); renderTasks(); updatePomoDisplay();
-            checkMicPermission();
 
             const editor = document.getElementById('rteEditor');
             editor.addEventListener('input', autoSaveActiveDoc);
@@ -2681,7 +2581,6 @@
                 btn.addEventListener('click', function(e) { e.preventDefault(); showTableForm(); });
             });
 
-            // Avatar label live preview
             const ai = document.getElementById('avatarLabelInput');
             if (ai) ai.addEventListener('input', function() { document.getElementById('previewLabel').innerText = this.value || 'MYDESK<3'; });
 
@@ -2696,11 +2595,6 @@
                 if (!panel.contains(e.target) && !titleBtn.contains(e.target)) closeJumpPanel();
             });
 
-            window.addEventListener('beforeunload', function(e) {
-                if (isRecordingVoice) { e.preventDefault(); e.returnValue = ''; }
-            });
-
-            // Periodic audio interaction rebind (safety net for pasted HTML)
             setInterval(() => { setupAudioInteractions(); }, 5000);
         });
     </script>
