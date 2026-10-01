@@ -23,9 +23,7 @@
             --ui-sidebar: #f0f5fc;
             --ui-text: #333333;
             --ui-header: #12437a;
-            --pixel-scale: 1;
         }
-        /* Pixelated body background (Cyworld style) */
         body {
             font-family: 'Nanum Gothic', 'Noto Sans KR', 'Noto Sans JP', 'Noto Sans SC', sans-serif;
             background-color: var(--ui-bg-1);
@@ -36,19 +34,14 @@
             background-position: 0 0, 12px 12px;
             color: var(--ui-text);
             min-height: 100vh;
-            image-rendering: pixelated;
         }
-        /* Custom user-uploaded background */
         body.custom-bg {
             background-image: var(--custom-bg-image);
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
-        body.pixel-mode * {
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }
+        body.pixel-mode * { image-rendering: pixelated; image-rendering: crisp-edges; }
         body.pixel-mode {
             font-family: 'DotGothic16', 'Press Start 2P', monospace;
             letter-spacing: 0.03em;
@@ -57,39 +50,21 @@
             font-family: 'Press Start 2P', 'DotGothic16', monospace;
             font-size: 0.85em;
         }
-        /* Pixel border style */
-        body.pixel-mode .retro-window,
-        body.pixel-mode .retro-sidebar,
-        body.pixel-mode .pixel-box {
+        body.pixel-mode .retro-window, body.pixel-mode .retro-sidebar, body.pixel-mode .pixel-box {
             border-radius: 0 !important;
             border-style: solid !important;
             border-width: 2px !important;
             box-shadow: 4px 4px 0 rgba(0,0,0,0.35) !important;
         }
-        body.pixel-mode button,
-        body.pixel-mode .tab-btn,
-        body.pixel-mode input,
-        body.pixel-mode select,
-        body.pixel-mode textarea {
-            border-radius: 0 !important;
-        }
-        body.pixel-mode .rte-editor {
-            font-family: 'DotGothic16', monospace;
-        }
-        body.pixel-mode .rte-editor img,
-        body.pixel-mode .rte-editor audio,
-        body.pixel-mode .rte-editor table {
-            border-radius: 0 !important;
-        }
-        /* Accent color theming */
+        body.pixel-mode button, body.pixel-mode .tab-btn, body.pixel-mode input,
+        body.pixel-mode select, body.pixel-mode textarea { border-radius: 0 !important; }
+        body.pixel-mode .rte-editor { font-family: 'DotGothic16', monospace; }
+        body.pixel-mode .rte-editor img, body.pixel-mode .rte-editor audio, body.pixel-mode .rte-editor table { border-radius: 0 !important; }
         .accent-bg { background-color: var(--ui-accent) !important; }
         .accent-border { border-color: var(--ui-accent) !important; }
         .accent-text { color: var(--ui-accent) !important; }
         .accent-bg-hover:hover { background-color: var(--ui-accent-dark) !important; }
-        .tab-btn-active {
-            background-color: var(--ui-header) !important;
-            color: white !important;
-        }
+        .tab-btn-active { background-color: var(--ui-header) !important; color: white !important; }
         .window-bg { background-color: var(--ui-window) !important; }
         .window-alt-bg { background-color: var(--ui-window-alt) !important; }
         .sidebar-bg { background-color: var(--ui-sidebar) !important; }
@@ -103,30 +78,17 @@
         }
         .dot-font { font-family: 'DotGothic16', monospace; }
         .mono-font { font-family: 'Share Tech Mono', monospace; }
-        .retro-window {
-            background: #ffffff;
-            border: 2px solid #5579b1;
-            box-shadow: 4px 4px 15px rgba(0,0,0,0.4);
-            border-radius: 4px;
-        }
+        .retro-window { background: #ffffff; border: 2px solid #5579b1; box-shadow: 4px 4px 15px rgba(0,0,0,0.4); border-radius: 4px; }
         .retro-titlebar {
             background: linear-gradient(to right, #1a4985, #3a7bc8);
-            color: white;
-            padding: 6px 10px;
-            font-weight: bold;
-            font-size: 13px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: white; padding: 6px 10px; font-weight: bold; font-size: 13px;
+            display: flex; justify-content: space-between; align-items: center;
         }
         .retro-sidebar { background: #f0f5fc; border-right: 1px solid #b4d0f0; }
         ::-webkit-scrollbar { width: 7px; height: 7px; }
         ::-webkit-scrollbar-track { background: #eef2f7; }
         ::-webkit-scrollbar-thumb { background: #9bb7de; border-radius: 3px; }
-        .backup-badge {
-            background: #ff6600; color: white; font-size: 10px;
-            padding: 2px 8px; border-radius: 999px; font-weight: bold; letter-spacing: 0.5px;
-        }
+        .backup-badge { background: #ff6600; color: white; font-size: 10px; padding: 2px 8px; border-radius: 999px; font-weight: bold; letter-spacing: 0.5px; }
         .month-title-btn { transition: all 0.15s ease; }
         .month-title-btn:hover { background: #dbeafe; border-color: #2178b5; transform: translateY(-1px); }
         .jump-panel { animation: jumpFadeIn 0.15s ease-out; }
@@ -135,7 +97,7 @@
         .lang-btn { transition: all 0.15s ease; }
         .lang-btn.active { background: #ff6600 !important; color: white !important; border-color: #cc5200 !important; font-weight: bold; }
 
-        /* ========= RICH TEXT EDITOR STYLES ========= */
+        /* RTE */
         .rte-toolbar { background: #fafcff; border-bottom: 1px solid #e5e7eb; }
         .rte-editor {
             background: #ffffff; outline: none; overflow-y: auto; padding: 1rem;
@@ -149,15 +111,8 @@
         .rte-editor ul, .rte-editor ol { margin: 0.5em 0; padding-left: 1.5em; }
         .rte-editor ul { list-style: disc; }
         .rte-editor ol { list-style: decimal; }
-        .rte-editor blockquote {
-            border-left: 4px solid #ff6600; background: #fff7ed; padding: 0.5em 0.8em;
-            margin: 0.5em 0; border-radius: 4px; color: #7c2d12;
-        }
-        .rte-editor pre {
-            background: #1e293b; color: #e2e8f0; padding: 0.8em 1em; border-radius: 6px;
-            font-family: 'Share Tech Mono', monospace; font-size: 12px; overflow-x: auto;
-            margin: 0.5em 0; white-space: pre-wrap;
-        }
+        .rte-editor blockquote { border-left: 4px solid #ff6600; background: #fff7ed; padding: 0.5em 0.8em; margin: 0.5em 0; border-radius: 4px; color: #7c2d12; }
+        .rte-editor pre { background: #1e293b; color: #e2e8f0; padding: 0.8em 1em; border-radius: 6px; font-family: 'Share Tech Mono', monospace; font-size: 12px; overflow-x: auto; margin: 0.5em 0; white-space: pre-wrap; }
         .rte-editor code { background: #f1f5f9; padding: 0.15em 0.4em; border-radius: 3px; font-family: 'Share Tech Mono', monospace; font-size: 0.9em; color: #be185d; }
         .rte-editor pre code { background: transparent; color: inherit; padding: 0; }
         .rte-editor a { color: #2563eb; text-decoration: underline; cursor: pointer; }
@@ -169,283 +124,165 @@
         .rte-editor table tr:nth-child(even) td { background: #f8fafc; }
         .rte-editor audio { width: 100%; margin: 0.4em 0; border-radius: 30px; }
         .rte-editor .callout { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 0.7em 0.9em; margin: 0.6em 0; border-radius: 4px; color: #78350f; }
+
+        /* Audio block inside the editor */
         .rte-editor .audio-block {
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             border: 1px solid #7dd3fc; border-radius: 10px; padding: 0.7em 0.9em; margin: 0.6em 0;
             box-shadow: 0 1px 3px rgba(2, 132, 199, 0.08);
+            position: relative;
+            resize: vertical;
+            overflow: auto;
+            min-height: 80px;
+            min-width: 220px;
         }
         .rte-editor .audio-block .audio-label {
             font-size: 11px; color: #0369a1; font-weight: bold; margin-bottom: 0.3em;
             display: flex; align-items: center; gap: 6px;
         }
         .rte-editor .audio-block .audio-label .audio-name { font-weight: normal; color: #0c4a6e; }
-        .rte-toolbar button.active { background: #2c599d !important; color: white !important; }
-
-        /* ========= AUDIO PLAYER PANEL ========= */
-        .audio-panel {
-            background: linear-gradient(180deg, #f0f5fc 0%, #e0edf8 100%);
-            border-top: 2px solid #7a9fd1;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+        /* Handles on audio block */
+        .audio-block-wrap { position: relative; display: block; }
+        .audio-block-toolbar {
+            position: absolute; top: -10px; right: 8px;
+            background: #0c4a6e; color: white;
+            border-radius: 6px; padding: 2px 4px;
+            display: flex; gap: 2px; z-index: 10;
+            opacity: 0; transition: opacity 0.15s;
+            font-size: 10px;
         }
-        .audio-track {
-            background: white;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            padding: 8px 10px;
-            transition: all 0.15s ease;
-            display: flex;
+        .audio-block-wrap:hover .audio-block-toolbar { opacity: 1; }
+        .audio-block-toolbar button {
+            background: transparent; border: none; color: white; cursor: pointer;
+            padding: 3px 5px; border-radius: 3px; font-size: 10px;
+        }
+        .audio-block-toolbar button:hover { background: rgba(255,255,255,0.2); }
+        .audio-block-toolbar button.danger:hover { background: #dc2626; }
+        .audio-block-wrap .drag-handle {
+            cursor: grab;
+            background: #0284c7;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px 4px 0 0;
+            font-size: 10px;
+            font-weight: bold;
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 4px;
+            user-select: none;
         }
-        .audio-track:hover { border-color: #2c599d; box-shadow: 0 2px 6px rgba(44, 89, 157, 0.12); }
-        .audio-track.playing { background: #e0edf8; border-color: #ff6600; box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2); }
-        .audio-track .track-play {
-            width: 30px; height: 30px; border-radius: 50%;
-            background: #2c599d; color: white;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.15s;
-            flex-shrink: 0;
-        }
-        .audio-track .track-play:hover { background: #1a3863; transform: scale(1.08); }
-        .audio-track.playing .track-play { background: #ff6600; }
-        .audio-track .track-info { flex: 1; min-width: 0; }
-        .audio-track .track-name { font-size: 12px; font-weight: bold; color: #12437a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .audio-track .track-meta { font-size: 10px; color: #6b7280; margin-top: 2px; display: flex; gap: 8px; }
-        .audio-track .track-progress {
-            height: 4px; background: #e5e7eb; border-radius: 2px; margin-top: 5px; overflow: hidden; cursor: pointer;
-        }
-        .audio-track .track-progress-bar {
-            height: 100%; background: linear-gradient(90deg, #2c599d, #ff6600); width: 0%; transition: width 0.1s linear;
-        }
-        .audio-track .track-delete {
-            color: #94a3b8; cursor: pointer; padding: 4px; border-radius: 4px;
-        }
-        .audio-track .track-delete:hover { color: #dc2626; background: #fee2e2; }
+        .audio-block-wrap .drag-handle:active { cursor: grabbing; }
+        .audio-block-wrap.dragging { opacity: 0.5; }
+        .audio-block.drag-over { outline: 2px dashed #ff6600; outline-offset: 2px; }
 
-        /* Global audio player (footer) */
+        /* Global audio player */
         .global-player {
             background: linear-gradient(180deg, #12437a 0%, #0f3460 100%);
-            color: white;
-            padding: 8px 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 11px;
+            color: white; padding: 8px 12px; display: flex; align-items: center; gap: 12px; font-size: 11px;
         }
         .global-player .gp-play {
             width: 34px; height: 34px; border-radius: 50%;
             background: #ff6600; color: white;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; flex-shrink: 0;
-            transition: all 0.15s;
+            cursor: pointer; flex-shrink: 0; transition: all 0.15s;
             box-shadow: 0 2px 6px rgba(255,102,0,0.3);
         }
         .global-player .gp-play:hover { transform: scale(1.08); }
         .global-player .gp-info { flex: 1; min-width: 0; }
         .global-player .gp-title { font-weight: bold; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .global-player .gp-time { font-size: 10px; color: #bae6fd; font-family: 'Share Tech Mono', monospace; }
-        .global-player .gp-progress {
-            height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px;
-            cursor: pointer; margin-top: 4px; overflow: hidden;
-        }
-        .global-player .gp-progress-bar {
-            height: 100%; background: linear-gradient(90deg, #ff6600, #fbbf24); width: 0%;
-        }
+        .global-player .gp-progress { height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; cursor: pointer; margin-top: 4px; overflow: hidden; }
+        .global-player .gp-progress-bar { height: 100%; background: linear-gradient(90deg, #ff6600, #fbbf24); width: 0%; }
         .global-player .gp-controls { display: flex; align-items: center; gap: 8px; }
         .global-player .gp-btn {
-            background: rgba(255,255,255,0.1); color: white;
-            width: 26px; height: 26px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 10px;
+            background: rgba(255,255,255,0.1); color: white; width: 26px; height: 26px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 10px;
             transition: background 0.15s;
         }
         .global-player .gp-btn:hover { background: rgba(255,255,255,0.25); }
         .global-player .gp-volume { width: 60px; }
         .global-player .gp-volume input { width: 100%; height: 3px; }
 
-        /* Permission status banner */
-        .perm-banner {
-            background: #fef3c7; border-left: 4px solid #f59e0b;
-            padding: 8px 12px; font-size: 11px; color: #78350f;
-            display: flex; align-items: center; gap: 8px;
+        /* Audio library panel */
+        .audio-panel { background: linear-gradient(180deg, #f0f5fc 0%, #e0edf8 100%); border-top: 2px solid #7a9fd1; box-shadow: 0 -2px 10px rgba(0,0,0,0.06); }
+        .audio-track {
+            background: white; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px;
+            transition: all 0.15s ease; display: flex; align-items: center; gap: 10px;
         }
+        .audio-track:hover { border-color: #2c599d; box-shadow: 0 2px 6px rgba(44, 89, 157, 0.12); }
+        .audio-track.playing { background: #e0edf8; border-color: #ff6600; box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2); }
+        .audio-track .track-play {
+            width: 30px; height: 30px; border-radius: 50%; background: #2c599d; color: white;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+        }
+        .audio-track .track-play:hover { background: #1a3863; transform: scale(1.08); }
+        .audio-track.playing .track-play { background: #ff6600; }
+        .audio-track .track-info { flex: 1; min-width: 0; }
+        .audio-track .track-name { font-size: 12px; font-weight: bold; color: #12437a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .audio-track .track-meta { font-size: 10px; color: #6b7280; margin-top: 2px; display: flex; gap: 8px; }
+        .audio-track .track-progress { height: 4px; background: #e5e7eb; border-radius: 2px; margin-top: 5px; overflow: hidden; cursor: pointer; }
+        .audio-track .track-progress-bar { height: 100%; background: linear-gradient(90deg, #2c599d, #ff6600); width: 0%; transition: width 0.1s linear; }
+        .audio-track .track-delete { color: #94a3b8; cursor: pointer; padding: 4px; border-radius: 4px; }
+        .audio-track .track-delete:hover { color: #dc2626; background: #fee2e2; }
+
+        /* Permission banner */
+        .perm-banner { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 8px 12px; font-size: 11px; color: #78350f; display: flex; align-items: center; gap: 8px; }
         .perm-banner.ok { background: #d1fae5; border-left-color: #10b981; color: #065f46; }
         .perm-banner.denied { background: #fee2e2; border-left-color: #ef4444; color: #7f1d1d; }
 
-        /* ========= DISCREET VOICE RECORDER POPUP ========= */
+        /* Voice recorder popup */
         .voice-recorder-popup {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
+            position: fixed; bottom: 20px; right: 20px;
             background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            border: 2px solid #334155;
-            border-radius: 12px;
-            padding: 14px 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 1000;
-            min-width: 260px;
+            color: white; border: 2px solid #334155; border-radius: 12px;
+            padding: 14px 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 1000; min-width: 260px;
             animation: slideUpFade 0.25s ease-out;
         }
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .voice-recorder-popup .rec-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            font-weight: bold;
-            color: #94a3b8;
-            margin-bottom: 10px;
-        }
-        .voice-recorder-popup .rec-dot {
-            width: 10px; height: 10px; border-radius: 50%;
-            background: #ef4444;
-            animation: pulseRed 1s infinite;
-        }
-        @keyframes pulseRed {
-            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(239,68,68,0.6); }
-            50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(239,68,68,0); }
-        }
-        .voice-recorder-popup .rec-time {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 26px;
-            font-weight: bold;
-            text-align: center;
-            color: #f87171;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-        .voice-recorder-popup .rec-wave {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            height: 28px;
-            margin-bottom: 10px;
-        }
-        .voice-recorder-popup .rec-wave span {
-            width: 3px;
-            background: #22d3ee;
-            border-radius: 2px;
-            animation: waveAnim 1s ease-in-out infinite;
-        }
-        @keyframes waveAnim {
-            0%, 100% { height: 6px; }
-            50% { height: 24px; }
-        }
-        .voice-recorder-popup .rec-actions {
-            display: flex;
-            gap: 8px;
-        }
-        .voice-recorder-popup .rec-btn {
-            flex: 1;
-            padding: 8px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-        .voice-recorder-popup .rec-btn-stop {
-            background: #ef4444;
-            color: white;
-        }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .voice-recorder-popup .rec-header { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: bold; color: #94a3b8; margin-bottom: 10px; }
+        .voice-recorder-popup .rec-dot { width: 10px; height: 10px; border-radius: 50%; background: #ef4444; animation: pulseRed 1s infinite; }
+        @keyframes pulseRed { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(239,68,68,0.6); } 50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(239,68,68,0); } }
+        .voice-recorder-popup .rec-time { font-family: 'Share Tech Mono', monospace; font-size: 26px; font-weight: bold; text-align: center; color: #f87171; letter-spacing: 1px; margin-bottom: 10px; }
+        .voice-recorder-popup .rec-wave { display: flex; align-items: center; justify-content: center; gap: 3px; height: 28px; margin-bottom: 10px; }
+        .voice-recorder-popup .rec-wave span { width: 3px; background: #22d3ee; border-radius: 2px; animation: waveAnim 1s ease-in-out infinite; }
+        @keyframes waveAnim { 0%, 100% { height: 6px; } 50% { height: 24px; } }
+        .voice-recorder-popup .rec-actions { display: flex; gap: 8px; }
+        .voice-recorder-popup .rec-btn { flex: 1; padding: 8px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; border: none; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .voice-recorder-popup .rec-btn-stop { background: #ef4444; color: white; }
         .voice-recorder-popup .rec-btn-stop:hover { background: #dc2626; }
-        .voice-recorder-popup .rec-btn-cancel {
-            background: #334155;
-            color: #cbd5e1;
-        }
+        .voice-recorder-popup .rec-btn-cancel { background: #334155; color: #cbd5e1; }
         .voice-recorder-popup .rec-btn-cancel:hover { background: #475569; }
 
-        /* ========= SETTINGS MENU ========= */
-        .settings-tab {
-            padding: 8px 12px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            color: #64748b;
-            transition: all 0.15s;
-        }
+        /* Settings */
+        .settings-tab { padding: 8px 12px; font-size: 12px; font-weight: bold; cursor: pointer; border-bottom: 2px solid transparent; color: #64748b; transition: all 0.15s; }
         .settings-tab:hover { color: #12437a; background: #f1f5f9; }
-        .settings-tab.active {
-            color: var(--ui-accent);
-            border-bottom-color: var(--ui-accent);
-        }
+        .settings-tab.active { color: var(--ui-accent); border-bottom-color: var(--ui-accent); }
         .settings-section { display: none; }
         .settings-section.active { display: block; }
-        .color-swatch {
-            width: 32px; height: 32px;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 2px solid #cbd5e1;
-            transition: all 0.15s;
-        }
+        .color-swatch { width: 32px; height: 32px; border-radius: 8px; cursor: pointer; border: 2px solid #cbd5e1; transition: all 0.15s; }
         .color-swatch:hover { transform: scale(1.1); border-color: #12437a; }
-        .color-swatch.selected {
-            border-color: var(--ui-accent);
-            box-shadow: 0 0 0 3px rgba(255,102,0,0.25);
-            transform: scale(1.1);
-        }
-        .layout-option {
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            padding: 10px;
-            cursor: pointer;
-            transition: all 0.15s;
-            background: white;
-        }
+        .color-swatch.selected { border-color: var(--ui-accent); box-shadow: 0 0 0 3px rgba(255,102,0,0.25); transform: scale(1.1); }
+        .layout-option { border: 2px solid #cbd5e1; border-radius: 8px; padding: 10px; cursor: pointer; transition: all 0.15s; background: white; }
         .layout-option:hover { border-color: #12437a; }
-        .layout-option.selected {
-            border-color: var(--ui-accent);
-            box-shadow: 0 0 0 3px rgba(255,102,0,0.2);
-            background: #fff7ed;
-        }
-        .toggle-switch {
-            position: relative;
-            width: 42px;
-            height: 22px;
-            background: #cbd5e1;
-            border-radius: 999px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+        .layout-option.selected { border-color: var(--ui-accent); box-shadow: 0 0 0 3px rgba(255,102,0,0.2); background: #fff7ed; }
+        .toggle-switch { position: relative; width: 42px; height: 22px; background: #cbd5e1; border-radius: 999px; cursor: pointer; transition: background 0.2s; }
         .toggle-switch.on { background: var(--ui-accent); }
-        .toggle-switch::after {
-            content: '';
-            position: absolute;
-            top: 2px; left: 2px;
-            width: 18px; height: 18px;
-            background: white;
-            border-radius: 50%;
-            transition: transform 0.2s;
-        }
+        .toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: transform 0.2s; }
         .toggle-switch.on::after { transform: translateX(20px); }
-
-        /* Different layouts */
         body.layout-sidebar-left .retro-window { flex-direction: row; }
         body.layout-sidebar-right .retro-window { flex-direction: row-reverse; }
         body.layout-sidebar-right .retro-sidebar { border-right: none; border-left: 1px solid #b4d0f0; }
         body.layout-compact .retro-sidebar { width: 200px; }
         body.layout-wide .retro-sidebar { width: 320px; }
         body.layout-topbar .retro-window { flex-direction: column; }
-        body.layout-topbar .retro-sidebar {
-            width: 100%;
-            height: auto;
-            max-height: 220px;
-            border-right: none;
-            border-bottom: 1px solid #b4d0f0;
-        }
-        body.layout-topbar .retro-sidebar > div:not(:first-child) { display: flex; flex-wrap: wrap; gap: 4px; }
+        body.layout-topbar .retro-sidebar { width: 100%; height: auto; max-height: 220px; border-right: none; border-bottom: 1px solid #b4d0f0; }
         body.hide-sidebar .retro-sidebar { display: none; }
+
+        /* Avatar */
+        .avatar-emoji { font-size: 26px; line-height: 1; cursor: pointer; transition: transform 0.15s; user-select: none; padding: 4px; border-radius: 6px; border: 2px solid transparent; }
+        .avatar-emoji:hover { transform: scale(1.15); background: #e0edf8; }
+        .avatar-emoji.selected { border-color: var(--ui-accent); background: #fff7ed; transform: scale(1.1); }
     </style>
 </head>
 <body class="p-2 sm:p-4 flex flex-col items-center justify-start min-h-screen lang-en">
@@ -453,7 +290,7 @@
     <header class="w-full max-w-7xl bg-white/95 backdrop-blur border border-[#4a72a9] rounded shadow-lg px-3 py-2 mb-3 flex flex-wrap items-center justify-between gap-2 text-xs">
         <div class="flex items-center gap-3 flex-wrap">
             <div class="accent-bg text-white px-2.5 py-1 rounded font-bold dot-font text-sm flex items-center gap-1 shadow-sm" id="brandBadge">
-                <i class="fa-solid fa-star text-yellow-200"></i> MYDESK <3
+                <i class="fa-solid fa-star text-yellow-200"></i> <span id="brandText">MYDESK <3</span>
             </div>
             <span class="text-gray-600 font-semibold hidden sm:inline"><span data-i18n="header.today">TODAY</span> <span class="text-red-500 font-bold" id="todayVisits">3,492</span> | <span data-i18n="header.total">TOTAL</span> <span class="text-blue-600 font-bold">245,118</span></span>
             <span class="backup-badge"><i class="fa-solid fa-database"></i> <span data-i18n="header.backupReady">BACKUP READY</span></span>
@@ -469,7 +306,7 @@
             <div class="flex items-center bg-[#eef3f9] border border-[#a4c2f4] rounded px-3 py-1 gap-3 shadow-inner">
                 <div class="flex items-center gap-1.5 text-[#0f4c81]">
                     <i class="fa-solid fa-compact-disc text-amber-500 text-sm animate-spin" style="animation-duration: 4s;"></i>
-                    <span class="font-bold truncate max-w-[110px] sm:max-w-[150px]" id="bgmTitle" data-i18n="bgm.epikHigh">Epik High - Fly (Retro Ver)</span>
+                    <span class="font-bold truncate max-w-[110px] sm:max-w-[150px]" id="bgmTitle">Epik High - Fly (Retro Ver)</span>
                 </div>
                 <div class="flex items-center gap-1.5">
                     <button onclick="togglePlayBGM()" id="bgmPlayBtn" class="accent-bg accent-bg-hover text-white px-2 py-0.5 rounded text-[11px] shadow">
@@ -492,15 +329,23 @@
     <main class="w-full max-w-7xl retro-window bg-[#f4f7fb] flex flex-col md:flex-row h-[84vh] overflow-hidden shadow-2xl">
 
         <aside class="w-full md:w-72 retro-sidebar flex flex-col flex-shrink-0 border-r border-[#a4c2f4]">
+            <!-- AVATAR/PROFILE RESTORED -->
             <div class="p-3 bg-[#e4eff9] border-b border-[#b4d0f0] text-center relative">
-                <div class="w-full h-20 bg-[#dbeafe] border border-blue-300 rounded flex items-center justify-center relative overflow-hidden shadow-inner mb-2">
+                <div class="w-full h-24 bg-[#dbeafe] border border-blue-300 rounded flex items-center justify-center relative overflow-hidden shadow-inner mb-2 cursor-pointer group" id="avatarDisplay" onclick="openAvatarModal()" title="Click to customize avatar">
                     <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#12437a_1px,transparent_1px)] [background-size:10px_10px]"></div>
-                    <div class="text-2xl select-none flex items-center gap-2">
-                        <span>👩‍💻</span><span class="text-base">☕</span><span class="text-base">🎧</span>
+                    <div class="text-2xl select-none flex items-center gap-2" id="avatarEmojis">
+                        <span id="avatarMain">👩‍💻</span><span class="text-base" id="avatarDeco1">☕</span><span class="text-base" id="avatarDeco2">🎧</span>
                     </div>
-                    <div class="absolute bottom-1 right-1 text-[9px] text-blue-900/60 dot-font font-bold">MYDESK<3</div>
+                    <div class="absolute bottom-1 right-1 text-[9px] text-blue-900/60 dot-font font-bold" id="avatarLabel">MYDESK&lt;3</div>
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all flex items-center justify-center">
+                        <span class="opacity-0 group-hover:opacity-100 text-white text-[10px] font-bold bg-black/50 px-2 py-1 rounded" data-i18n="avatar.edit">✎ Edit Avatar</span>
+                    </div>
                 </div>
                 <input type="text" id="userMood" value="♫ Coding & organizing memories..." onchange="saveMood(this.value)" class="w-full text-center text-[11px] bg-yellow-50 border border-blue-200 rounded px-1 py-0.5 text-gray-700 font-semibold focus:outline-none" placeholder="Your mood...">
+                <div class="flex justify-center gap-1 mt-1.5">
+                    <button onclick="openAvatarModal()" class="text-[10px] bg-white border border-blue-300 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-50 font-bold" data-i18n="avatar.customize">👤 Avatar</button>
+                    <button onclick="openProfileModal()" class="text-[10px] bg-white border border-blue-300 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-50 font-bold" data-i18n="avatar.profile">✎ Profile</button>
+                </div>
             </div>
 
             <div class="p-2 bg-[#d8e3f0] border-b border-[#a4c2f4] grid grid-cols-2 gap-1 text-xs">
@@ -539,7 +384,7 @@
 
         <div class="flex-1 flex flex-col bg-white overflow-hidden relative">
 
-            <!-- ==================== DOCUMENTS ==================== -->
+            <!-- DOCUMENTS -->
             <div id="view-documents" class="flex-1 flex flex-col h-full overflow-hidden workspace-view">
                 <div class="bg-[#f0f4f9] border-b border-[#a4c2f4] px-4 py-2.5 flex flex-wrap justify-between items-center gap-2">
                     <div class="flex items-center gap-2 flex-1 max-w-lg">
@@ -554,7 +399,6 @@
                     </div>
                 </div>
 
-                <!-- MIC PERMISSION BANNER -->
                 <div id="micPermBanner" class="perm-banner hidden">
                     <i class="fa-solid fa-microphone-slash"></i>
                     <span id="micPermText">Microphone access required for voice recording.</span>
@@ -563,16 +407,15 @@
                     </button>
                 </div>
 
-                <!-- RICH TEXT TOOLBAR -->
                 <div class="rte-toolbar px-3 py-1.5 flex flex-wrap items-center gap-1 text-xs">
                     <select onchange="rteExec('formatBlock', this.value); this.selectedIndex=0;" class="px-1.5 py-1 bg-white border border-gray-300 rounded text-[11px] hover:bg-gray-100">
-                        <option value="" data-i18n="rte.paragraph">Paragraph ▾</option>
-                        <option value="h1" data-i18n="rte.h1">Heading 1</option>
-                        <option value="h2" data-i18n="rte.h2">Heading 2</option>
-                        <option value="h3" data-i18n="rte.h3">Heading 3</option>
-                        <option value="p" data-i18n="rte.p">Paragraph</option>
-                        <option value="pre" data-i18n="rte.code">Code Block</option>
-                        <option value="blockquote" data-i18n="rte.quote">Quote</option>
+                        <option value="">Paragraph ▾</option>
+                        <option value="h1">Heading 1</option>
+                        <option value="h2">Heading 2</option>
+                        <option value="h3">Heading 3</option>
+                        <option value="p">Paragraph</option>
+                        <option value="pre">Code Block</option>
+                        <option value="blockquote">Quote</option>
                     </select>
                     <span class="text-gray-300">|</span>
                     <button onclick="rteExec('bold')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 font-bold" title="Bold (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
@@ -608,7 +451,7 @@
                         <input type="number" id="rteTableRows" value="3" min="1" max="20" class="w-10 text-center text-[11px] border border-gray-300 rounded px-0.5">
                         <span class="text-[10px]">×</span>
                         <input type="number" id="rteTableCols" value="3" min="1" max="10" class="w-10 text-center text-[11px] border border-gray-300 rounded px-0.5">
-                        <button onclick="rteInsertTable()" class="bg-purple-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold" data-i18n="rte.insert">Insert</button>
+                        <button onclick="rteInsertTable()" class="bg-purple-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">Insert</button>
                         <button onclick="document.getElementById('rteTableForm').classList.add('hidden')" class="text-gray-500 text-[10px] px-1">✕</button>
                     </span>
                 </div>
@@ -617,7 +460,6 @@
                     <div id="rteEditor" class="rte-editor" contenteditable="true" data-placeholder="Write notes Notion-style..."></div>
                 </div>
 
-                <!-- AUDIO PLAYER PANEL -->
                 <div id="audioPanel" class="audio-panel hidden">
                     <div class="px-4 py-2 flex justify-between items-center border-b border-[#b4d0f0]">
                         <div class="flex items-center gap-2">
@@ -641,7 +483,6 @@
                     <span data-i18n="docs.footer">MYDESK Notion Docs • Offline Mode</span>
                 </div>
 
-                <!-- GLOBAL AUDIO PLAYER -->
                 <div id="globalPlayer" class="global-player hidden">
                     <div class="gp-play" onclick="toggleGlobalPlay()">
                         <i class="fa-solid fa-play" id="gpPlayIcon"></i>
@@ -711,7 +552,6 @@
                     </div>
                 </div>
 
-                <!-- CALENDAR ACTION BAR (Import/Export iCal) — RESTORED -->
                 <div class="bg-[#eef3f9] border-b border-[#a4c2f4] px-4 py-2 flex flex-wrap items-center gap-2 text-[11px]">
                     <label class="accent-bg accent-bg-hover text-white px-3 py-1 rounded shadow cursor-pointer flex items-center gap-1 font-bold" title="Import .ics or .cal file into calendar">
                         <i class="fa-solid fa-file-import"></i> <span data-i18n="cal.importIcs">Import .ics / .cal</span>
@@ -856,31 +696,31 @@
     <div id="linkModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
             <div class="retro-titlebar">
-                <span data-i18n="modal.link.title">🔗 Insert Hyperlink</span>
+                <span>🔗 Insert Hyperlink</span>
                 <button onclick="closeLinkModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
             </div>
             <div class="p-4 space-y-3 text-xs">
                 <div>
-                    <label class="block font-bold text-gray-700 mb-1" data-i18n="modal.link.text">Display Text:</label>
-                    <input type="text" id="linkTextInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" data-i18n-placeholder="modal.link.textPlaceholder" placeholder="Link text...">
+                    <label class="block font-bold text-gray-700 mb-1">Display Text:</label>
+                    <input type="text" id="linkTextInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="Link text...">
                 </div>
                 <div>
-                    <label class="block font-bold text-gray-700 mb-1" data-i18n="modal.link.url">URL:</label>
+                    <label class="block font-bold text-gray-700 mb-1">URL:</label>
                     <input type="text" id="linkUrlInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="https://example.com">
                 </div>
                 <div class="flex justify-end gap-2 pt-2">
-                    <button onclick="closeLinkModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold" data-i18n="modal.cancel">Cancel</button>
-                    <button onclick="insertLinkFromModal()" class="accent-bg accent-bg-hover text-white px-4 py-1.5 rounded font-bold shadow" data-i18n="modal.link.insert">Insert Link</button>
+                    <button onclick="closeLinkModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold">Cancel</button>
+                    <button onclick="insertLinkFromModal()" class="accent-bg accent-bg-hover text-white px-4 py-1.5 rounded font-bold shadow">Insert Link</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Microphone Permission Modal -->
+    <!-- Mic permission modal -->
     <div id="micPermModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
             <div class="retro-titlebar">
-                <span data-i18n="mic.title">🎤 Microphone Permission Required</span>
+                <span>🎤 Microphone Permission Required</span>
                 <button onclick="closeMicPermModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
             </div>
             <div class="p-5 space-y-3 text-xs text-gray-700">
@@ -889,38 +729,98 @@
                         <i class="fa-solid fa-microphone-slash text-lg"></i>
                     </div>
                     <div>
-                        <p class="font-bold text-gray-800 mb-1" data-i18n="mic.body1">We need microphone access to record voice notes.</p>
-                        <p class="text-[11px] text-gray-600" data-i18n="mic.body2">Your browser will ask you to allow microphone access. Look for a popup near the address bar.</p>
+                        <p class="font-bold text-gray-800 mb-1">We need microphone access to record voice notes.</p>
+                        <p class="text-[11px] text-gray-600">Your browser will ask you to allow microphone access.</p>
                     </div>
-                </div>
-                <div class="bg-blue-50 border border-blue-200 rounded p-3 text-[11px] space-y-1">
-                    <div class="font-bold text-blue-900" data-i18n="mic.howTo">📋 How to enable:</div>
-                    <ul class="list-disc list-inside text-gray-700 space-y-0.5">
-                        <li data-i18n="mic.step1">Click the button below</li>
-                        <li data-i18n="mic.step2">When your browser asks, click <b>Allow</b></li>
-                        <li data-i18n="mic.step3">If it doesn't appear, click the 🔒 icon next to the URL</li>
-                        <li data-i18n="mic.step4">Set Microphone to <b>Allow</b> and reload the page</li>
-                    </ul>
                 </div>
                 <div id="micPermStatus" class="text-[11px] text-center font-bold"></div>
                 <div class="flex justify-end gap-2 pt-2">
-                    <button onclick="closeMicPermModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold" data-i18n="mic.later">Later</button>
+                    <button onclick="closeMicPermModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold">Later</button>
                     <button onclick="requestMicPermission(true)" class="accent-bg accent-bg-hover text-white px-4 py-1.5 rounded font-bold shadow flex items-center gap-1">
-                        <i class="fa-solid fa-key"></i> <span data-i18n="mic.grantAccess">Grant Microphone Access</span>
+                        <i class="fa-solid fa-key"></i> Grant Microphone Access
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SETTINGS MODAL -->
+    <!-- Avatar Modal (RESTORED) -->
+    <div id="avatarModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[90] p-4">
+        <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-lg overflow-hidden max-h-[88vh] flex flex-col">
+            <div class="retro-titlebar">
+                <span><i class="fa-solid fa-user-astronaut"></i> <span data-i18n="avatar.modalTitle">Customize Avatar & Profile</span></span>
+                <button onclick="closeAvatarModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
+            </div>
+            <div class="p-4 space-y-4 text-xs overflow-y-auto">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-2"><i class="fa-solid fa-face-smile text-blue-600"></i> <span data-i18n="avatar.main">Main Avatar:</span></label>
+                    <div class="grid grid-cols-8 gap-1 bg-[#f0f4f9] p-3 rounded border border-[#a4c2f4]" id="mainAvatarPicker"></div>
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-2"><i class="fa-solid fa-mug-hot text-amber-600"></i> <span data-i18n="avatar.deco1">Decoration 1 (left):</span></label>
+                    <div class="grid grid-cols-8 gap-1 bg-[#f0f4f9] p-3 rounded border border-[#a4c2f4]" id="deco1Picker"></div>
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-2"><i class="fa-solid fa-headphones text-purple-600"></i> <span data-i18n="avatar.deco2">Decoration 2 (right):</span></label>
+                    <div class="grid grid-cols-8 gap-1 bg-[#f0f4f9] p-3 rounded border border-[#a4c2f4]" id="deco2Picker"></div>
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1"><i class="fa-solid fa-tag text-pink-600"></i> <span data-i18n="avatar.label">Mini-room Label:</span></label>
+                    <input type="text" id="avatarLabelInput" maxlength="20" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="e.g. MYDESK&lt;3">
+                </div>
+                <div class="bg-[#dbeafe] border border-blue-300 rounded p-3 text-center">
+                    <div class="text-[10px] text-blue-700 font-bold mb-1" data-i18n="avatar.preview">PREVIEW</div>
+                    <div class="text-2xl select-none flex items-center justify-center gap-2">
+                        <span id="previewMain">👩‍💻</span>
+                        <span class="text-base" id="previewDeco1">☕</span>
+                        <span class="text-base" id="previewDeco2">🎧</span>
+                    </div>
+                    <div class="text-[9px] text-blue-900/60 dot-font font-bold mt-1" id="previewLabel">MYDESK&lt;3</div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button onclick="resetAvatar()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold" data-i18n="avatar.reset">Reset Avatar</button>
+                    <button onclick="closeAvatarModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold" data-i18n="modal.cancel">Cancel</button>
+                    <button onclick="saveAvatar()" class="accent-bg accent-bg-hover text-white px-4 py-1.5 rounded font-bold shadow" data-i18n="avatar.save">Save Avatar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal (RESTORED) -->
+    <div id="profileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[90] p-4">
+        <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="retro-titlebar">
+                <span><i class="fa-solid fa-user-pen"></i> <span data-i18n="profile.modalTitle">Edit Profile</span></span>
+                <button onclick="closeProfileModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
+            </div>
+            <div class="p-4 space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1" data-i18n="profile.name">Display Name:</label>
+                    <input type="text" id="profileNameInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="Your name...">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1" data-i18n="profile.brand">Header Brand Text:</label>
+                    <input type="text" id="profileBrandInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="e.g. MYDESK &lt;3">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1" data-i18n="profile.mood">Status Mood:</label>
+                    <input type="text" id="profileMoodInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="Your mood...">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button onclick="closeProfileModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold" data-i18n="modal.cancel">Cancel</button>
+                    <button onclick="saveProfile()" class="accent-bg accent-bg-hover text-white px-4 py-1.5 rounded font-bold shadow" data-i18n="avatar.save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
     <div id="settingsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[80] p-4">
         <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-2xl overflow-hidden max-h-[88vh] flex flex-col">
             <div class="retro-titlebar">
                 <span><i class="fa-solid fa-gear"></i> <span data-i18n="settings.title">Settings & Customization</span></span>
                 <button onclick="closeSettings()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
             </div>
-            <!-- Settings Tabs -->
             <div class="flex border-b border-gray-200 bg-[#f8fafc] overflow-x-auto">
                 <div class="settings-tab active" data-settings-tab="theme" onclick="switchSettingsTab('theme')"><i class="fa-solid fa-palette"></i> <span data-i18n="settings.tab.theme">Theme</span></div>
                 <div class="settings-tab" data-settings-tab="layout" onclick="switchSettingsTab('layout')"><i class="fa-solid fa-table-columns"></i> <span data-i18n="settings.tab.layout">Layout</span></div>
@@ -928,23 +828,20 @@
                 <div class="settings-tab" data-settings-tab="pixel" onclick="switchSettingsTab('pixel')"><i class="fa-solid fa-gamepad"></i> <span data-i18n="settings.tab.pixel">Pixel Mode</span></div>
                 <div class="settings-tab" data-settings-tab="data" onclick="switchSettingsTab('data')"><i class="fa-solid fa-database"></i> <span data-i18n="settings.tab.data">Data</span></div>
             </div>
-            <!-- Settings Content -->
             <div class="p-4 overflow-y-auto flex-1 text-xs">
-
-                <!-- THEME TAB -->
                 <div class="settings-section active" data-settings-section="theme">
                     <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.accentColor">Accent Color</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <div class="color-swatch" data-color="#ff6600" style="background:#ff6600" onclick="setAccentColor('#ff6600','#cc5200')" title="Orange (Default)"></div>
-                        <div class="color-swatch" data-color="#3b82f6" style="background:#3b82f6" onclick="setAccentColor('#3b82f6','#1d4ed8')" title="Blue"></div>
-                        <div class="color-swatch" data-color="#10b981" style="background:#10b981" onclick="setAccentColor('#10b981','#047857')" title="Green"></div>
-                        <div class="color-swatch" data-color="#a855f7" style="background:#a855f7" onclick="setAccentColor('#a855f7','#7e22ce')" title="Purple"></div>
-                        <div class="color-swatch" data-color="#ec4899" style="background:#ec4899" onclick="setAccentColor('#ec4899','#be185d')" title="Pink"></div>
-                        <div class="color-swatch" data-color="#ef4444" style="background:#ef4444" onclick="setAccentColor('#ef4444','#b91c1c')" title="Red"></div>
-                        <div class="color-swatch" data-color="#f59e0b" style="background:#f59e0b" onclick="setAccentColor('#f59e0b','#b45309')" title="Amber"></div>
-                        <div class="color-swatch" data-color="#14b8a6" style="background:#14b8a6" onclick="setAccentColor('#14b8a6','#0f766e')" title="Teal"></div>
-                        <div class="color-swatch" data-color="#6366f1" style="background:#6366f1" onclick="setAccentColor('#6366f1','#4338ca')" title="Indigo"></div>
-                        <div class="color-swatch" data-color="#0ea5e9" style="background:#0ea5e9" onclick="setAccentColor('#0ea5e9','#0369a1')" title="Sky"></div>
+                        <div class="color-swatch" data-color="#ff6600" style="background:#ff6600" onclick="setAccentColor('#ff6600','#cc5200')"></div>
+                        <div class="color-swatch" data-color="#3b82f6" style="background:#3b82f6" onclick="setAccentColor('#3b82f6','#1d4ed8')"></div>
+                        <div class="color-swatch" data-color="#10b981" style="background:#10b981" onclick="setAccentColor('#10b981','#047857')"></div>
+                        <div class="color-swatch" data-color="#a855f7" style="background:#a855f7" onclick="setAccentColor('#a855f7','#7e22ce')"></div>
+                        <div class="color-swatch" data-color="#ec4899" style="background:#ec4899" onclick="setAccentColor('#ec4899','#be185d')"></div>
+                        <div class="color-swatch" data-color="#ef4444" style="background:#ef4444" onclick="setAccentColor('#ef4444','#b91c1c')"></div>
+                        <div class="color-swatch" data-color="#f59e0b" style="background:#f59e0b" onclick="setAccentColor('#f59e0b','#b45309')"></div>
+                        <div class="color-swatch" data-color="#14b8a6" style="background:#14b8a6" onclick="setAccentColor('#14b8a6','#0f766e')"></div>
+                        <div class="color-swatch" data-color="#6366f1" style="background:#6366f1" onclick="setAccentColor('#6366f1','#4338ca')"></div>
+                        <div class="color-swatch" data-color="#0ea5e9" style="background:#0ea5e9" onclick="setAccentColor('#0ea5e9','#0369a1')"></div>
                     </div>
                     <div class="flex items-center gap-3 mb-4">
                         <label class="font-bold text-gray-700" data-i18n="settings.customAccent">Custom accent:</label>
@@ -957,38 +854,24 @@
                         <span class="text-[11px] text-gray-500" data-i18n="settings.headerHint">Used for active tabs and headings.</span>
                     </div>
                 </div>
-
-                <!-- LAYOUT TAB -->
                 <div class="settings-section" data-settings-section="layout">
                     <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.layout.title">Sidebar Position & Size</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
                         <div class="layout-option" data-layout="layout-sidebar-left" onclick="setLayout('layout-sidebar-left')">
                             <div class="text-[10px] font-bold text-gray-700 mb-1" data-i18n="settings.layout.left">Sidebar Left</div>
-                            <div class="flex gap-0.5">
-                                <div class="w-3 h-8 bg-[#12437a] rounded-l"></div>
-                                <div class="flex-1 h-8 bg-gray-200 rounded-r"></div>
-                            </div>
+                            <div class="flex gap-0.5"><div class="w-3 h-8 bg-[#12437a] rounded-l"></div><div class="flex-1 h-8 bg-gray-200 rounded-r"></div></div>
                         </div>
                         <div class="layout-option" data-layout="layout-sidebar-right" onclick="setLayout('layout-sidebar-right')">
                             <div class="text-[10px] font-bold text-gray-700 mb-1" data-i18n="settings.layout.right">Sidebar Right</div>
-                            <div class="flex gap-0.5">
-                                <div class="flex-1 h-8 bg-gray-200 rounded-l"></div>
-                                <div class="w-3 h-8 bg-[#12437a] rounded-r"></div>
-                            </div>
+                            <div class="flex gap-0.5"><div class="flex-1 h-8 bg-gray-200 rounded-l"></div><div class="w-3 h-8 bg-[#12437a] rounded-r"></div></div>
                         </div>
                         <div class="layout-option" data-layout="layout-topbar" onclick="setLayout('layout-topbar')">
                             <div class="text-[10px] font-bold text-gray-700 mb-1" data-i18n="settings.layout.top">Top Bar</div>
-                            <div class="flex flex-col gap-0.5">
-                                <div class="h-3 bg-[#12437a] rounded"></div>
-                                <div class="h-5 bg-gray-200 rounded"></div>
-                            </div>
+                            <div class="flex flex-col gap-0.5"><div class="h-3 bg-[#12437a] rounded"></div><div class="h-5 bg-gray-200 rounded"></div></div>
                         </div>
                         <div class="layout-option" data-layout="layout-compact" onclick="setLayout('layout-compact')">
                             <div class="text-[10px] font-bold text-gray-700 mb-1" data-i18n="settings.layout.compact">Compact</div>
-                            <div class="flex gap-0.5">
-                                <div class="w-2 h-8 bg-[#12437a] rounded-l"></div>
-                                <div class="flex-1 h-8 bg-gray-200 rounded-r"></div>
-                            </div>
+                            <div class="flex gap-0.5"><div class="w-2 h-8 bg-[#12437a] rounded-l"></div><div class="flex-1 h-8 bg-gray-200 rounded-r"></div></div>
                         </div>
                     </div>
                     <h3 class="font-bold text-sm text-[#12437a] mb-3 mt-5" data-i18n="settings.layout.width">Sidebar Width</h3>
@@ -998,17 +881,10 @@
                         <button onclick="setLayout('layout-wide')" class="px-3 py-1.5 bg-white border border-gray-300 rounded font-bold hover:bg-blue-50 text-[11px]" data-i18n="settings.layout.wide">Wide</button>
                         <button onclick="setLayout('hide-sidebar')" class="px-3 py-1.5 bg-white border border-gray-300 rounded font-bold hover:bg-blue-50 text-[11px]" data-i18n="settings.layout.hidden">Hidden</button>
                     </div>
-                    <h3 class="font-bold text-sm text-[#12437a] mb-3 mt-5" data-i18n="settings.layout.density">UI Density</h3>
-                    <div class="flex items-center gap-3">
-                        <button onclick="setDensity('compact')" class="px-3 py-1.5 bg-white border border-gray-300 rounded font-bold hover:bg-blue-50 text-[11px]" data-i18n="settings.layout.compactDensity">Compact</button>
-                        <button onclick="setDensity('comfortable')" class="px-3 py-1.5 bg-white border border-gray-300 rounded font-bold hover:bg-blue-50 text-[11px]" data-i18n="settings.layout.comfortable">Comfortable</button>
-                    </div>
                 </div>
-
-                <!-- BACKGROUND TAB -->
                 <div class="settings-section" data-settings-section="background">
                     <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.bg.title">Custom Background</h3>
-                    <p class="text-[11px] text-gray-500 mb-3" data-i18n="settings.bg.hint">Upload an image to use as your workspace background. The image is stored locally in your browser.</p>
+                    <p class="text-[11px] text-gray-500 mb-3" data-i18n="settings.bg.hint">Upload an image to use as your workspace background.</p>
                     <div class="flex items-center gap-3 mb-4 flex-wrap">
                         <label class="accent-bg accent-bg-hover text-white px-3 py-1.5 rounded shadow cursor-pointer flex items-center gap-1 font-bold">
                             <i class="fa-solid fa-upload"></i> <span data-i18n="settings.bg.upload">Upload Image</span>
@@ -1018,35 +894,21 @@
                     </div>
                     <h3 class="font-bold text-sm text-[#12437a] mb-3 mt-5" data-i18n="settings.bg.preset">Preset Backgrounds</h3>
                     <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                        <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a] transition" style="background: radial-gradient(#2d5082 15%, transparent 16%) 0 0 / 24px 24px, #1e3a62" onclick="setPresetBg('default')" title="Default Blue"></div>
-                        <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a] transition" style="background: linear-gradient(135deg, #fce7f3, #c7d2fe);" onclick="setPresetBg('pastel')" title="Pastel"></div>
-                        <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a] transition" style="background: linear-gradient(135deg, #1e293b, #0f172a);" onclick="setPresetBg('dark')" title="Dark"></div>
-                        <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a] transition" style="background: repeating-linear-gradient(45deg, #fef3c7, #fef3c7 10px, #fde68a 10px, #fde68a 20px);" onclick="setPresetBg('retro')" title="Retro Stripes"></div>
-                        <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a] transition" style="background: radial-gradient(circle, #f0abfc 20%, transparent 20%) 0 0 / 20px 20px, #f5d0fe;" onclick="setPresetBg('polka')" title="Polka"></div>
+                        <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a]" style="background: radial-gradient(#2d5082 15%, transparent 16%) 0 0 / 24px 24px, #1e3a62" onclick="setPresetBg('default')"></div>
+                        <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a]" style="background: linear-gradient(135deg, #fce7f3, #c7d2fe);" onclick="setPresetBg('pastel')"></div>
+                        <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a]" style="background: linear-gradient(135deg, #1e293b, #0f172a);" onclick="setPresetBg('dark')"></div>
+                        <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a]" style="background: repeating-linear-gradient(45deg, #fef3c7, #fef3c7 10px, #fde68a 10px, #fde68a 20px);" onclick="setPresetBg('retro')"></div>
+                        <div class="h-16 rounded border-2 border-gray-300 cursor-pointer hover:border-[#12437a]" style="background: radial-gradient(circle, #f0abfc 20%, transparent 20%) 0 0 / 20px 20px, #f5d0fe;" onclick="setPresetBg('polka')"></div>
                     </div>
                 </div>
-
-                <!-- PIXEL MODE TAB -->
                 <div class="settings-section" data-settings-section="pixel">
                     <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.pixel.title">Cyworld Pixel Mode</h3>
-                    <p class="text-[11px] text-gray-500 mb-4" data-i18n="settings.pixel.hint">Toggle pixelated retro styling inspired by 2008 Cyworld. Disables rounded corners, applies pixel fonts and blocky shadows.</p>
+                    <p class="text-[11px] text-gray-500 mb-4" data-i18n="settings.pixel.hint">Toggle pixelated retro styling inspired by 2008 Cyworld.</p>
                     <div class="flex items-center gap-3 mb-5">
                         <div id="pixelToggle" class="toggle-switch" onclick="togglePixelMode()"></div>
                         <span class="font-bold text-[12px]" data-i18n="settings.pixel.enable">Enable Pixel Mode</span>
                     </div>
-                    <div class="bg-[#fffbeb] border border-amber-200 rounded p-3 text-[11px] text-amber-800 mb-4">
-                        <b data-i18n="settings.pixel.note">Note:</b> <span data-i18n="settings.pixel.noteText">Pixel mode changes fonts and removes rounded corners. Turn off if you prefer a modern smooth look.</span>
-                    </div>
-                    <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.pixel.sound">BGM Jukebox</h3>
-                    <p class="text-[11px] text-gray-500 mb-3" data-i18n="settings.pixel.bgmHint">Each track has its own unique chiptune melody.</p>
-                    <div class="flex items-center gap-2">
-                        <button onclick="togglePlayBGM()" class="accent-bg accent-bg-hover text-white px-3 py-1.5 rounded font-bold text-[11px] flex items-center gap-1">
-                            <i class="fa-solid fa-play"></i> <span data-i18n="settings.pixel.playBgm">Play / Stop BGM</span>
-                        </button>
-                    </div>
                 </div>
-
-                <!-- DATA TAB -->
                 <div class="settings-section" data-settings-section="data">
                     <h3 class="font-bold text-sm text-[#12437a] mb-3" data-i18n="settings.data.title">Backup & Restore</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
@@ -1059,12 +921,10 @@
                         </label>
                     </div>
                     <h3 class="font-bold text-sm text-[#12437a] mb-3 mt-5" data-i18n="settings.data.reset">Reset Workspace</h3>
-                    <p class="text-[11px] text-gray-500 mb-2" data-i18n="settings.data.resetHint">This will clear all documents, tasks, and calendar events and restore defaults.</p>
                     <button onclick="resetWorkspace()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded font-bold flex items-center gap-1">
                         <i class="fa-solid fa-trash"></i> <span data-i18n="settings.data.reset">Reset Workspace</span>
                     </button>
                 </div>
-
             </div>
             <div class="border-t border-gray-200 px-4 py-2 flex justify-end bg-[#f8fafc]">
                 <button onclick="closeSettings()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-1.5 rounded font-bold text-xs" data-i18n="modal.cancel">Cancel</button>
@@ -1073,7 +933,6 @@
         </div>
     </div>
 
-    <!-- Toast -->
     <div id="toast" class="fixed bottom-4 right-4 bg-gray-900 text-white text-xs px-3 py-2 rounded shadow-lg hidden z-[2000]"></div>
 
     <script>
@@ -1086,7 +945,7 @@
                 'tab.docs': 'Docs & Pages', 'tab.todo': 'To-Do List', 'tab.calendar': 'Calendar', 'tab.pomodoro': 'Focus Timer',
                 'btn.backup': 'Backup', 'btn.restore': 'Restore', 'btn.reset': 'Reset', 'btn.settings': 'Settings',
                 'backup.fullExport': 'Full database export',
-                'docs.pageTitle': 'Page Title...', 'docs.saved': 'Saved locally', 'docs.body': 'Write notes Notion-style...',
+                'docs.pageTitle': 'Page Title...', 'docs.saved': 'Saved locally',
                 'docs.footer': 'MYDESK Notion Docs • Offline Mode', 'docs.delete': 'Delete page',
                 'docs.statsFormat': '{words} words | {chars} characters | {lines} lines',
                 'docs.newPageTitle': 'New Notion Page ★', 'docs.newPageBody': '',
@@ -1097,7 +956,7 @@
                 'todo.total': 'Total', 'todo.done': 'Done', 'todo.noTasks': 'No tasks found. Click "Add Task" to create one.',
                 'todo.quickSummary': 'Task Quick Summary', 'todo.activeTasks': 'Active Tasks:', 'todo.completedTasks': 'Completed:', 'todo.addTaskShort': 'Add Task +',
                 'cal.title': 'MYDESK Retro Calendar', 'cal.subtitle': 'Click the month/year below to jump quickly. Click a date to add notes.',
-                'cal.prevMonth': 'Previous month', 'cal.nextMonth': 'Next month', 'cal.jumpTitle': 'Click to jump to a different month or year',
+                'cal.prevMonth': 'Previous month', 'cal.nextMonth': 'Next month',
                 'cal.jumpPanelTitle': 'Quick Jump — Year & Month', 'cal.close': 'Close', 'cal.year': 'Year:', 'cal.jumpToday': 'Jump to Today',
                 'cal.quickJump': 'Calendar Quick Jump', 'cal.quickJumpHint': 'Use the month/year title to open the quick jump panel.',
                 'cal.quickJumpHint2': 'Click dates to add diary entries & events.', 'cal.entryTitle': 'Calendar Entry',
@@ -1115,28 +974,18 @@
                 'modal.task.duePlaceholder': 'e.g. Tomorrow / 5pm', 'modal.task.save': 'Save Task', 'modal.task.enterTitle': 'Please enter a task title.',
                 'modal.cal.notesLabel': 'Diary Entry / Event Notes:', 'modal.cal.notesPlaceholder': 'Write thoughts, appointments, or diary notes for this day...',
                 'modal.cal.save': 'Save Entry',
-                'modal.link.title': '🔗 Insert Hyperlink', 'modal.link.text': 'Display Text:', 'modal.link.textPlaceholder': 'Link text...',
-                'modal.link.url': 'URL:', 'modal.link.insert': 'Insert Link',
                 'alert.restored': '✅ Full workspace restored successfully!', 'alert.invalidBackup': '❌ Invalid backup file: missing required documents or tasks array.',
                 'alert.parseError': '❌ Error parsing JSON backup file.', 'alert.resetConfirm': 'Are you sure you want to reset the entire workspace to default templates?',
                 'alert.keepOnePage': 'You must keep at least one page!', 'alert.backupDownloaded': '✅ Backup downloaded!', 'alert.yearRange': 'Please enter a year between 1900 and 2200.',
-                'bgm.epikHigh': 'Epik High - Fly (Retro Ver)',
-                'bgm.younha': 'Younha - Password 486',
-                'bgm.wondergirls': 'Wonder Girls - Tell Me',
-                'bgm.bigbang': 'Big Bang - Lies',
-                'mic.title': '🎤 Microphone Permission Required',
-                'mic.body1': 'We need microphone access to record voice notes.',
-                'mic.body2': 'Your browser will ask you to allow microphone access. Look for a popup near the address bar.',
-                'mic.howTo': '📋 How to enable:',
-                'mic.step1': 'Click the button below',
-                'mic.step2': 'When your browser asks, click <b>Allow</b>',
-                'mic.step3': 'If it doesn\'t appear, click the 🔒 icon next to the URL',
-                'mic.step4': 'Set Microphone to <b>Allow</b> and reload the page',
-                'mic.later': 'Later', 'mic.grantAccess': 'Grant Microphone Access', 'mic.grant': 'Grant Permission',
+                'mic.grant': 'Grant Permission',
                 'audio.library': 'Audio Library', 'audio.refresh': 'Refresh',
-                'voice.title': 'Voice Recording', 'voice.stop': 'Stop & Save', 'voice.cancel': 'Cancel',
-                'voice.recording': 'Recording...', 'voice.saved': 'Voice note saved!', 'voice.cancelled': 'Recording cancelled',
-                'voice.tooShort': 'Recording too short — try again.',
+                'voice.recording': 'Recording...', 'voice.stop': 'Stop & Save', 'voice.cancel': 'Cancel',
+                'voice.saved': 'Voice note saved!', 'voice.cancelled': 'Recording cancelled', 'voice.tooShort': 'Recording too short — try again.',
+                'audio.moveHint': 'Drag to move', 'audio.delHint': 'Delete recording', 'audio.resizeHint': 'Resize',
+                'avatar.edit': '✎ Edit Avatar', 'avatar.customize': '👤 Avatar', 'avatar.profile': '✎ Profile',
+                'avatar.modalTitle': 'Customize Avatar & Profile', 'avatar.main': 'Main Avatar:', 'avatar.deco1': 'Decoration 1 (left):', 'avatar.deco2': 'Decoration 2 (right):',
+                'avatar.label': 'Mini-room Label:', 'avatar.preview': 'PREVIEW', 'avatar.reset': 'Reset Avatar', 'avatar.save': 'Save Avatar',
+                'profile.modalTitle': 'Edit Profile', 'profile.name': 'Display Name:', 'profile.brand': 'Header Brand Text:', 'profile.mood': 'Status Mood:',
                 'settings.title': 'Settings & Customization',
                 'settings.tab.theme': 'Theme', 'settings.tab.layout': 'Layout', 'settings.tab.background': 'Background',
                 'settings.tab.pixel': 'Pixel Mode', 'settings.tab.data': 'Data',
@@ -1147,18 +996,13 @@
                 'settings.layout.top': 'Top Bar', 'settings.layout.compact': 'Compact',
                 'settings.layout.width': 'Sidebar Width',
                 'settings.layout.narrow': 'Narrow', 'settings.layout.medium': 'Medium', 'settings.layout.wide': 'Wide', 'settings.layout.hidden': 'Hidden',
-                'settings.layout.density': 'UI Density', 'settings.layout.compactDensity': 'Compact', 'settings.layout.comfortable': 'Comfortable',
-                'settings.bg.title': 'Custom Background', 'settings.bg.hint': 'Upload an image to use as your workspace background. The image is stored locally in your browser.',
+                'settings.bg.title': 'Custom Background', 'settings.bg.hint': 'Upload an image to use as your workspace background.',
                 'settings.bg.upload': 'Upload Image', 'settings.bg.clear': 'Remove Custom Background', 'settings.bg.preset': 'Preset Backgrounds',
                 'settings.pixel.title': 'Cyworld Pixel Mode',
-                'settings.pixel.hint': 'Toggle pixelated retro styling inspired by 2008 Cyworld. Disables rounded corners, applies pixel fonts and blocky shadows.',
+                'settings.pixel.hint': 'Toggle pixelated retro styling inspired by 2008 Cyworld.',
                 'settings.pixel.enable': 'Enable Pixel Mode',
-                'settings.pixel.note': 'Note:', 'settings.pixel.noteText': 'Pixel mode changes fonts and removes rounded corners. Turn off if you prefer a modern smooth look.',
-                'settings.pixel.sound': 'BGM Jukebox', 'settings.pixel.bgmHint': 'Each track has its own unique chiptune melody.', 'settings.pixel.playBgm': 'Play / Stop BGM',
-                'settings.data.title': 'Backup & Restore', 'settings.data.reset': 'Reset Workspace', 'settings.data.resetHint': 'This will clear all documents, tasks, and calendar events and restore defaults.',
+                'settings.data.title': 'Backup & Restore', 'settings.data.reset': 'Reset Workspace',
                 'settings.close': 'Save & Close',
-                'rte.paragraph': 'Paragraph ▾', 'rte.h1': 'Heading 1', 'rte.h2': 'Heading 2', 'rte.h3': 'Heading 3', 'rte.p': 'Paragraph',
-                'rte.code': 'Code Block', 'rte.quote': 'Quote', 'rte.insert': 'Insert',
                 'lang.name': 'English'
             },
             zh: {
@@ -1166,7 +1010,7 @@
                 'tab.docs': '文档与页面', 'tab.todo': '待办清单', 'tab.calendar': '日历', 'tab.pomodoro': '专注计时',
                 'btn.backup': '备份', 'btn.restore': '恢复', 'btn.reset': '重置', 'btn.settings': '设置',
                 'backup.fullExport': '完整数据库导出',
-                'docs.pageTitle': '页面标题...', 'docs.saved': '已保存到本地', 'docs.body': '以 Notion 风格撰写笔记...',
+                'docs.pageTitle': '页面标题...', 'docs.saved': '已保存到本地',
                 'docs.footer': 'MYDESK Notion 文档 • 离线模式', 'docs.delete': '删除页面',
                 'docs.statsFormat': '{words} 词 | {chars} 字符 | {lines} 行',
                 'docs.newPageTitle': '新 Notion 页面 ★', 'docs.newPageBody': '',
@@ -1177,7 +1021,7 @@
                 'todo.total': '总计', 'todo.done': '已完成', 'todo.noTasks': '未找到任务。点击"添加任务"创建一个。',
                 'todo.quickSummary': '任务快速摘要', 'todo.activeTasks': '进行中任务：', 'todo.completedTasks': '已完成：', 'todo.addTaskShort': '添加任务 +',
                 'cal.title': 'MYDESK 复古日历', 'cal.subtitle': '点击下方的月份/年份可快速跳转。点击日期添加备注。',
-                'cal.prevMonth': '上个月', 'cal.nextMonth': '下个月', 'cal.jumpTitle': '点击跳转到其他月份或年份',
+                'cal.prevMonth': '上个月', 'cal.nextMonth': '下个月',
                 'cal.jumpPanelTitle': '快速跳转 — 年份与月份', 'cal.close': '关闭', 'cal.year': '年份：', 'cal.jumpToday': '跳到今天',
                 'cal.quickJump': '日历快速跳转', 'cal.quickJumpHint': '使用月份/年份标题打开快速跳转面板。',
                 'cal.quickJumpHint2': '点击日期添加日记与事件。', 'cal.entryTitle': '日历条目',
@@ -1195,21 +1039,17 @@
                 'modal.task.duePlaceholder': '例如：明天 / 下午5点', 'modal.task.save': '保存任务', 'modal.task.enterTitle': '请输入任务标题。',
                 'modal.cal.notesLabel': '日记 / 事件备注：', 'modal.cal.notesPlaceholder': '写下今天的想法、约会或日记...',
                 'modal.cal.save': '保存条目',
-                'modal.link.title': '🔗 插入超链接', 'modal.link.text': '显示文本：', 'modal.link.textPlaceholder': '链接文本...',
-                'modal.link.url': '网址：', 'modal.link.insert': '插入链接',
                 'alert.restored': '✅ 工作区已成功恢复！', 'alert.invalidBackup': '❌ 无效的备份文件：缺少文档或任务数组。',
                 'alert.parseError': '❌ 解析 JSON 备份文件时出错。', 'alert.resetConfirm': '确定要将整个工作区重置为默认模板吗？',
                 'alert.keepOnePage': '您必须至少保留一个页面！', 'alert.backupDownloaded': '✅ 备份已下载！', 'alert.yearRange': '请输入 1900 至 2200 之间的年份。',
-                'bgm.epikHigh': 'Epik High - Fly（复古版）', 'bgm.younha': 'Younha - Password 486', 'bgm.wondergirls': 'Wonder Girls - Tell Me', 'bgm.bigbang': 'Big Bang - Lies',
-                'mic.title': '🎤 需要麦克风权限', 'mic.body1': '我们需要麦克风权限来录制语音笔记。',
-                'mic.body2': '浏览器会请求麦克风权限。请在地址栏附近查找弹窗。',
-                'mic.howTo': '📋 如何启用：', 'mic.step1': '点击下方按钮', 'mic.step2': '浏览器询问时点击<b>允许</b>',
-                'mic.step3': '如果没有弹窗，点击网址旁的 🔒 图标', 'mic.step4': '将麦克风设为<b>允许</b>并刷新页面',
-                'mic.later': '稍后', 'mic.grantAccess': '授予麦克风访问权限', 'mic.grant': '授予权限',
-                'audio.library': '音频库', 'audio.refresh': '刷新',
-                'voice.title': '语音录制', 'voice.stop': '停止并保存', 'voice.cancel': '取消',
-                'voice.recording': '正在录制...', 'voice.saved': '语音笔记已保存！', 'voice.cancelled': '已取消录制',
-                'voice.tooShort': '录制时间太短 — 请重试。',
+                'mic.grant': '授予权限', 'audio.library': '音频库', 'audio.refresh': '刷新',
+                'voice.recording': '正在录制...', 'voice.stop': '停止并保存', 'voice.cancel': '取消',
+                'voice.saved': '语音笔记已保存！', 'voice.cancelled': '已取消录制', 'voice.tooShort': '录制时间太短 — 请重试。',
+                'audio.moveHint': '拖动移动', 'audio.delHint': '删除录音', 'audio.resizeHint': '调整大小',
+                'avatar.edit': '✎ 编辑头像', 'avatar.customize': '👤 头像', 'avatar.profile': '✎ 资料',
+                'avatar.modalTitle': '自定义头像与资料', 'avatar.main': '主头像：', 'avatar.deco1': '装饰 1（左）：', 'avatar.deco2': '装饰 2（右）：',
+                'avatar.label': '迷你房间标签：', 'avatar.preview': '预览', 'avatar.reset': '重置头像', 'avatar.save': '保存头像',
+                'profile.modalTitle': '编辑资料', 'profile.name': '显示名称：', 'profile.brand': '标题品牌文字：', 'profile.mood': '状态心情：',
                 'settings.title': '设置与自定义', 'settings.tab.theme': '主题', 'settings.tab.layout': '布局', 'settings.tab.background': '背景',
                 'settings.tab.pixel': '像素模式', 'settings.tab.data': '数据',
                 'settings.accentColor': '强调色', 'settings.customAccent': '自定义强调色：', 'settings.resetAccent': '重置',
@@ -1217,16 +1057,12 @@
                 'settings.layout.title': '侧边栏位置与大小', 'settings.layout.left': '侧边栏居左', 'settings.layout.right': '侧边栏居右',
                 'settings.layout.top': '顶部栏', 'settings.layout.compact': '紧凑',
                 'settings.layout.width': '侧边栏宽度', 'settings.layout.narrow': '窄', 'settings.layout.medium': '中', 'settings.layout.wide': '宽', 'settings.layout.hidden': '隐藏',
-                'settings.layout.density': '界面密度', 'settings.layout.compactDensity': '紧凑', 'settings.layout.comfortable': '舒适',
-                'settings.bg.title': '自定义背景', 'settings.bg.hint': '上传图片用作工作区背景。图片存储在浏览器本地。',
+                'settings.bg.title': '自定义背景', 'settings.bg.hint': '上传图片用作工作区背景。',
                 'settings.bg.upload': '上传图片', 'settings.bg.clear': '移除自定义背景', 'settings.bg.preset': '预设背景',
-                'settings.pixel.title': 'Cyworld 像素模式', 'settings.pixel.hint': '切换受 2008 年 Cyworld 启发的像素复古风格。禁用圆角，应用像素字体和块状阴影。',
-                'settings.pixel.enable': '启用像素模式', 'settings.pixel.note': '注意：', 'settings.pixel.noteText': '像素模式会更改字体并移除圆角。如果您喜欢现代平滑外观，请关闭。',
-                'settings.pixel.sound': 'BGM 点唱机', 'settings.pixel.bgmHint': '每首曲目都有独特的芯片音乐旋律。', 'settings.pixel.playBgm': '播放 / 停止 BGM',
-                'settings.data.title': '备份与恢复', 'settings.data.reset': '重置工作区', 'settings.data.resetHint': '这将清除所有文档、任务和日历事件并恢复默认值。',
+                'settings.pixel.title': 'Cyworld 像素模式', 'settings.pixel.hint': '切换受 2008 年 Cyworld 启发的像素复古风格。',
+                'settings.pixel.enable': '启用像素模式',
+                'settings.data.title': '备份与恢复', 'settings.data.reset': '重置工作区',
                 'settings.close': '保存并关闭',
-                'rte.paragraph': '段落 ▾', 'rte.h1': '标题 1', 'rte.h2': '标题 2', 'rte.h3': '标题 3', 'rte.p': '段落',
-                'rte.code': '代码块', 'rte.quote': '引用', 'rte.insert': '插入',
                 'lang.name': '中文'
             },
             ja: {
@@ -1234,7 +1070,7 @@
                 'tab.docs': 'ドキュメント', 'tab.todo': 'To-Do リスト', 'tab.calendar': 'カレンダー', 'tab.pomodoro': '集中タイマー',
                 'btn.backup': 'バックアップ', 'btn.restore': '復元', 'btn.reset': 'リセット', 'btn.settings': '設定',
                 'backup.fullExport': 'データベース全体をエクスポート',
-                'docs.pageTitle': 'ページタイトル...', 'docs.saved': 'ローカルに保存済み', 'docs.body': 'Notion 風にメモを書く...',
+                'docs.pageTitle': 'ページタイトル...', 'docs.saved': 'ローカルに保存済み',
                 'docs.footer': 'MYDESK Notion ドキュメント • オフラインモード', 'docs.delete': 'ページを削除',
                 'docs.statsFormat': '{words} 語 | {chars} 文字 | {lines} 行',
                 'docs.newPageTitle': '新しい Notion ページ ★', 'docs.newPageBody': '',
@@ -1242,20 +1078,20 @@
                 'docs.searchPlaceholder': 'ページを検索...', 'docs.workspacePages': 'ワークスペースページ', 'docs.newPage': '新規ページ',
                 'todo.title': 'MYDESK タスク管理 & To-Do ボード', 'todo.subtitle': '優先度タグで毎日のタスク・プロジェクト・目標を整理。',
                 'todo.addTask': 'タスク追加', 'todo.filter': 'フィルター：', 'todo.all': 'すべて', 'todo.active': '未完了', 'todo.completed': '完了',
-                'todo.total': '合計', 'todo.done': '完了', 'todo.noTasks': 'タスクが見つかりません。「タスク追加」をクリックして作成してください。',
+                'todo.total': '合計', 'todo.done': '完了', 'todo.noTasks': 'タスクが見つかりません。「タスク追加」をクリックしてください。',
                 'todo.quickSummary': 'タスク概要', 'todo.activeTasks': '未完了タスク：', 'todo.completedTasks': '完了：', 'todo.addTaskShort': 'タスク追加 +',
-                'cal.title': 'MYDESK レトロカレンダー', 'cal.subtitle': '下の月/年をクリックして素早く移動。日付をクリックしてメモを追加。',
-                'cal.prevMonth': '前月', 'cal.nextMonth': '翌月', 'cal.jumpTitle': 'クリックして別の月や年に移動',
+                'cal.title': 'MYDESK レトロカレンダー', 'cal.subtitle': '下の月/年をクリックして素早く移動。',
+                'cal.prevMonth': '前月', 'cal.nextMonth': '翌月',
                 'cal.jumpPanelTitle': 'クイックジャンプ — 年と月', 'cal.close': '閉じる', 'cal.year': '年：', 'cal.jumpToday': '今日にジャンプ',
-                'cal.quickJump': 'カレンダークイックジャンプ', 'cal.quickJumpHint': '月/年のタイトルを使ってクイックジャンプパネルを開きます。',
+                'cal.quickJump': 'カレンダークイックジャンプ', 'cal.quickJumpHint': '月/年のタイトルでクイックジャンプパネルを開きます。',
                 'cal.quickJumpHint2': '日付をクリックして日記やイベントを追加。', 'cal.entryTitle': 'カレンダー項目',
                 'cal.importIcs': '.ics / .cal をインポート', 'cal.exportIcs': '.ics をエクスポート',
                 'day.sun': '日', 'day.mon': '月', 'day.tue': '火', 'day.wed': '水', 'day.thu': '木', 'day.fri': '金', 'day.sat': '土',
                 'pomo.title': 'ポモドーロ集中タイマー', 'pomo.work': '作業 (25分)', 'pomo.shortBreak': '短休憩 (5分)', 'pomo.longBreak': '長休憩 (15分)',
                 'pomo.ready': '集中して生産的に過ごす準備', 'pomo.focusInProgress': '集中セッション進行中...', 'pomo.breakInProgress': '休憩時間中...',
                 'pomo.paused': 'タイマー一時停止', 'pomo.start': '開始', 'pomo.pause': '一時停止', 'pomo.reset': 'リセット', 'pomo.completedToday': '今日の完了集中セッション：',
-                'pomo.focusComplete': '集中セッション完了！お疲れ様！少し休憩しましょう。', 'pomo.breakComplete': '休憩終了！次の集中セッションの準備はいいですか？',
-                'pomo.focusTips': '集中のヒント', 'pomo.tip1': '<b>ポモドーロ・テクニック：</b>25 分の深い作業、5 分の休憩。', 'pomo.tip2': '♪ 作業中はジュークボックスの音楽を！',
+                'pomo.focusComplete': '集中セッション完了！お疲れ様！', 'pomo.breakComplete': '休憩終了！次の集中セッションへ？',
+                'pomo.focusTips': '集中のヒント', 'pomo.tip1': '<b>ポモドーロ：</b>25分作業、5分休憩。', 'pomo.tip2': '♪ 作業中はジュークボックス音楽を！',
                 'modal.cancel': 'キャンセル', 'modal.task.addTitle': '新規タスク追加', 'modal.task.editTitle': 'タスク編集', 'modal.task.titleLabel': 'タスク名：',
                 'modal.task.titlePlaceholder': '例：MYDESK ホームページのデザインを完成...', 'modal.task.priorityLabel': '優先度：',
                 'modal.task.high': '🔴 高優先度', 'modal.task.medium': '🟡 中優先度', 'modal.task.low': '🟢 低優先度',
@@ -1263,38 +1099,30 @@
                 'modal.task.duePlaceholder': '例：明日 / 17時', 'modal.task.save': 'タスク保存', 'modal.task.enterTitle': 'タスク名を入力してください。',
                 'modal.cal.notesLabel': '日記 / イベントメモ：', 'modal.cal.notesPlaceholder': 'この日の考え、予定、日記を書く...',
                 'modal.cal.save': '項目を保存',
-                'modal.link.title': '🔗 ハイパーリンク挿入', 'modal.link.text': '表示テキスト：', 'modal.link.textPlaceholder': 'リンクテキスト...',
-                'modal.link.url': 'URL：', 'modal.link.insert': 'リンク挿入',
-                'alert.restored': '✅ ワークスペースが正常に復元されました！', 'alert.invalidBackup': '❌ 無効なバックアップファイル：ドキュメントまたはタスク配列がありません。',
-                'alert.parseError': '❌ JSON バックアップファイルの解析エラー。', 'alert.resetConfirm': 'ワークスペース全体をデフォルトテンプレートにリセットしてもよろしいですか？',
+                'alert.restored': '✅ ワークスペースが正常に復元されました！', 'alert.invalidBackup': '❌ 無効なバックアップファイル。',
+                'alert.parseError': '❌ JSON バックアップファイルの解析エラー。', 'alert.resetConfirm': 'ワークスペース全体をリセットしてもよろしいですか？',
                 'alert.keepOnePage': '少なくとも 1 ページは残す必要があります！', 'alert.backupDownloaded': '✅ バックアップをダウンロードしました！', 'alert.yearRange': '1900 から 2200 の間の年を入力してください。',
-                'bgm.epikHigh': 'Epik High - Fly（レトロ版）', 'bgm.younha': 'Younha - Password 486', 'bgm.wondergirls': 'Wonder Girls - Tell Me', 'bgm.bigbang': 'Big Bang - Lies',
-                'mic.title': '🎤 マイクの許可が必要です', 'mic.body1': '音声メモの録音にはマイクへのアクセスが必要です。',
-                'mic.body2': 'ブラウザがマイクの許可を求めます。アドレスバー付近のポップアップを確認してください。',
-                'mic.howTo': '📋 有効にする方法：', 'mic.step1': '下のボタンをクリック', 'mic.step2': 'ブラウザが尋ねたら「許可」をクリック',
-                'mic.step3': '表示されない場合は、URL の横の 🔒 アイコンをクリック', 'mic.step4': 'マイクを「許可」に設定してページを再読み込み',
-                'mic.later': '後で', 'mic.grantAccess': 'マイクへのアクセスを許可', 'mic.grant': '許可する',
-                'audio.library': 'オーディオライブラリ', 'audio.refresh': '更新',
-                'voice.title': '音声録音', 'voice.stop': '停止して保存', 'voice.cancel': 'キャンセル',
-                'voice.recording': '録音中...', 'voice.saved': '音声メモを保存しました！', 'voice.cancelled': '録音をキャンセルしました',
-                'voice.tooShort': '録音時間が短すぎます — もう一度お試しください。',
+                'mic.grant': '許可する', 'audio.library': 'オーディオライブラリ', 'audio.refresh': '更新',
+                'voice.recording': '録音中...', 'voice.stop': '停止して保存', 'voice.cancel': 'キャンセル',
+                'voice.saved': '音声メモを保存しました！', 'voice.cancelled': '録音をキャンセルしました', 'voice.tooShort': '録音時間が短すぎます。',
+                'audio.moveHint': 'ドラッグして移動', 'audio.delHint': '録音を削除', 'audio.resizeHint': 'サイズ変更',
+                'avatar.edit': '✎ アバター編集', 'avatar.customize': '👤 アバター', 'avatar.profile': '✎ プロフィール',
+                'avatar.modalTitle': 'アバターとプロフィールのカスタマイズ', 'avatar.main': 'メインアバター：', 'avatar.deco1': '装飾 1（左）：', 'avatar.deco2': '装飾 2（右）：',
+                'avatar.label': 'ミニルームラベル：', 'avatar.preview': 'プレビュー', 'avatar.reset': 'アバターをリセット', 'avatar.save': 'アバターを保存',
+                'profile.modalTitle': 'プロフィール編集', 'profile.name': '表示名：', 'profile.brand': 'ヘッダーブランド：', 'profile.mood': 'ステータス気分：',
                 'settings.title': '設定とカスタマイズ', 'settings.tab.theme': 'テーマ', 'settings.tab.layout': 'レイアウト', 'settings.tab.background': '背景',
                 'settings.tab.pixel': 'ピクセルモード', 'settings.tab.data': 'データ',
-                'settings.accentColor': 'アクセントカラー', 'settings.customAccent': 'カスタムアクセント：', 'settings.resetAccent': 'リセット',
-                'settings.headerColor': 'ヘッダー/タブの色', 'settings.headerHint': 'アクティブなタブと見出しに使用されます。',
+                'settings.accentColor': 'アクセントカラー', 'settings.customAccent': 'カスタム：', 'settings.resetAccent': 'リセット',
+                'settings.headerColor': 'ヘッダー/タブの色', 'settings.headerHint': 'アクティブなタブと見出しに使用。',
                 'settings.layout.title': 'サイドバーの位置とサイズ', 'settings.layout.left': 'サイドバー左', 'settings.layout.right': 'サイドバー右',
                 'settings.layout.top': 'トップバー', 'settings.layout.compact': 'コンパクト',
                 'settings.layout.width': 'サイドバー幅', 'settings.layout.narrow': '狭い', 'settings.layout.medium': '中', 'settings.layout.wide': '広い', 'settings.layout.hidden': '非表示',
-                'settings.layout.density': 'UI密度', 'settings.layout.compactDensity': 'コンパクト', 'settings.layout.comfortable': '快適',
-                'settings.bg.title': 'カスタム背景', 'settings.bg.hint': 'ワークスペースの背景として使用する画像をアップロードします。画像はブラウザにローカル保存されます。',
+                'settings.bg.title': 'カスタム背景', 'settings.bg.hint': 'ワークスペースの背景として使用する画像をアップロード。',
                 'settings.bg.upload': '画像をアップロード', 'settings.bg.clear': 'カスタム背景を削除', 'settings.bg.preset': 'プリセット背景',
-                'settings.pixel.title': 'Cyworld ピクセルモード', 'settings.pixel.hint': '2008 年の Cyworld にインスパイアされたピクセルレトロスタイルを切り替えます。角丸を無効にし、ピクセルフォントとブロックシャドウを適用します。',
-                'settings.pixel.enable': 'ピクセルモードを有効化', 'settings.pixel.note': '注意：', 'settings.pixel.noteText': 'ピクセルモードはフォントを変更し、角丸を削除します。モダンで滑らかな見た目を好む場合はオフにしてください。',
-                'settings.pixel.sound': 'BGM ジュークボックス', 'settings.pixel.bgmHint': '各トラックには独自のチップチューン メロディーがあります。', 'settings.pixel.playBgm': 'BGM 再生 / 停止',
-                'settings.data.title': 'バックアップと復元', 'settings.data.reset': 'ワークスペースをリセット', 'settings.data.resetHint': 'すべてのドキュメント、タスク、カレンダーイベントを消去し、デフォルトに戻します。',
+                'settings.pixel.title': 'Cyworld ピクセルモード', 'settings.pixel.hint': '2008 年 Cyworld 風のピクセルスタイルを切り替えます。',
+                'settings.pixel.enable': 'ピクセルモードを有効化',
+                'settings.data.title': 'バックアップと復元', 'settings.data.reset': 'ワークスペースをリセット',
                 'settings.close': '保存して閉じる',
-                'rte.paragraph': '段落 ▾', 'rte.h1': '見出し 1', 'rte.h2': '見出し 2', 'rte.h3': '見出し 3', 'rte.p': '段落',
-                'rte.code': 'コードブロック', 'rte.quote': '引用', 'rte.insert': '挿入',
                 'lang.name': '日本語'
             },
             ko: {
@@ -1302,7 +1130,7 @@
                 'tab.docs': '문서 & 페이지', 'tab.todo': '할 일 목록', 'tab.calendar': '캘린더', 'tab.pomodoro': '집중 타이머',
                 'btn.backup': '백업', 'btn.restore': '복원', 'btn.reset': '초기화', 'btn.settings': '설정',
                 'backup.fullExport': '전체 데이터베이스 내보내기',
-                'docs.pageTitle': '페이지 제목...', 'docs.saved': '로컬에 저장됨', 'docs.body': 'Notion 스타일로 메모 작성...',
+                'docs.pageTitle': '페이지 제목...', 'docs.saved': '로컬에 저장됨',
                 'docs.footer': 'MYDESK Notion 문서 • 오프라인 모드', 'docs.delete': '페이지 삭제',
                 'docs.statsFormat': '{words} 단어 | {chars} 문자 | {lines} 줄',
                 'docs.newPageTitle': '새 Notion 페이지 ★', 'docs.newPageBody': '',
@@ -1312,17 +1140,17 @@
                 'todo.addTask': '작업 추가', 'todo.filter': '필터:', 'todo.all': '전체', 'todo.active': '진행 중', 'todo.completed': '완료',
                 'todo.total': '전체', 'todo.done': '완료', 'todo.noTasks': '작업이 없습니다. "작업 추가"를 클릭하여 만드세요.',
                 'todo.quickSummary': '작업 빠른 요약', 'todo.activeTasks': '진행 중 작업:', 'todo.completedTasks': '완료:', 'todo.addTaskShort': '작업 추가 +',
-                'cal.title': 'MYDESK 레트로 캘린더', 'cal.subtitle': '아래 월/년을 클릭하여 빠르게 이동하세요. 날짜를 클릭하여 메모 추가.',
-                'cal.prevMonth': '이전 달', 'cal.nextMonth': '다음 달', 'cal.jumpTitle': '다른 월 또는 연도로 이동하려면 클릭',
+                'cal.title': 'MYDESK 레트로 캘린더', 'cal.subtitle': '아래 월/년을 클릭하여 빠르게 이동하세요.',
+                'cal.prevMonth': '이전 달', 'cal.nextMonth': '다음 달',
                 'cal.jumpPanelTitle': '빠른 이동 — 년 & 월', 'cal.close': '닫기', 'cal.year': '년:', 'cal.jumpToday': '오늘로 이동',
-                'cal.quickJump': '캘린더 빠른 이동', 'cal.quickJumpHint': '월/년 제목을 사용하여 빠른 이동 패널을 여세요.',
+                'cal.quickJump': '캘린더 빠른 이동', 'cal.quickJumpHint': '월/년 제목으로 빠른 이동 패널을 여세요.',
                 'cal.quickJumpHint2': '날짜를 클릭하여 일기와 이벤트를 추가하세요.', 'cal.entryTitle': '캘린더 항목',
                 'cal.importIcs': '.ics / .cal 가져오기', 'cal.exportIcs': '.ics 내보내기',
                 'day.sun': '일', 'day.mon': '월', 'day.tue': '화', 'day.wed': '수', 'day.thu': '목', 'day.fri': '금', 'day.sat': '토',
                 'pomo.title': '뽀모도로 집중 타이머', 'pomo.work': '작업 (25분)', 'pomo.shortBreak': '짧은 휴식 (5분)', 'pomo.longBreak': '긴 휴식 (15분)',
                 'pomo.ready': '집중하고 생산적으로 시작할 준비', 'pomo.focusInProgress': '집중 세션 진행 중...', 'pomo.breakInProgress': '휴식 시간 진행 중...',
                 'pomo.paused': '타이머 일시정지', 'pomo.start': '시작', 'pomo.pause': '일시정지', 'pomo.reset': '초기화', 'pomo.completedToday': '오늘 완료한 집중 세션:',
-                'pomo.focusComplete': '집중 세션 완료! 잘했어요! 잠시 휴식하세요.', 'pomo.breakComplete': '휴식 끝! 다음 집중 세션 준비되셨나요?',
+                'pomo.focusComplete': '집중 세션 완료! 잘했어요!', 'pomo.breakComplete': '휴식 끝! 다음 집중 세션 준비되셨나요?',
                 'pomo.focusTips': '집중 팁', 'pomo.tip1': '<b>뽀모도로 기법:</b> 25분 깊은 작업, 5분 휴식.', 'pomo.tip2': '♪ 작업 중 주크박스 음악을 재생하세요!',
                 'modal.cancel': '취소', 'modal.task.addTitle': '새 작업 추가', 'modal.task.editTitle': '작업 편집', 'modal.task.titleLabel': '작업 제목:',
                 'modal.task.titlePlaceholder': '예: MYDESK 홈페이지 디자인 완성...', 'modal.task.priorityLabel': '우선순위:',
@@ -1331,21 +1159,17 @@
                 'modal.task.duePlaceholder': '예: 내일 / 오후 5시', 'modal.task.save': '작업 저장', 'modal.task.enterTitle': '작업 제목을 입력하세요.',
                 'modal.cal.notesLabel': '일기 / 이벤트 메모:', 'modal.cal.notesPlaceholder': '이 날의 생각, 약속, 일기를 작성하세요...',
                 'modal.cal.save': '항목 저장',
-                'modal.link.title': '🔗 하이퍼링크 삽입', 'modal.link.text': '표시 텍스트:', 'modal.link.textPlaceholder': '링크 텍스트...',
-                'modal.link.url': 'URL:', 'modal.link.insert': '링크 삽입',
-                'alert.restored': '✅ 워크스페이스가 성공적으로 복원되었습니다!', 'alert.invalidBackup': '❌ 잘못된 백업 파일: 문서 또는 작업 배열이 없습니다.',
-                'alert.parseError': '❌ JSON 백업 파일 구문 분석 오류.', 'alert.resetConfirm': '전체 워크스페이스를 기본 템플릿으로 초기화하시겠습니까?',
+                'alert.restored': '✅ 워크스페이스가 성공적으로 복원되었습니다!', 'alert.invalidBackup': '❌ 잘못된 백업 파일입니다.',
+                'alert.parseError': '❌ JSON 백업 파일 구문 분석 오류.', 'alert.resetConfirm': '전체 워크스페이스를 초기화하시겠습니까?',
                 'alert.keepOnePage': '최소 한 개의 페이지는 유지해야 합니다!', 'alert.backupDownloaded': '✅ 백업이 다운로드되었습니다!', 'alert.yearRange': '1900에서 2200 사이의 연도를 입력하세요.',
-                'bgm.epikHigh': 'Epik High - Fly (레트로 버전)', 'bgm.younha': 'Younha - Password 486', 'bgm.wondergirls': 'Wonder Girls - Tell Me', 'bgm.bigbang': 'Big Bang - Lies',
-                'mic.title': '🎤 마이크 권한 필요', 'mic.body1': '음성 메모 녹음에는 마이크 접근 권한이 필요합니다.',
-                'mic.body2': '브라우저가 마이크 접근을 요청합니다. 주소 표시줄 근처의 팝업을 확인하세요.',
-                'mic.howTo': '📋 활성화 방법:', 'mic.step1': '아래 버튼 클릭', 'mic.step2': '브라우저가 요청하면 <b>허용</b> 클릭',
-                'mic.step3': '표시되지 않으면 URL 옆의 🔒 아이콘 클릭', 'mic.step4': '마이크를 <b>허용</b>으로 설정하고 페이지 새로고침',
-                'mic.later': '나중에', 'mic.grantAccess': '마이크 접근 권한 부여', 'mic.grant': '권한 부여',
-                'audio.library': '오디오 라이브러리', 'audio.refresh': '새로고침',
-                'voice.title': '음성 녹음', 'voice.stop': '중지 및 저장', 'voice.cancel': '취소',
-                'voice.recording': '녹음 중...', 'voice.saved': '음성 메모 저장됨!', 'voice.cancelled': '녹음 취소됨',
-                'voice.tooShort': '녹음 시간이 너무 짧습니다 — 다시 시도하세요.',
+                'mic.grant': '권한 부여', 'audio.library': '오디오 라이브러리', 'audio.refresh': '새로고침',
+                'voice.recording': '녹음 중...', 'voice.stop': '중지 및 저장', 'voice.cancel': '취소',
+                'voice.saved': '음성 메모 저장됨!', 'voice.cancelled': '녹음 취소됨', 'voice.tooShort': '녹음 시간이 너무 짧습니다.',
+                'audio.moveHint': '드래그하여 이동', 'audio.delHint': '녹음 삭제', 'audio.resizeHint': '크기 조정',
+                'avatar.edit': '✎ 아바타 편집', 'avatar.customize': '👤 아바타', 'avatar.profile': '✎ 프로필',
+                'avatar.modalTitle': '아바타 및 프로필 사용자 지정', 'avatar.main': '메인 아바타:', 'avatar.deco1': '장식 1 (왼쪽):', 'avatar.deco2': '장식 2 (오른쪽):',
+                'avatar.label': '미니룸 라벨:', 'avatar.preview': '미리보기', 'avatar.reset': '아바타 초기화', 'avatar.save': '아바타 저장',
+                'profile.modalTitle': '프로필 편집', 'profile.name': '표시 이름:', 'profile.brand': '헤더 브랜드 텍스트:', 'profile.mood': '상태 기분:',
                 'settings.title': '설정 및 사용자 지정', 'settings.tab.theme': '테마', 'settings.tab.layout': '레이아웃', 'settings.tab.background': '배경',
                 'settings.tab.pixel': '픽셀 모드', 'settings.tab.data': '데이터',
                 'settings.accentColor': '강조 색상', 'settings.customAccent': '사용자 지정 강조:', 'settings.resetAccent': '초기화',
@@ -1353,16 +1177,12 @@
                 'settings.layout.title': '사이드바 위치 및 크기', 'settings.layout.left': '사이드바 왼쪽', 'settings.layout.right': '사이드바 오른쪽',
                 'settings.layout.top': '상단 바', 'settings.layout.compact': '컴팩트',
                 'settings.layout.width': '사이드바 너비', 'settings.layout.narrow': '좁게', 'settings.layout.medium': '중간', 'settings.layout.wide': '넓게', 'settings.layout.hidden': '숨김',
-                'settings.layout.density': 'UI 밀도', 'settings.layout.compactDensity': '컴팩트', 'settings.layout.comfortable': '편안함',
-                'settings.bg.title': '사용자 지정 배경', 'settings.bg.hint': '워크스페이스 배경으로 사용할 이미지를 업로드하세요. 이미지는 브라우저에 로컬로 저장됩니다.',
+                'settings.bg.title': '사용자 지정 배경', 'settings.bg.hint': '워크스페이스 배경으로 사용할 이미지를 업로드하세요.',
                 'settings.bg.upload': '이미지 업로드', 'settings.bg.clear': '사용자 지정 배경 제거', 'settings.bg.preset': '사전 설정 배경',
-                'settings.pixel.title': 'Cyworld 픽셀 모드', 'settings.pixel.hint': '2008년 Cyworld에서 영감을 받은 픽셀 레트로 스타일을 전환합니다. 둥근 모서리를 비활성화하고 픽셀 폰트와 블록 그림자를 적용합니다.',
-                'settings.pixel.enable': '픽셀 모드 활성화', 'settings.pixel.note': '참고:', 'settings.pixel.noteText': '픽셀 모드는 폰트를 변경하고 둥근 모서리를 제거합니다. 현대적이고 부드러운 모양을 선호하면 끄세요.',
-                'settings.pixel.sound': 'BGM 주크박스', 'settings.pixel.bgmHint': '각 트랙에는 고유한 칩튠 멜로디가 있습니다.', 'settings.pixel.playBgm': 'BGM 재생 / 정지',
-                'settings.data.title': '백업 및 복원', 'settings.data.reset': '워크스페이스 초기화', 'settings.data.resetHint': '모든 문서, 작업 및 캘린더 이벤트를 지우고 기본값으로 복원합니다.',
+                'settings.pixel.title': 'Cyworld 픽셀 모드', 'settings.pixel.hint': '2008년 Cyworld에서 영감을 받은 픽셀 레트로 스타일을 전환합니다.',
+                'settings.pixel.enable': '픽셀 모드 활성화',
+                'settings.data.title': '백업 및 복원', 'settings.data.reset': '워크스페이스 초기화',
                 'settings.close': '저장 및 닫기',
-                'rte.paragraph': '단락 ▾', 'rte.h1': '제목 1', 'rte.h2': '제목 2', 'rte.h3': '제목 3', 'rte.p': '단락',
-                'rte.code': '코드 블록', 'rte.quote': '인용', 'rte.insert': '삽입',
                 'lang.name': '한국어'
             }
         };
@@ -1381,7 +1201,6 @@
         };
         const YEAR_LABEL_I18N = { en:(y)=>`${y}`, zh:(y)=>`${y}年`, ja:(y)=>`${y}年`, ko:(y)=>`${y}년` };
 
-        // ---------- STATE ----------
         let currentLang = localStorage.getItem('cy_workspace_lang') || 'en';
         function t(key) { return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || TRANSLATIONS.en[key] || key; }
 
@@ -1398,6 +1217,8 @@
             updatePomoDisplay();
             updateLangButtons();
             updateBgmTitle();
+            applyAvatar();
+            applyProfile();
         }
 
         function updateLangButtons() {
@@ -1412,7 +1233,7 @@
         function applyTranslations() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (['docStats','calendarMonthTitleText','calModalDateTitle','rteVoiceStatus'].includes(el.id)) return;
+                if (['docStats','calendarMonthTitleText','calModalDateTitle','rteVoiceStatus','brandText'].includes(el.id)) return;
                 el.innerHTML = t(key);
             });
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = t(el.getAttribute('data-i18n-placeholder')));
@@ -1427,7 +1248,119 @@
             if (!sel) return;
             const key = 'bgm.' + sel.value;
             const titleEl = document.getElementById('bgmTitle');
-            if (titleEl) titleEl.innerText = t(key);
+            const map = {
+                epik: 'Epik High - Fly (Retro Ver)',
+                younha: 'Younha - Password 486',
+                wondergirls: 'Wonder Girls - Tell Me',
+                bigbang: 'Big Bang - Lies'
+            };
+            if (titleEl) titleEl.innerText = map[sel.value] || 'Epik High - Fly';
+        }
+
+        // ---------- AVATAR / PROFILE STATE ----------
+        const DEFAULT_AVATAR = { main: '👩‍💻', deco1: '☕', deco2: '🎧', label: 'MYDESK<3' };
+        const MAIN_AVATAR_OPTIONS = ['👩‍💻','🧑‍💻','👨‍💻','👧','🧑','👦','🐱','🐶','🐰','🐻','🦊','🐼','🌸','⭐','🎮','📚'];
+        const DECO_OPTIONS = ['☕','🎧','🌸','⭐','♪','💖','🍕','🍰','📖','✏️','🎮','💡','🌙','☀️','🌈','🍎'];
+        let avatar = JSON.parse(localStorage.getItem('cy_workspace_avatar') || JSON.stringify(DEFAULT_AVATAR));
+        let profileName = localStorage.getItem('cy_workspace_profile_name') || '';
+        let profileBrand = localStorage.getItem('cy_workspace_profile_brand') || 'MYDESK <3';
+        let tempAvatar = { ...avatar };
+
+        function openAvatarModal() {
+            tempAvatar = { ...avatar };
+            renderAvatarPickers();
+            document.getElementById('avatarLabelInput').value = tempAvatar.label;
+            updateAvatarPreview();
+            document.getElementById('avatarModal').classList.remove('hidden');
+            document.getElementById('avatarModal').classList.add('flex');
+            applyTranslations();
+        }
+        function closeAvatarModal() {
+            document.getElementById('avatarModal').classList.remove('flex');
+            document.getElementById('avatarModal').classList.add('hidden');
+        }
+        function renderAvatarPickers() {
+            const mainPicker = document.getElementById('mainAvatarPicker');
+            const deco1Picker = document.getElementById('deco1Picker');
+            const deco2Picker = document.getElementById('deco2Picker');
+            mainPicker.innerHTML = ''; deco1Picker.innerHTML = ''; deco2Picker.innerHTML = '';
+            MAIN_AVATAR_OPTIONS.forEach(emoji => {
+                const btn = document.createElement('button');
+                btn.className = 'avatar-emoji' + (tempAvatar.main === emoji ? ' selected' : '');
+                btn.innerText = emoji;
+                btn.onclick = () => { tempAvatar.main = emoji; renderAvatarPickers(); updateAvatarPreview(); };
+                mainPicker.appendChild(btn);
+            });
+            DECO_OPTIONS.forEach(emoji => {
+                const b1 = document.createElement('button');
+                b1.className = 'avatar-emoji' + (tempAvatar.deco1 === emoji ? ' selected' : '');
+                b1.innerText = emoji;
+                b1.onclick = () => { tempAvatar.deco1 = emoji; renderAvatarPickers(); updateAvatarPreview(); };
+                deco1Picker.appendChild(b1);
+                const b2 = document.createElement('button');
+                b2.className = 'avatar-emoji' + (tempAvatar.deco2 === emoji ? ' selected' : '');
+                b2.innerText = emoji;
+                b2.onclick = () => { tempAvatar.deco2 = emoji; renderAvatarPickers(); updateAvatarPreview(); };
+                deco2Picker.appendChild(b2);
+            });
+        }
+        function updateAvatarPreview() {
+            document.getElementById('previewMain').innerText = tempAvatar.main;
+            document.getElementById('previewDeco1').innerText = tempAvatar.deco1;
+            document.getElementById('previewDeco2').innerText = tempAvatar.deco2;
+            const label = document.getElementById('avatarLabelInput').value || 'MYDESK<3';
+            document.getElementById('previewLabel').innerText = label;
+        }
+        function saveAvatar() {
+            tempAvatar.label = document.getElementById('avatarLabelInput').value.trim() || 'MYDESK<3';
+            avatar = { ...tempAvatar };
+            localStorage.setItem('cy_workspace_avatar', JSON.stringify(avatar));
+            applyAvatar();
+            closeAvatarModal();
+            showToast('👤 Avatar saved!');
+        }
+        function resetAvatar() {
+            tempAvatar = { ...DEFAULT_AVATAR };
+            renderAvatarPickers();
+            document.getElementById('avatarLabelInput').value = tempAvatar.label;
+            updateAvatarPreview();
+        }
+        function applyAvatar() {
+            const a = avatar;
+            const el = id => document.getElementById(id);
+            if (el('avatarMain')) el('avatarMain').innerText = a.main;
+            if (el('avatarDeco1')) el('avatarDeco1').innerText = a.deco1;
+            if (el('avatarDeco2')) el('avatarDeco2').innerText = a.deco2;
+            if (el('avatarLabel')) el('avatarLabel').innerText = a.label;
+        }
+
+        function openProfileModal() {
+            document.getElementById('profileNameInput').value = profileName;
+            document.getElementById('profileBrandInput').value = profileBrand;
+            document.getElementById('profileMoodInput').value = userMood;
+            document.getElementById('profileModal').classList.remove('hidden');
+            document.getElementById('profileModal').classList.add('flex');
+            applyTranslations();
+        }
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('flex');
+            document.getElementById('profileModal').classList.add('hidden');
+        }
+        function saveProfile() {
+            profileName = document.getElementById('profileNameInput').value.trim();
+            profileBrand = document.getElementById('profileBrandInput').value.trim() || 'MYDESK <3';
+            userMood = document.getElementById('profileMoodInput').value.trim();
+            localStorage.setItem('cy_workspace_profile_name', profileName);
+            localStorage.setItem('cy_workspace_profile_brand', profileBrand);
+            localStorage.setItem('cy_workspace_mood', userMood);
+            document.getElementById('userMood').value = userMood;
+            applyProfile();
+            closeProfileModal();
+            showToast('✅ Profile saved!');
+        }
+        function applyProfile() {
+            const bt = document.getElementById('brandText');
+            if (bt) bt.innerText = profileBrand;
         }
 
         // ---------- DEFAULTS ----------
@@ -1435,7 +1368,7 @@
             {
                 id: 'doc-1',
                 title: '★ MYDESK Notion Workspace Guide',
-                html: '<h1>Welcome to MYDESK</h1><p>Your 2008 <b>Cyworld Notion-style</b> productivity suite. All data is stored locally in your browser.</p><h2>✨ Features</h2><ul><li><b>Rich Text Editor</b> — bold, italic, headings, lists, quotes</li><li>🖼️ <b>Images</b> — click the image icon to insert</li><li>🎵 <b>Audio & Voice Recording</b> — click the music/mic icons</li><li>📊 <b>Tables</b> — click the table icon</li><li>🔗 <b>Auto-Link Detection</b> — type <code>https://example.com</code> and press space</li><li>🎨 <b>Settings Menu</b> — customize theme, layout, background & pixel mode</li></ul><blockquote class="callout">💡 Tip: Your links, images, audio, and tables are all backed up when you click <b>Backup</b> in the sidebar.</blockquote>',
+                html: '<h1>Welcome to MYDESK</h1><p>Your 2008 <b>Cyworld Notion-style</b> productivity suite. All data is stored locally in your browser.</p><h2>✨ Features</h2><ul><li><b>Rich Text Editor</b> — bold, italic, headings, lists, quotes</li><li>🖼️ <b>Images</b> — click the image icon to insert</li><li>🎵 <b>Audio & Voice Recording</b> — click the music/mic icons</li><li>📊 <b>Tables</b> — click the table icon</li><li>🔗 <b>Auto-Link Detection</b> — type <code>https://example.com</code> and press space</li><li>🎨 <b>Settings Menu</b> — customize theme, layout, background & pixel mode</li><li>👤 <b>Avatar & Profile</b> — click the avatar box in the sidebar</li><li>🎙️ <b>Movable Audio</b> — drag recordings to reposition, use corner to resize</li></ul><blockquote class="callout">💡 Tip: Recordings can be dragged, resized, and deleted. Click the ⠿ handle to move.</blockquote>',
                 text: 'Welcome to MYDESK — Your 2008 Cyworld Notion-style productivity suite.'
             },
             {
@@ -1478,7 +1411,7 @@
         let voicePopup = null;
         let voiceCancelFlag = false;
 
-        // ---------- SETTINGS STATE ----------
+        // Settings state
         let settings = JSON.parse(localStorage.getItem('cy_workspace_settings') || '{}');
         let customBg = localStorage.getItem('cy_workspace_custombg') || '';
         let pixelMode = settings.pixelMode || false;
@@ -1488,7 +1421,7 @@
         let headerColor = settings.headerColor || '#12437a';
 
         // ================================================================
-        // MIC PERMISSION
+        // MIC
         // ================================================================
         async function checkMicPermission() {
             if (!navigator.permissions || !navigator.permissions.query) { micPermissionState = 'unknown'; updateMicBanner(); return; }
@@ -1499,35 +1432,33 @@
                 updateMicBanner();
             } catch (e) { micPermissionState = 'unknown'; updateMicBanner(); }
         }
-
         function updateMicBanner() {
-            const banner = document.getElementById('micPermBanner');
-            if (!banner) return;
+            const banner = document.getElementById('micPermBanner'); if (!banner) return;
             if (micPermissionState === 'granted') {
                 banner.className = 'perm-banner ok';
-                banner.innerHTML = '<i class="fa-solid fa-microphone"></i><span data-i18n="mic.granted">Microphone access granted — voice recording ready.</span>';
+                banner.innerHTML = '<i class="fa-solid fa-microphone"></i><span>Microphone access granted.</span>';
                 banner.classList.remove('hidden');
                 setTimeout(() => { if (micPermissionState === 'granted') banner.classList.add('hidden'); }, 3000);
             } else if (micPermissionState === 'denied') {
                 banner.className = 'perm-banner denied';
-                banner.innerHTML = '<i class="fa-solid fa-microphone-slash"></i><span data-i18n="mic.denied">Microphone access is blocked. Enable it in your browser settings.</span>' +
-                    '<button onclick="showMicHelp()" class="ml-auto bg-red-600 hover:bg-red-700 text-white px-2 py-0.5 rounded text-[10px] font-bold"><i class="fa-solid fa-circle-question"></i></button>';
+                banner.innerHTML = '<i class="fa-solid fa-microphone-slash"></i><span>Microphone blocked.</span>';
                 banner.classList.remove('hidden');
             } else {
                 banner.className = 'perm-banner';
-                banner.innerHTML = '<i class="fa-solid fa-microphone-slash"></i><span data-i18n="mic.required">Microphone access required for voice recording.</span>' +
+                banner.innerHTML = '<i class="fa-solid fa-microphone-slash"></i><span>Microphone access required.</span>' +
                     '<button onclick="requestMicPermission()" class="ml-auto bg-amber-600 hover:bg-amber-700 text-white px-2 py-0.5 rounded text-[10px] font-bold"><i class="fa-solid fa-key"></i> <span data-i18n="mic.grant">Grant Permission</span></button>';
                 banner.classList.remove('hidden');
             }
             applyTranslations();
         }
-
         async function requestMicPermission(fromModal = false) {
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { alert('Microphone not supported.'); return false; }
             const statusEl = fromModal ? document.getElementById('micPermStatus') : null;
             if (statusEl) { statusEl.innerText = 'Requesting...'; statusEl.className = 'text-[11px] text-center font-bold text-blue-600'; }
             try {
-                micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                // Immediately release - we just want permission
+                stream.getTracks().forEach(t => t.stop());
                 micPermissionState = 'granted';
                 updateMicBanner();
                 if (statusEl) { statusEl.innerText = '✅'; statusEl.className = 'text-[11px] text-center font-bold text-green-600'; }
@@ -1537,15 +1468,10 @@
             } catch (err) {
                 micPermissionState = err.name === 'NotAllowedError' ? 'denied' : 'unknown';
                 updateMicBanner();
-                if (statusEl) {
-                    statusEl.innerText = err.name === 'NotAllowedError' ? '❌ Denied' : '❌ ' + err.message;
-                    statusEl.className = 'text-[11px] text-center font-bold text-red-600';
-                }
-                if (!fromModal) alert('Microphone access denied.');
+                if (statusEl) { statusEl.innerText = '❌ ' + err.message; statusEl.className = 'text-[11px] text-center font-bold text-red-600'; }
                 return false;
             }
         }
-        function showMicHelp() { document.getElementById('micPermModal').classList.remove('hidden'); document.getElementById('micPermModal').classList.add('flex'); }
         function closeMicPermModal() { document.getElementById('micPermModal').classList.remove('flex'); document.getElementById('micPermModal').classList.add('hidden'); }
 
         // ================================================================
@@ -1572,10 +1498,6 @@
                     if (block) {
                         const nameEl = block.querySelector('.audio-name');
                         if (nameEl) name = nameEl.textContent.trim();
-                        else {
-                            const labelEl = block.querySelector('.audio-label');
-                            if (labelEl) name = labelEl.textContent.replace(/^[🎵📼]\s*/, '').trim();
-                        }
                     }
                     if (!name) name = 'Audio in "' + (doc.title || 'Untitled') + '"';
                     tracks.push({ id: 'track-' + Math.random().toString(36).slice(2, 9), src, name, docId: doc.id, docTitle: doc.title || 'Untitled' });
@@ -1593,7 +1515,7 @@
             if (!list) return;
             if (countEl) countEl.innerText = tracks.length + ' track' + (tracks.length === 1 ? '' : 's');
             if (tracks.length === 0) {
-                list.innerHTML = '<div class="text-center text-[11px] text-gray-400 py-6">🎧 No audio found. Record a voice note or import an audio file in a document.</div>';
+                list.innerHTML = '<div class="text-center text-[11px] text-gray-400 py-6">🎧 No audio found. Record or import in a document.</div>';
                 return;
             }
             list.innerHTML = '';
@@ -1619,42 +1541,33 @@
         }
 
         function toggleTrackPlay(trackId, src, name) {
-            if (currentTrackSrc === src) {
-                if (globalAudio.paused) globalAudio.play(); else globalAudio.pause();
-            } else {
-                playGlobalAudio(src, name);
-            }
+            if (currentTrackSrc === src) { if (globalAudio.paused) globalAudio.play(); else globalAudio.pause(); }
+            else { playGlobalAudio(src, name); }
         }
-
         function playGlobalAudio(src, name) {
-            currentTrackSrc = src;
-            currentTrackName = name;
-            globalAudio.src = src;
-            globalAudio.load();
-            globalAudio.play().catch(e => showToast('❌ Audio playback failed'));
+            currentTrackSrc = src; currentTrackName = name;
+            globalAudio.src = src; globalAudio.load();
+            globalAudio.play().catch(() => showToast('❌ Audio playback failed'));
             document.getElementById('globalPlayer').classList.remove('hidden');
             document.getElementById('gpTitle').innerText = name || 'Untitled';
         }
-
         function toggleGlobalPlay() {
             if (!currentTrackSrc) { showToast('🎧 No track selected'); return; }
             if (globalAudio.paused) globalAudio.play(); else globalAudio.pause();
         }
-        function globalAudioSkip(seconds) { if (!currentTrackSrc) return; globalAudio.currentTime = Math.max(0, Math.min(globalAudio.duration || 0, globalAudio.currentTime + seconds)); }
-        function toggleGlobalLoop() { globalAudio.loop = !globalAudio.loop; const btn = document.getElementById('gpLoopBtn'); if (btn) btn.style.background = globalAudio.loop ? 'rgba(255,102,0,0.4)' : ''; }
+        function globalAudioSkip(s) { if (!currentTrackSrc) return; globalAudio.currentTime = Math.max(0, Math.min(globalAudio.duration || 0, globalAudio.currentTime + s)); }
+        function toggleGlobalLoop() { globalAudio.loop = !globalAudio.loop; const b = document.getElementById('gpLoopBtn'); if (b) b.style.background = globalAudio.loop ? 'rgba(255,102,0,0.4)' : ''; }
         function globalAudioVolume(val) {
-            if (val === 0) { globalAudio.muted = !globalAudio.muted; document.getElementById('gpVolumeSlider').value = globalAudio.muted ? 0 : 100; document.getElementById('gpVolIcon').className = globalAudio.muted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high'; return; }
+            if (val === 0) { globalAudio.muted = !globalAudio.muted; document.getElementById('gpVolumeSlider').value = globalAudio.muted ? 0 : 100; return; }
             globalAudio.muted = false;
             globalAudio.volume = Math.max(0, Math.min(1, val / 100));
-            document.getElementById('gpVolIcon').className = val > 50 ? 'fa-solid fa-volume-high' : val > 0 ? 'fa-solid fa-volume-low' : 'fa-solid fa-volume-xmark';
         }
         function seekGlobalAudio(event) {
             if (!currentTrackSrc || !globalAudio.duration) return;
             const rect = event.currentTarget.getBoundingClientRect();
-            const pct = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-            globalAudio.currentTime = pct * globalAudio.duration;
+            globalAudio.currentTime = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)) * globalAudio.duration;
         }
-        function formatTime(sec) { if (!isFinite(sec) || isNaN(sec)) return '0:00'; const m = Math.floor(sec / 60); const s = Math.floor(sec % 60); return m + ':' + String(s).padStart(2, '0'); }
+        function formatTime(s) { if (!isFinite(s) || isNaN(s)) return '0:00'; const m = Math.floor(s / 60); return m + ':' + String(Math.floor(s % 60)).padStart(2, '0'); }
         function escapeAttr(str) { return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
 
         globalAudio.addEventListener('timeupdate', () => {
@@ -1671,20 +1584,18 @@
 
         function removeAudioFromDoc(docId, trackId) {
             if (!confirm('Remove this audio track?')) return;
-            const doc = documents.find(d => d.id === docId);
-            if (!doc || !doc.html) return;
-            const temp = document.createElement('div');
-            temp.innerHTML = doc.html;
+            const doc = documents.find(d => d.id === docId); if (!doc || !doc.html) return;
+            const temp = document.createElement('div'); temp.innerHTML = doc.html;
             const visibleTrack = document.querySelector(`.audio-track[data-track-id="${trackId}"]`);
             if (!visibleTrack) return;
             const name = visibleTrack.querySelector('.track-name').textContent;
             let removed = false;
-            temp.querySelectorAll('.audio-block').forEach(block => {
+            temp.querySelectorAll('.audio-block-wrap').forEach(wrap => {
                 if (removed) return;
-                const nameEl = block.querySelector('.audio-name');
-                if (nameEl && nameEl.textContent.trim() === name) { block.remove(); removed = true; }
+                const nameEl = wrap.querySelector('.audio-name');
+                if (nameEl && nameEl.textContent.trim() === name) { wrap.remove(); removed = true; }
             });
-            if (!removed) { const firstAudio = temp.querySelector('audio'); if (firstAudio) { const b = firstAudio.closest('.audio-block'); if (b) b.remove(); else firstAudio.remove(); } }
+            if (!removed) { const firstAudio = temp.querySelector('audio'); if (firstAudio) { const b = firstAudio.closest('.audio-block-wrap') || firstAudio.closest('.audio-block'); if (b) b.remove(); else firstAudio.remove(); } }
             doc.html = temp.innerHTML;
             saveDocsToStorage();
             if (doc.id === activeDocId) loadActiveDocument();
@@ -1733,17 +1644,30 @@
             reader.onload = e => { insertAudioBlock(e.target.result, file.name); };
             reader.readAsDataURL(file); event.target.value = '';
         }
+
+        // Insert audio with draggable / resizable / deletable wrapper
         function insertAudioBlock(dataUrl, label) {
-            rteEditor().focus();
             const safeLabel = escapeHtml(label || 'Audio recording');
-            document.execCommand('insertHTML', false, `<div class="audio-block" contenteditable="false"><div class="audio-label">🎵 <span class="audio-name">${safeLabel}</span></div><audio controls src="${dataUrl}"></audio></div><p><br></p>`);
+            const id = 'ab-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+            const wrapHtml = `
+                <div class="audio-block-wrap" contenteditable="false" data-audio-id="${id}">
+                    <div class="audio-block-toolbar" contenteditable="false">
+                        <button type="button" class="drag-handle" title="${t('audio.moveHint')}"><i class="fa-solid fa-grip-vertical"></i></button>
+                        <button type="button" class="danger" data-audio-del title="${t('audio.delHint')}"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <div class="audio-block">
+                        <div class="audio-label">🎵 <span class="audio-name">${safeLabel}</span></div>
+                        <audio controls src="${dataUrl}"></audio>
+                    </div>
+                </div><p><br></p>`;
+            rteEditor().focus();
+            document.execCommand('insertHTML', false, wrapHtml);
             autoSaveActiveDoc();
+            setupAudioInteractions();
             openAudioPanel();
         }
 
-        // ================================================================
-        // VOICE RECORDER — DISCREET POPUP
-        // ================================================================
+        // Voice recording — build popup + insert via insertAudioBlock
         async function toggleVoiceRecording() {
             if (isRecordingVoice) { stopVoiceRecording(); return; }
             if (micPermissionState !== 'granted') {
@@ -1752,7 +1676,6 @@
             }
             startVoiceRecording();
         }
-
         function startVoiceRecording() {
             navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
                 micStream = stream;
@@ -1781,17 +1704,14 @@
                 document.getElementById('micPermModal').classList.add('flex');
             });
         }
-
         function cleanupRecorder() {
             isRecordingVoice = false;
             if (recordingTimerInterval) { clearInterval(recordingTimerInterval); recordingTimerInterval = null; }
             if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
             hideVoicePopup();
         }
-
         function stopVoiceRecording() { if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop(); }
         function cancelVoiceRecording() { voiceCancelFlag = true; if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop(); showToast('🚫 ' + t('voice.cancelled')); }
-
         function showVoicePopup() {
             hideVoicePopup();
             voicePopup = document.createElement('div');
@@ -1831,6 +1751,75 @@
             voicePopup = null;
         }
 
+        // ================================================================
+        // AUDIO BLOCK DRAG / RESIZE / DELETE
+        // ================================================================
+        function setupAudioInteractions() {
+            const editor = rteEditor();
+            if (!editor) return;
+            // Delegate delete clicks
+            editor.querySelectorAll('[data-audio-del]').forEach(btn => {
+                if (btn.dataset.bound) return;
+                btn.dataset.bound = '1';
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault(); e.stopPropagation();
+                    const wrap = btn.closest('.audio-block-wrap');
+                    if (wrap && confirm('Delete this audio recording?')) {
+                        wrap.remove();
+                        autoSaveActiveDoc();
+                        scanAudioFromDocs();
+                        showToast('🗑️ Recording deleted');
+                    }
+                });
+            });
+            // Delegate drag handles
+            editor.querySelectorAll('.drag-handle').forEach(handle => {
+                if (handle.dataset.bound) return;
+                handle.dataset.bound = '1';
+                handle.setAttribute('draggable', 'true');
+                handle.addEventListener('dragstart', function(e) {
+                    const wrap = handle.closest('.audio-block-wrap');
+                    if (!wrap) return;
+                    e.dataTransfer.setData('text/audio-id', wrap.dataset.audioId);
+                    e.dataTransfer.effectAllowed = 'move';
+                    wrap.classList.add('dragging');
+                });
+                handle.addEventListener('dragend', function() {
+                    const wrap = handle.closest('.audio-block-wrap');
+                    if (wrap) wrap.classList.remove('dragging');
+                    document.querySelectorAll('.audio-block.drag-over').forEach(el => el.classList.remove('drag-over'));
+                });
+            });
+            // Drop zone on each audio block
+            editor.querySelectorAll('.audio-block-wrap').forEach(wrap => {
+                if (wrap.dataset.dropBound) return;
+                wrap.dataset.dropBound = '1';
+                wrap.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    const block = wrap.querySelector('.audio-block');
+                    if (block) block.classList.add('drag-over');
+                });
+                wrap.addEventListener('dragleave', e => {
+                    const block = wrap.querySelector('.audio-block');
+                    if (block) block.classList.remove('drag-over');
+                });
+                wrap.addEventListener('drop', e => {
+                    e.preventDefault();
+                    const block = wrap.querySelector('.audio-block');
+                    if (block) block.classList.remove('drag-over');
+                    const draggedId = e.dataTransfer.getData('text/audio-id');
+                    if (!draggedId) return;
+                    const draggedWrap = editor.querySelector(`.audio-block-wrap[data-audio-id="${draggedId}"]`);
+                    if (!draggedWrap || draggedWrap === wrap) return;
+                    // Swap: insert dragged before this wrap
+                    wrap.parentNode.insertBefore(draggedWrap, wrap);
+                    autoSaveActiveDoc();
+                    scanAudioFromDocs();
+                    showToast('↕️ Audio reordered');
+                });
+            });
+        }
+
         // ---- TABLE ----
         function showTableForm() {
             const form = document.getElementById('rteTableForm');
@@ -1850,11 +1839,10 @@
             autoSaveActiveDoc();
         }
 
-        // ---- LINK AUTO-DETECTION ----
+        // ---- LINK AUTO-DETECT ----
         function setupLinkAutoDetection() {
-            const editor = document.getElementById('rteEditor');
-            if (!editor) return;
-            editor.addEventListener('input', function(e) {
+            const editor = document.getElementById('rteEditor'); if (!editor) return;
+            editor.addEventListener('input', function() {
                 const sel = window.getSelection(); if (!sel || sel.rangeCount === 0) return;
                 const range = sel.getRangeAt(0); const node = range.startContainer;
                 if (node.nodeType !== Node.TEXT_NODE) return;
@@ -1888,28 +1876,25 @@
 
         // ---- SAVE / LOAD ----
         function autoSaveActiveDoc() {
-            const doc = documents.find(d => d.id === activeDocId);
-            if (!doc) return;
+            const doc = documents.find(d => d.id === activeDocId); if (!doc) return;
             const editor = rteEditor();
             doc.html = editor.innerHTML;
             doc.text = editor.innerText || '';
             updateDocumentStats(doc.text);
             saveDocsToStorage();
-            const searchInput = document.getElementById('docSearch');
-            if (activeTab === 'documents') renderDocumentTree(searchInput ? searchInput.value : '');
+            const s = document.getElementById('docSearch');
+            if (activeTab === 'documents') renderDocumentTree(s ? s.value : '');
         }
-
         function loadActiveDocument() {
-            const doc = documents.find(d => d.id === activeDocId);
-            if (!doc) return;
+            const doc = documents.find(d => d.id === activeDocId); if (!doc) return;
             document.getElementById('activeDocTitle').value = doc.title || '';
             const editor = rteEditor();
             editor.innerHTML = doc.html || (doc.body ? escapeHtml(doc.body).replace(/\n/g, '<br>') : '');
             updateDocumentStats(editor.innerText || '');
+            setupAudioInteractions();
             if (!document.getElementById('audioPanel').classList.contains('hidden')) scanAudioFromDocs();
             setTimeout(() => scanAudioFromDocs(), 100);
         }
-
         function exportDocTxt() {
             const doc = documents.find(d => d.id === activeDocId); if (!doc) return;
             const text = (doc.title || 'Untitled') + '\n\n' + (doc.text || rteEditor().innerText || '');
@@ -1938,7 +1923,7 @@
         }
 
         // ================================================================
-        // TAB SWITCHING
+        // TABS
         // ================================================================
         const TABS = ['documents', 'todo', 'calendar', 'pomodoro'];
         function switchTab(tabId) {
@@ -1967,8 +1952,7 @@
         }
 
         function renderSidebarContext() {
-            const container = document.getElementById('sidebarContextContainer');
-            if (!container) return;
+            const container = document.getElementById('sidebarContextContainer'); if (!container) return;
             container.innerHTML = '';
             if (activeTab === 'documents') {
                 container.innerHTML = `
@@ -2020,8 +2004,7 @@
 
         // ---------- DOCUMENTS tree ----------
         function renderDocumentTree(filterText = '') {
-            const treeContainer = document.getElementById('documentListTree');
-            if (!treeContainer) return;
+            const treeContainer = document.getElementById('documentListTree'); if (!treeContainer) return;
             treeContainer.innerHTML = '';
             const q = (filterText || '').toLowerCase();
             const filtered = documents.filter(d => (d.title || '').toLowerCase().includes(q) || (d.text || '').toLowerCase().includes(q) || (d.body || '').toLowerCase().includes(q));
@@ -2064,11 +2047,11 @@
         function saveDocsToStorage() {
             try {
                 localStorage.setItem('cy_workspace_docs', JSON.stringify(documents));
-                const status = document.getElementById('saveStatus');
-                if (status) { status.innerText = t('docs.saved'); status.style.color = ''; }
+                const s = document.getElementById('saveStatus');
+                if (s) { s.innerText = t('docs.saved'); s.style.color = ''; }
             } catch (e) {
-                const status = document.getElementById('saveStatus');
-                if (status) { status.innerText = '⚠️ Storage full — export backup!'; status.style.color = '#dc2626'; }
+                const s = document.getElementById('saveStatus');
+                if (s) { s.innerText = '⚠️ Storage full!'; s.style.color = '#dc2626'; }
             }
         }
 
@@ -2248,7 +2231,7 @@
             closeCalModal(); renderCalendar();
         }
 
-        // ---------- iCAL IMPORT/EXPORT ----------
+        // iCal
         function importICalFile(event) {
             const file = event.target.files[0]; if (!file) return;
             const reader = new FileReader();
@@ -2273,8 +2256,7 @@
                     if (events.length > 0) { currentYear = events[0].date.getFullYear(); currentMonth = events[0].date.getMonth(); renderCalendar(); }
                 } catch (err) { statusEl.innerText = '❌ Failed to parse .ics'; setTimeout(() => statusEl.innerText = '', 3000); }
             };
-            reader.readAsText(file);
-            event.target.value = '';
+            reader.readAsText(file); event.target.value = '';
         }
         function parseICal(text) {
             const events = [];
@@ -2404,9 +2386,7 @@
             } catch (e) {}
         }
 
-        // ================================================================
-        // SETTINGS
-        // ================================================================
+        // ---------- SETTINGS ----------
         function openSettings() {
             document.getElementById('settingsModal').classList.remove('hidden');
             document.getElementById('settingsModal').classList.add('flex');
@@ -2449,10 +2429,6 @@
             document.querySelectorAll('.layout-option').forEach(o => o.classList.toggle('selected', o.dataset.layout === cls));
             saveSettings();
         }
-        function setDensity(d) {
-            document.body.style.fontSize = d === 'compact' ? '12px' : '14px';
-            saveSettings();
-        }
         function togglePixelMode() {
             pixelMode = !pixelMode;
             document.getElementById('pixelToggle').classList.toggle('on', pixelMode);
@@ -2468,8 +2444,7 @@
                 document.body.classList.add('custom-bg');
                 document.body.style.setProperty('--custom-bg-image', `url(${customBg})`);
             };
-            reader.readAsDataURL(file);
-            event.target.value = '';
+            reader.readAsDataURL(file); event.target.value = '';
         }
         function clearCustomBackground() {
             customBg = '';
@@ -2511,12 +2486,12 @@
             const workspace = {
                 documents, tasks, calendarEvents,
                 userMood, pomoCompletedToday, currentLang,
+                avatar, profileName, profileBrand,
                 settings: { pixelMode, layoutClass, accent, accentDark, headerColor },
                 customBg: customBg,
                 bgmSelectValue: document.getElementById('bgmSelect').value,
                 activeTab, activeDocId, currentYear, currentMonth,
-                exportDate: new Date().toISOString(),
-                _counts: { documents: documents.length, tasks: tasks.length, calendarEvents: Object.keys(calendarEvents).length }
+                exportDate: new Date().toISOString()
             };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(workspace, null, 2));
             const dl = document.createElement('a');
@@ -2538,6 +2513,9 @@
                         calendarEvents = imported.calendarEvents || {};
                         userMood = imported.userMood || '♫ Coding & organizing memories...';
                         pomoCompletedToday = imported.pomoCompletedToday !== undefined ? imported.pomoCompletedToday : 0;
+                        avatar = imported.avatar || { ...DEFAULT_AVATAR };
+                        profileName = imported.profileName || '';
+                        profileBrand = imported.profileBrand || 'MYDESK <3';
                         if (imported.currentYear && imported.currentMonth !== undefined) { currentYear = imported.currentYear; currentMonth = imported.currentMonth; }
                         if (imported.activeTab && TABS.includes(imported.activeTab)) activeTab = imported.activeTab;
                         if (imported.activeDocId && documents.some(d => d.id === imported.activeDocId)) activeDocId = imported.activeDocId;
@@ -2566,9 +2544,13 @@
                         localStorage.setItem('cy_workspace_cal', JSON.stringify(calendarEvents));
                         localStorage.setItem('cy_workspace_mood', userMood);
                         localStorage.setItem('cy_pomo_count', pomoCompletedToday);
+                        localStorage.setItem('cy_workspace_avatar', JSON.stringify(avatar));
+                        localStorage.setItem('cy_workspace_profile_name', profileName);
+                        localStorage.setItem('cy_workspace_profile_brand', profileBrand);
                         if (imported.currentLang && TRANSLATIONS[imported.currentLang]) setLanguage(imported.currentLang);
                         document.getElementById('userMood').value = userMood;
                         document.getElementById('pomoCompletedCount').innerText = pomoCompletedToday;
+                        applyAvatar(); applyProfile();
                         switchTab(activeTab);
                         renderTasks(); renderCalendar(); updatePomoDisplay();
                         if (activeTab === 'documents') { renderDocumentTree(); loadActiveDocument(); }
@@ -2589,14 +2571,21 @@
                 activeDocId = defaultDocuments[0].id;
                 userMood = '♫ Coding & organizing memories...';
                 pomoCompletedToday = 3;
+                avatar = { ...DEFAULT_AVATAR };
+                profileName = '';
+                profileBrand = 'MYDESK <3';
                 currentYear = new Date().getFullYear();
                 currentMonth = new Date().getMonth();
                 saveDocsToStorage(); saveTasksToStorage();
                 localStorage.setItem('cy_workspace_cal', JSON.stringify(calendarEvents));
                 localStorage.setItem('cy_workspace_mood', userMood);
                 localStorage.setItem('cy_pomo_count', pomoCompletedToday);
+                localStorage.setItem('cy_workspace_avatar', JSON.stringify(avatar));
+                localStorage.setItem('cy_workspace_profile_name', profileName);
+                localStorage.setItem('cy_workspace_profile_brand', profileBrand);
                 document.getElementById('userMood').value = userMood;
                 document.getElementById('pomoCompletedCount').innerText = pomoCompletedToday;
+                applyAvatar(); applyProfile();
                 switchTab('documents'); renderTasks(); renderCalendar(); updatePomoDisplay();
                 if (activeTab === 'documents') { renderDocumentTree(); loadActiveDocument(); }
                 scanAudioFromDocs();
@@ -2604,31 +2593,13 @@
         }
         function saveMood(val) { userMood = val; localStorage.setItem('cy_workspace_mood', val); }
 
-        // ================================================================
-        // BGM — Each track has a distinct chiptune melody
-        // ================================================================
+        // ---------- BGM ----------
         let isPlayingBGM = false, audioCtx = null, bgmTimer = null;
         const BGM_PRESETS = {
-            epik: {
-                tempo: 340,
-                wave: 'triangle',
-                notes: [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 293.66, 329.63]
-            },
-            younha: {
-                tempo: 280,
-                wave: 'square',
-                notes: [392.00, 440.00, 493.88, 523.25, 493.88, 440.00, 392.00, 329.63, 349.23, 392.00]
-            },
-            wondergirls: {
-                tempo: 300,
-                wave: 'sawtooth',
-                notes: [523.25, 523.25, 587.33, 659.25, 587.33, 523.25, 493.88, 440.00, 493.88, 523.25]
-            },
-            bigbang: {
-                tempo: 380,
-                wave: 'sine',
-                notes: [220.00, 261.63, 293.66, 349.23, 329.63, 293.66, 261.63, 220.00, 196.00, 220.00, 261.63, 293.66]
-            }
+            epik: { tempo: 340, wave: 'triangle', notes: [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 293.66, 329.63] },
+            younha: { tempo: 280, wave: 'square', notes: [392.00, 440.00, 493.88, 523.25, 493.88, 440.00, 392.00, 329.63, 349.23, 392.00] },
+            wondergirls: { tempo: 300, wave: 'sawtooth', notes: [523.25, 523.25, 587.33, 659.25, 587.33, 523.25, 493.88, 440.00, 493.88, 523.25] },
+            bigbang: { tempo: 380, wave: 'sine', notes: [220.00, 261.63, 293.66, 349.23, 329.63, 293.66, 261.63, 220.00, 196.00, 220.00, 261.63, 293.66] }
         };
         function getCurrentBgmPreset() {
             const sel = document.getElementById('bgmSelect');
@@ -2640,31 +2611,25 @@
             if (isPlayingBGM) { i.className = 'fa-solid fa-pause'; startRetroBGM(); }
             else { i.className = 'fa-solid fa-play'; stopRetroBGM(); }
         }
-        function changeBGM(val) {
-            updateBgmTitle();
-            if (isPlayingBGM) { stopRetroBGM(); startRetroBGM(); }
-        }
+        function changeBGM(val) { updateBgmTitle(); if (isPlayingBGM) { stopRetroBGM(); startRetroBGM(); } }
         function startRetroBGM() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const preset = getCurrentBgmPreset();
-            const notes = preset.notes;
-            const wave = preset.wave;
-            const tempo = preset.tempo;
             let step = 0;
             bgmTimer = setInterval(() => {
                 if (!audioCtx || !isPlayingBGM) return;
                 try {
                     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-                    o.type = wave;
-                    o.frequency.setValueAtTime(notes[step % notes.length], audioCtx.currentTime);
+                    o.type = preset.wave;
+                    o.frequency.setValueAtTime(preset.notes[step % preset.notes.length], audioCtx.currentTime);
                     g.gain.setValueAtTime(0.025, audioCtx.currentTime);
                     g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
                     o.connect(g); g.connect(audioCtx.destination);
                     o.start(); o.stop(audioCtx.currentTime + 0.35);
                     step++;
                 } catch (e) {}
-            }, tempo);
+            }, preset.tempo);
         }
         function stopRetroBGM() { if (bgmTimer) clearInterval(bgmTimer); }
 
@@ -2689,9 +2654,10 @@
             updateLangButtons();
             applyTranslations();
             updateBgmTitle();
+            applyAvatar();
+            applyProfile();
             switchTab('documents');
             renderCalendar(); renderTasks(); updatePomoDisplay();
-
             checkMicPermission();
 
             const editor = document.getElementById('rteEditor');
@@ -2711,12 +2677,16 @@
                 if (a && a.href) { if (e.ctrlKey || e.metaKey) { e.preventDefault(); window.open(a.href, '_blank'); } }
             });
             setupLinkAutoDetection();
-
             document.querySelectorAll('[data-rte-table-trigger]').forEach(btn => {
                 btn.addEventListener('click', function(e) { e.preventDefault(); showTableForm(); });
             });
 
+            // Avatar label live preview
+            const ai = document.getElementById('avatarLabelInput');
+            if (ai) ai.addEventListener('input', function() { document.getElementById('previewLabel').innerText = this.value || 'MYDESK<3'; });
+
             loadActiveDocument();
+            setupAudioInteractions();
             scanAudioFromDocs();
 
             document.addEventListener('click', function (e) {
@@ -2729,6 +2699,9 @@
             window.addEventListener('beforeunload', function(e) {
                 if (isRecordingVoice) { e.preventDefault(); e.returnValue = ''; }
             });
+
+            // Periodic audio interaction rebind (safety net for pasted HTML)
+            setInterval(() => { setupAudioInteractions(); }, 5000);
         });
     </script>
 </body>
