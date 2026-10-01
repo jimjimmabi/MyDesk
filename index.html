@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYDESK <3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Nanum+Gothic:wght@400;700&family=Share+Tech+Mono&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cy-blue-dark: #12437a;
+            --cy-blue-med: #2178b5;
+            --cy-blue-light: #e0edf8;
+            --cy-border: #7a9fd1;
+            --cy-orange: #ff6600;
+        }
+        body {
+            font-family: 'Nanum Gothic', 'Noto Sans KR', 'Noto Sans JP', 'Noto Sans SC', sans-serif;
+            background-color: #1e3a62;
+            background-image: radial-gradient(#2d5082 15%, transparent 16%), radial-gradient(#152d50 15%, transparent 16%);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+            color: #333;
+            min-height: 100vh;
+        }
+        body.lang-ko { font-family: 'Nanum Gothic', 'Noto Sans KR', sans-serif; }
+        body.lang-ja { font-family: 'Noto Sans JP', 'Nanum Gothic', sans-serif; }
+        body.lang-zh { font-family: 'Noto Sans SC', 'Nanum Gothic', sans-serif; }
+        body.lang-en { font-family: 'Nanum Gothic', sans-serif; }
+        .dot-font { font-family: 'DotGothic16', monospace; }
+        .mono-font { font-family: 'Share Tech Mono', monospace; }
+        .retro-window {
+            background: #ffffff;
+            border: 2px solid #5579b1;
+            box-shadow: 4px 4px 15px rgba(0,0,0,0.4);
+            border-radius: 4px;
+        }
+        .retro-titlebar {
+            background: linear-gradient(to right, #1a4985, #3a7bc8);
+            color: white;
+            padding: 6px 10px;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .retro-sidebar { background: #f0f5fc; border-right: 1px solid #b4d0f0; }
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar-track { background: #eef2f7; }
+        ::-webkit-scrollbar-thumb { background: #9bb7de; border-radius: 3px; }
+        .backup-badge {
+            background: #ff6600; color: white; font-size: 10px;
+            padding: 2px 8px; border-radius: 999px; font-weight: bold; letter-spacing: 0.5px;
+        }
+        .month-title-btn { transition: all 0.15s ease; }
+        .month-title-btn:hover { background: #dbeafe; border-color: #2178b5; transform: translateY(-1px); }
+        .jump-panel { animation: jumpFadeIn 0.15s ease-out; }
+        @keyframes jumpFadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+        .year-quick-btn.active, .month-quick-btn.active { background: #2c599d !important; color: white !important; border-color: #1a3863 !important; }
+        .lang-btn { transition: all 0.15s ease; }
+        .lang-btn.active { background: #ff6600 !important; color: white !important; border-color: #cc5200 !important; font-weight: bold; }
+
+        /* ========= RICH TEXT EDITOR STYLES ========= */
+        .rte-toolbar { background: #fafcff; border-bottom: 1px solid #e5e7eb; }
+        .rte-editor {
+            background: #ffffff; outline: none; overflow-y: auto; padding: 1rem;
+            font-size: 14px; line-height: 1.7; min-height: 100%; word-wrap: break-word; color: #1f2937;
+        }
+        .rte-editor:empty:before { content: attr(data-placeholder); color: #9ca3af; font-style: italic; }
+        .rte-editor h1 { font-size: 1.9em; font-weight: bold; margin: 0.5em 0 0.3em; color: #12437a; }
+        .rte-editor h2 { font-size: 1.5em; font-weight: bold; margin: 0.5em 0 0.3em; color: #12437a; }
+        .rte-editor h3 { font-size: 1.25em; font-weight: bold; margin: 0.4em 0 0.2em; color: #12437a; }
+        .rte-editor p { margin: 0.4em 0; }
+        .rte-editor ul, .rte-editor ol { margin: 0.5em 0; padding-left: 1.5em; }
+        .rte-editor ul { list-style: disc; }
+        .rte-editor ol { list-style: decimal; }
+        .rte-editor blockquote {
+            border-left: 4px solid #ff6600; background: #fff7ed; padding: 0.5em 0.8em;
+            margin: 0.5em 0; border-radius: 4px; color: #7c2d12;
+        }
+        .rte-editor pre {
+            background: #1e293b; color: #e2e8f0; padding: 0.8em 1em; border-radius: 6px;
+            font-family: 'Share Tech Mono', monospace; font-size: 12px; overflow-x: auto;
+            margin: 0.5em 0; white-space: pre-wrap;
+        }
+        .rte-editor code { background: #f1f5f9; padding: 0.15em 0.4em; border-radius: 3px; font-family: 'Share Tech Mono', monospace; font-size: 0.9em; color: #be185d; }
+        .rte-editor pre code { background: transparent; color: inherit; padding: 0; }
+        .rte-editor a { color: #2563eb; text-decoration: underline; cursor: pointer; }
+        .rte-editor a:hover { color: #1d4ed8; }
+        .rte-editor img { max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #e5e7eb; margin: 0.5em 0; display: block; }
+        .rte-editor table { border-collapse: collapse; width: 100%; margin: 0.8em 0; font-size: 13px; }
+        .rte-editor table th, .rte-editor table td { border: 1px solid #cbd5e1; padding: 0.5em 0.7em; text-align: left; }
+        .rte-editor table th { background: #e0edf8; font-weight: bold; color: #12437a; }
+        .rte-editor table tr:nth-child(even) td { background: #f8fafc; }
+        .rte-editor audio { width: 100%; margin: 0.4em 0; border-radius: 30px; }
+        .rte-editor .callout { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 0.7em 0.9em; margin: 0.6em 0; border-radius: 4px; color: #78350f; }
+        .rte-editor .audio-block {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #7dd3fc; border-radius: 10px; padding: 0.7em 0.9em; margin: 0.6em 0;
+            box-shadow: 0 1px 3px rgba(2, 132, 199, 0.08);
+        }
+        .rte-editor .audio-block .audio-label {
+            font-size: 11px; color: #0369a1; font-weight: bold; margin-bottom: 0.3em;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .rte-editor .audio-block .audio-label .audio-name { font-weight: normal; color: #0c4a6e; }
+        .rte-toolbar button.active { background: #2c599d !important; color: white !important; }
+        .recording-pulse { animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* ========= AUDIO PLAYER PANEL ========= */
+        .audio-panel {
+            background: linear-gradient(180deg, #f0f5fc 0%, #e0edf8 100%);
+            border-top: 2px solid #7a9fd1;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+        }
+        .audio-track {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 8px 10px;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .audio-track:hover { border-color: #2c599d; box-shadow: 0 2px 6px rgba(44, 89, 157, 0.12); }
+        .audio-track.playing { background: #e0edf8; border-color: #ff6600; box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2); }
+        .audio-track .track-play {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: #2c599d; color: white;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .audio-track .track-play:hover { background: #1a3863; transform: scale(1.08); }
+        .audio-track.playing .track-play { background: #ff6600; }
+        .audio-track .track-info { flex: 1; min-width: 0; }
+        .audio-track .track-name { font-size: 12px; font-weight: bold; color: #12437a; truncate; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .audio-track .track-meta { font-size: 10px; color: #6b7280; margin-top: 2px; display: flex; gap: 8px; }
+        .audio-track .track-progress {
+            height: 4px; background: #e5e7eb; border-radius: 2px; margin-top: 5px; overflow: hidden; cursor: pointer;
+        }
+        .audio-track .track-progress-bar {
+            height: 100%; background: linear-gradient(90deg, #2c599d, #ff6600); width: 0%; transition: width 0.1s linear;
+        }
+        .audio-track .track-delete {
+            color: #94a3b8; cursor: pointer; padding: 4px; border-radius: 4px;
+        }
+        .audio-track .track-delete:hover { color: #dc2626; background: #fee2e2; }
+
+        /* Global audio player (footer) */
+        .global-player {
+            background: linear-gradient(180deg, #12437a 0%, #0f3460 100%);
+            color: white;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+        }
+        .global-player .gp-play {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: #ff6600; color: white;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; flex-shrink: 0;
+            transition: all 0.15s;
+            box-shadow: 0 2px 6px rgba(255,102,0,0.3);
+        }
+        .global-player .gp-play:hover { transform: scale(1.08); }
+        .global-player .gp-info { flex: 1; min-width: 0; }
+        .global-player .gp-title { font-weight: bold; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .global-player .gp-time { font-size: 10px; color: #bae6fd; font-family: 'Share Tech Mono', monospace; }
+        .global-player .gp-progress {
+            height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px;
+            cursor: pointer; margin-top: 4px; overflow: hidden;
+        }
+        .global-player .gp-progress-bar {
+            height: 100%; background: linear-gradient(90deg, #ff6600, #fbbf24); width: 0%;
+        }
+        .global-player .gp-controls { display: flex; align-items: center; gap: 8px; }
+        .global-player .gp-btn {
+            background: rgba(255,255,255,0.1); color: white;
+            width: 26px; height: 26px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 10px;
+            transition: background 0.15s;
+        }
+        .global-player .gp-btn:hover { background: rgba(255,255,255,0.25); }
+        .global-player .gp-volume { width: 60px; }
+        .global-player .gp-volume input { width: 100%; height: 3px; }
+
+        /* Permission status banner */
+        .perm-banner {
+            background: #fef3c7; border-left: 4px solid #f59e0b;
+            padding: 8px 12px; font-size: 11px; color: #78350f;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .perm-banner.ok { background: #d1fae5; border-left-color: #10b981; color: #065f46; }
+        .perm-banner.denied { background: #fee2e2; border-left-color: #ef4444; color: #7f1d1d; }
+    </style>
+</head>
+<body class="p-2 sm:p-4 flex flex-col items-center justify-start min-h-screen lang-en">
+
+    <header class="w-full max-w-7xl bg-white/95 backdrop-blur border border-[#4a72a9] rounded shadow-lg px-3 py-2 mb-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div class="flex items-center gap-3 flex-wrap">
+            <div class="bg-[#ff6600] text-white px-2.5 py-1 rounded font-bold dot-font text-sm flex items-center gap-1 shadow-sm">
+                <i class="fa-solid fa-star text-yellow-200"></i> MYDESK <3
+            </div>
+            <span class="text-gray-600 font-semibold hidden sm:inline"><span data-i18n="header.today">TODAY</span> <span class="text-red-500 font-bold" id="todayVisits">3,492</span> | <span data-i18n="header.total">TOTAL</span> <span class="text-blue-600 font-bold">245,118</span></span>
+            <span class="backup-badge"><i class="fa-solid fa-database"></i> <span data-i18n="header.backupReady">BACKUP READY</span></span>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+            <div class="flex items-center bg-[#eef3f9] border border-[#a4c2f4] rounded px-1 py-0.5 gap-0.5 shadow-inner" title="Language">
+                <i class="fa-solid fa-globe text-[#2c599d] text-xs px-1"></i>
+                <button onclick="setLanguage('en')" id="langBtn-en" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="English">EN</button>
+                <button onclick="setLanguage('zh')" id="langBtn-zh" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="中文">中</button>
+                <button onclick="setLanguage('ja')" id="langBtn-ja" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="日本語">日</button>
+                <button onclick="setLanguage('ko')" id="langBtn-ko" class="lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white" title="한국어">한</button>
+            </div>
+            <div class="flex items-center bg-[#eef3f9] border border-[#a4c2f4] rounded px-3 py-1 gap-3 shadow-inner">
+                <div class="flex items-center gap-1.5 text-[#0f4c81]">
+                    <i class="fa-solid fa-compact-disc text-amber-500 text-sm animate-spin" style="animation-duration: 4s;"></i>
+                    <span class="font-bold truncate max-w-[110px] sm:max-w-[150px]" id="bgmTitle">Epik High - Fly (Retro Ver)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <button onclick="togglePlayBGM()" id="bgmPlayBtn" class="bg-[#2c599d] hover:bg-[#1a3863] text-white px-2 py-0.5 rounded text-[11px] shadow">
+                        <i class="fa-solid fa-play" id="bgmIcon"></i>
+                    </button>
+                    <select id="bgmSelect" onchange="changeBGM(this.value)" class="text-[11px] border border-[#7a9fd1] rounded bg-white px-1 py-0.5">
+                        <option value="Epik High - Fly">Epik High - Fly</option>
+                        <option value="Younha - Password 486">Younha - Password 486</option>
+                        <option value="Wonder Girls - Tell Me">Wonder Girls - Tell Me</option>
+                        <option value="Big Bang - Lies">Big Bang - Lies</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-7xl retro-window bg-[#f4f7fb] flex flex-col md:flex-row h-[84vh] overflow-hidden shadow-2xl">
+
+        <aside class="w-full md:w-72 retro-sidebar flex flex-col flex-shrink-0 border-r border-[#a4c2f4]">
+            <div class="p-3 bg-[#e4eff9] border-b border-[#b4d0f0] text-center relative">
+                <div class="w-full h-20 bg-[#dbeafe] border border-blue-300 rounded flex items-center justify-center relative overflow-hidden shadow-inner mb-2">
+                    <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#12437a_1px,transparent_1px)] [background-size:10px_10px]"></div>
+                    <div class="text-2xl select-none flex items-center gap-2">
+                        <span>👩‍💻</span><span class="text-base">☕</span><span class="text-base">🎧</span>
+                    </div>
+                    <div class="absolute bottom-1 right-1 text-[9px] text-blue-900/60 dot-font font-bold">MYDESK<3</div>
+                </div>
+                <input type="text" id="userMood" value="♫ Coding & organizing memories..." onchange="saveMood(this.value)" class="w-full text-center text-[11px] bg-yellow-50 border border-blue-200 rounded px-1 py-0.5 text-gray-700 font-semibold focus:outline-none" placeholder="Your mood...">
+            </div>
+
+            <div class="p-2 bg-[#d8e3f0] border-b border-[#a4c2f4] grid grid-cols-2 gap-1 text-xs">
+                <button id="tabBtn-documents" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-file-lines"></i> <span data-i18n="tab.docs">Docs & Pages</span>
+                </button>
+                <button id="tabBtn-todo" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-list-check"></i> <span data-i18n="tab.todo">To-Do List</span>
+                </button>
+                <button id="tabBtn-calendar" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-calendar-days"></i> <span data-i18n="tab.calendar">Calendar</span>
+                </button>
+                <button id="tabBtn-pomodoro" class="tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-clock"></i> <span data-i18n="tab.pomodoro">Focus Timer</span>
+                </button>
+            </div>
+
+            <div id="sidebarContextContainer" class="flex-1 overflow-y-auto p-2 bg-white"></div>
+
+            <div class="p-2 bg-[#eef3f9] border-t border-[#a4c2f4] flex flex-col gap-1.5 text-[11px]">
+                <div class="flex justify-between items-center gap-1">
+                    <button onclick="exportAllWorkspaceJSON()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1.5 rounded shadow flex items-center justify-center gap-1 font-bold" title="Backup entire workspace to JSON">
+                        <i class="fa-solid fa-download"></i> <span data-i18n="btn.backup">Backup</span>
+                    </button>
+                    <label class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1.5 rounded shadow cursor-pointer flex items-center justify-center gap-1 font-bold" title="Restore workspace from JSON backup">
+                        <i class="fa-solid fa-upload"></i> <span data-i18n="btn.restore">Restore</span>
+                        <input type="file" id="importFile" onchange="importWorkspaceJSON(event)" accept=".json" class="hidden">
+                    </label>
+                </div>
+                <div class="flex justify-between items-center px-1">
+                    <span class="text-gray-500 text-[10px]"><i class="fa-regular fa-circle-check text-green-500"></i> <span data-i18n="backup.fullExport">Full database export</span></span>
+                    <button onclick="resetWorkspace()" class="text-red-500 hover:underline text-[10px]" data-i18n="btn.reset">Reset</button>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col bg-white overflow-hidden relative">
+
+            <!-- ==================== DOCUMENTS (RICH TEXT) ==================== -->
+            <div id="view-documents" class="flex-1 flex flex-col h-full overflow-hidden workspace-view">
+                <div class="bg-[#f0f4f9] border-b border-[#a4c2f4] px-4 py-2.5 flex flex-wrap justify-between items-center gap-2">
+                    <div class="flex items-center gap-2 flex-1 max-w-lg">
+                        <input type="text" id="activeDocTitle" oninput="updateActiveTitle(this.value)" placeholder="Page Title..." data-i18n-placeholder="docs.pageTitle" class="font-bold text-sm sm:text-base bg-transparent border-b border-transparent hover:border-blue-300 focus:border-[#2178b5] focus:outline-none w-full text-[#12437a]">
+                    </div>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span id="saveStatus" class="text-green-600 font-bold text-[11px]" data-i18n="docs.saved">Saved locally</span>
+                        <button onclick="exportDocTxt()" class="bg-[#2c599d] hover:bg-[#1a3863] text-white px-2.5 py-1 rounded shadow flex items-center gap-1" title="Export .txt"><i class="fa-solid fa-file-arrow-down"></i> .txt</button>
+                        <button onclick="exportDocHtml()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded shadow flex items-center gap-1" title="Export .html"><i class="fa-solid fa-globe"></i> .html</button>
+                        <button onclick="exportDocJson()" class="bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1 rounded shadow flex items-center gap-1" title="Export .json"><i class="fa-solid fa-code"></i> .json</button>
+                        <button onclick="deleteActiveDocument()" class="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded shadow flex items-center gap-1" data-i18n-title="docs.delete"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <!-- MIC PERMISSION BANNER -->
+                <div id="micPermBanner" class="perm-banner hidden">
+                    <i class="fa-solid fa-microphone-slash"></i>
+                    <span id="micPermText">Microphone access required for voice recording.</span>
+                    <button onclick="requestMicPermission()" class="ml-auto bg-amber-600 hover:bg-amber-700 text-white px-2 py-0.5 rounded text-[10px] font-bold">
+                        <i class="fa-solid fa-key"></i> Grant Permission
+                    </button>
+                </div>
+
+                <!-- RICH TEXT TOOLBAR -->
+                <div class="rte-toolbar px-3 py-1.5 flex flex-wrap items-center gap-1 text-xs">
+                    <select onchange="rteExec('formatBlock', this.value); this.selectedIndex=0;" class="px-1.5 py-1 bg-white border border-gray-300 rounded text-[11px] hover:bg-gray-100">
+                        <option value="">Paragraph ▾</option>
+                        <option value="h1">Heading 1</option>
+                        <option value="h2">Heading 2</option>
+                        <option value="h3">Heading 3</option>
+                        <option value="p">Paragraph</option>
+                        <option value="pre">Code Block</option>
+                        <option value="blockquote">Quote</option>
+                    </select>
+                    <span class="text-gray-300">|</span>
+                    <button onclick="rteExec('bold')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 font-bold" title="Bold (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+                    <button onclick="rteExec('italic')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 italic" title="Italic (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+                    <button onclick="rteExec('underline')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 underline" title="Underline (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
+                    <button onclick="rteExec('strikeThrough')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 line-through" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
+                    <span class="text-gray-300">|</span>
+                    <button onclick="rteExec('insertUnorderedList')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Bullet list"><i class="fa-solid fa-list-ul"></i></button>
+                    <button onclick="rteExec('insertOrderedList')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Numbered list"><i class="fa-solid fa-list-ol"></i></button>
+                    <button onclick="rteInsertCallout()" class="px-2 py-1 bg-yellow-50 border border-yellow-300 rounded hover:bg-yellow-100 text-amber-700 font-bold" title="Callout">💡</button>
+                    <span class="text-gray-300">|</span>
+                    <button onclick="rteInsertLink()" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Hyperlink (Ctrl+K)"><i class="fa-solid fa-link text-blue-600"></i></button>
+                    <button onclick="document.getElementById('rteImageInput').click()" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Image"><i class="fa-solid fa-image text-emerald-600"></i></button>
+                    <button data-rte-table-trigger class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Table"><i class="fa-solid fa-table text-purple-600"></i></button>
+                    <button onclick="document.getElementById('rteAudioInput').click()" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Insert Audio File"><i class="fa-solid fa-music text-pink-600"></i></button>
+                    <button onclick="toggleVoiceRecording()" id="rteVoiceBtn" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Record Voice"><i class="fa-solid fa-microphone text-red-600"></i></button>
+                    <button onclick="openAudioPanel()" class="px-2 py-1 bg-blue-50 border border-blue-300 rounded hover:bg-blue-100 text-blue-700 font-bold relative" title="Open Audio Library">
+                        <i class="fa-solid fa-headphones"></i>
+                        <span id="audioCountBadge" class="absolute -top-1.5 -right-1.5 bg-[#ff6600] text-white text-[9px] rounded-full px-1.5 min-w-[16px] text-center font-bold">0</span>
+                    </button>
+                    <span class="text-gray-300">|</span>
+                    <button onclick="rteExec('undo')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+                    <button onclick="rteExec('redo')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+                    <button onclick="rteExec('removeFormat')" class="px-2 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100" title="Clear formatting"><i class="fa-solid fa-eraser"></i></button>
+                    <span class="text-gray-300">|</span>
+                    <button onclick="rteInsertEmotion('★')" class="px-2 py-1 bg-yellow-50 border border-yellow-300 rounded text-amber-700 font-bold">★</button>
+                    <button onclick="rteInsertEmotion('♪')" class="px-2 py-1 bg-yellow-50 border border-yellow-300 rounded text-amber-700 font-bold">♪</button>
+
+                    <input type="file" id="rteImageInput" accept="image/*" class="hidden" onchange="handleRteImage(event)">
+                    <input type="file" id="rteAudioInput" accept="audio/*" class="hidden" onchange="handleRteAudio(event)">
+
+                    <span id="rteTableForm" class="hidden ml-1 bg-blue-50 border border-blue-300 rounded px-2 py-0.5 flex items-center gap-1">
+                        <input type="number" id="rteTableRows" value="3" min="1" max="20" class="w-10 text-center text-[11px] border border-gray-300 rounded px-0.5">
+                        <span class="text-[10px]">×</span>
+                        <input type="number" id="rteTableCols" value="3" min="1" max="10" class="w-10 text-center text-[11px] border border-gray-300 rounded px-0.5">
+                        <button onclick="rteInsertTable()" class="bg-purple-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">Insert</button>
+                        <button onclick="document.getElementById('rteTableForm').classList.add('hidden')" class="text-gray-500 text-[10px] px-1">✕</button>
+                    </span>
+                </div>
+
+                <div class="flex-1 bg-white overflow-hidden relative" style="min-height: 0;">
+                    <div id="rteEditor" class="rte-editor" contenteditable="true" data-placeholder="Write notes Notion-style..."></div>
+                </div>
+
+                <!-- AUDIO PLAYER PANEL (collapsible) -->
+                <div id="audioPanel" class="audio-panel hidden">
+                    <div class="px-4 py-2 flex justify-between items-center border-b border-[#b4d0f0]">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-headphones text-[#2c599d]"></i>
+                            <span class="font-bold text-xs text-[#12437a]">Audio Library</span>
+                            <span id="audioPanelCount" class="text-[10px] text-gray-500 bg-white px-2 py-0.5 rounded-full border border-[#a4c2f4]">0 tracks</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button onclick="scanAudioFromDocs()" class="text-[10px] bg-white border border-[#7a9fd1] text-[#12437a] px-2 py-0.5 rounded hover:bg-blue-50 font-bold" title="Refresh from documents">
+                                <i class="fa-solid fa-rotate"></i> Refresh
+                            </button>
+                            <button onclick="closeAudioPanel()" class="text-gray-500 hover:text-red-500 text-xs font-bold px-1">✕</button>
+                        </div>
+                    </div>
+                    <div id="audioPanelList" class="p-3 space-y-2 overflow-y-auto" style="max-height: 200px;">
+                        <!-- Audio tracks populated dynamically -->
+                    </div>
+                </div>
+
+                <div class="bg-[#f0f4f9] border-t border-[#a4c2f4] px-4 py-1.5 flex justify-between items-center text-[11px] text-gray-500">
+                    <span id="docStats">0 words | 0 characters | 0 lines</span>
+                    <span id="rteVoiceStatus"></span>
+                    <span data-i18n="docs.footer">MYDESK Notion Docs • Offline Mode</span>
+                </div>
+
+                <!-- GLOBAL AUDIO PLAYER (fixed at bottom of documents view) -->
+                <div id="globalPlayer" class="global-player hidden">
+                    <div class="gp-play" onclick="toggleGlobalPlay()">
+                        <i class="fa-solid fa-play" id="gpPlayIcon"></i>
+                    </div>
+                    <div class="gp-info">
+                        <div class="gp-title" id="gpTitle">No track selected</div>
+                        <div class="gp-time" id="gpTime">0:00 / 0:00</div>
+                        <div class="gp-progress" onclick="seekGlobalAudio(event)">
+                            <div class="gp-progress-bar" id="gpProgressBar"></div>
+                        </div>
+                    </div>
+                    <div class="gp-controls">
+                        <div class="gp-btn" onclick="globalAudioSkip(-5)" title="-5s"><i class="fa-solid fa-rotate-left"></i></div>
+                        <div class="gp-btn" onclick="globalAudioSkip(5)" title="+5s"><i class="fa-solid fa-rotate-right"></i></div>
+                        <div class="gp-btn" onclick="toggleGlobalLoop()" id="gpLoopBtn" title="Loop"><i class="fa-solid fa-repeat"></i></div>
+                        <div class="gp-btn" onclick="globalAudioVolume(0)" title="Mute"><i class="fa-solid fa-volume-xmark" id="gpVolIcon"></i></div>
+                        <div class="gp-volume">
+                            <input type="range" id="gpVolumeSlider" min="0" max="100" value="100" onchange="globalAudioVolume(this.value)" oninput="globalAudioVolume(this.value)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TODO -->
+            <div id="view-todo" class="flex-1 flex flex-col h-full overflow-hidden workspace-view hidden bg-[#fcfdff]">
+                <div class="bg-[#f0f4f9] border-b border-[#a4c2f4] px-4 py-3 flex justify-between items-center flex-wrap gap-2">
+                    <div>
+                        <h2 class="font-bold text-sm text-[#12437a] flex items-center gap-1.5"><i class="fa-solid fa-list-check text-blue-600"></i> <span data-i18n="todo.title">MYDESK Task Manager & To-Do Board</span></h2>
+                        <p class="text-[11px] text-gray-500" data-i18n="todo.subtitle">Organize your daily tasks, projects, and goals with priority tags.</p>
+                    </div>
+                    <button onclick="openNewTaskModal()" class="bg-[#2c599d] hover:bg-[#1a3863] text-white px-3 py-1.5 rounded text-xs shadow flex items-center gap-1 font-bold">
+                        <i class="fa-solid fa-plus"></i> <span data-i18n="todo.addTask">Add Task</span>
+                    </button>
+                </div>
+                <div class="p-4 flex-1 overflow-y-auto">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4 bg-[#eef3f9] p-2.5 rounded border border-[#a4c2f4] text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-gray-700" data-i18n="todo.filter">Filter:</span>
+                            <button onclick="filterTasks('all')" id="filter-all" class="px-2 py-1 bg-[#2c599d] text-white rounded font-bold" data-i18n="todo.all">All</button>
+                            <button onclick="filterTasks('active')" id="filter-active" class="px-2 py-1 bg-white border border-gray-300 rounded text-gray-700" data-i18n="todo.active">Active</button>
+                            <button onclick="filterTasks('completed')" id="filter-completed" class="px-2 py-1 bg-white border border-gray-300 rounded text-gray-700" data-i18n="todo.completed">Completed</button>
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-600 font-semibold">
+                            <span><span data-i18n="todo.total">Total</span>: <span id="taskCountTotal">0</span></span>
+                            <span><span data-i18n="todo.done">Done</span>: <span id="taskCountDone" class="text-green-600">0</span></span>
+                        </div>
+                    </div>
+                    <div id="tasksListContainer" class="space-y-2"></div>
+                </div>
+            </div>
+
+            <!-- CALENDAR -->
+            <div id="view-calendar" class="flex-1 flex flex-col h-full overflow-hidden workspace-view hidden bg-[#fcfdff]">
+                <div class="bg-[#f0f4f9] border-b border-[#a4c2f4] px-4 py-3 flex justify-between items-center flex-wrap gap-2">
+                    <div>
+                        <h2 class="font-bold text-sm text-[#12437a] flex items-center gap-1.5"><i class="fa-solid fa-calendar-days text-blue-600"></i> <span data-i18n="cal.title">MYDESK Retro Calendar</span></h2>
+                        <p class="text-[11px] text-gray-500" data-i18n="cal.subtitle">Click the month/year below to jump quickly. Click a date to add notes.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="changeMonth(-1)" class="bg-white border border-[#7a9fd1] px-2.5 py-1 rounded text-xs hover:bg-gray-100 font-bold" data-i18n-title="cal.prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button id="calendarMonthTitle" onclick="toggleJumpPanel()" class="month-title-btn bg-white border border-[#7a9fd1] hover:bg-blue-50 px-3 py-1 rounded font-bold text-xs sm:text-sm text-[#12437a] min-w-[140px] text-center flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+                            <i class="fa-solid fa-magnifying-glass text-[10px] text-blue-600"></i>
+                            <span id="calendarMonthTitleText">October 2026</span>
+                            <i class="fa-solid fa-caret-down text-[10px] text-blue-600"></i>
+                        </button>
+                        <button onclick="changeMonth(1)" class="bg-white border border-[#7a9fd1] px-2.5 py-1 rounded text-xs hover:bg-gray-100 font-bold" data-i18n-title="cal.nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div id="jumpPanel" class="hidden jump-panel bg-[#eef3f9] border-b border-[#a4c2f4] px-4 py-3">
+                    <div class="max-w-3xl mx-auto">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11px] font-bold text-[#12437a] flex items-center gap-1">
+                                <i class="fa-solid fa-bolt text-amber-500"></i> <span data-i18n="cal.jumpPanelTitle">Quick Jump — Year & Month</span>
+                            </span>
+                            <button onclick="closeJumpPanel()" class="text-gray-500 hover:text-red-500 text-xs font-bold px-1">✕ <span data-i18n="cal.close">Close</span></button>
+                        </div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <label class="text-[11px] font-bold text-gray-600 w-12" data-i18n="cal.year">Year:</label>
+                            <div class="flex items-center gap-1.5 flex-wrap" id="yearQuickRow"></div>
+                            <div class="flex items-center gap-1 ml-auto">
+                                <button onclick="jumpYear(-1)" class="bg-white border border-[#7a9fd1] hover:bg-blue-50 rounded w-7 h-7 text-xs font-bold">−</button>
+                                <input type="number" id="jumpYearInput" min="1900" max="2200" class="w-20 text-center text-xs px-2 py-1 border border-[#7a9fd1] rounded bg-white focus:outline-none" onchange="jumpToYear(this.value)">
+                                <button onclick="jumpYear(1)" class="bg-white border border-[#7a9fd1] hover:bg-blue-50 rounded w-7 h-7 text-xs font-bold">+</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-1.5" id="monthQuickGrid"></div>
+                        <div class="mt-3 flex justify-end">
+                            <button onclick="jumpToToday()" class="bg-[#ff6600] hover:bg-orange-600 text-white px-3 py-1 rounded text-[11px] font-bold shadow flex items-center gap-1">
+                                <i class="fa-solid fa-crosshairs"></i> <span data-i18n="cal.jumpToday">Jump to Today</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 flex-1 overflow-y-auto flex flex-col">
+                    <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs text-[#12437a] bg-[#eef3f9] p-2 rounded-t border border-[#a4c2f4]" id="weekdayHeader">
+                        <span class="text-red-500" data-i18n="day.sun">Sun</span><span data-i18n="day.mon">Mon</span><span data-i18n="day.tue">Tue</span><span data-i18n="day.wed">Wed</span><span data-i18n="day.thu">Thu</span><span data-i18n="day.fri">Fri</span><span class="text-blue-500" data-i18n="day.sat">Sat</span>
+                    </div>
+                    <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1 flex-1 auto-rows-fr bg-gray-100 p-1 border-x border-b border-[#a4c2f4] rounded-b min-h-[350px]"></div>
+                </div>
+            </div>
+
+            <!-- POMODORO -->
+            <div id="view-pomodoro" class="flex-1 flex-col h-full overflow-hidden workspace-view hidden bg-[#fcfdff] items-center justify-center p-6">
+                <div class="w-full max-w-md bg-[#f0f4f9] border border-[#a4c2f4] rounded-lg p-6 shadow-xl text-center">
+                    <div class="flex justify-center items-center gap-2 mb-4">
+                        <div class="bg-[#ff6600] text-white px-3 py-1 rounded-full text-xs font-bold dot-font"><i class="fa-solid fa-clock"></i> <span data-i18n="pomo.title">Pomodoro Focus Timer</span></div>
+                    </div>
+                    <div class="flex justify-center gap-2 mb-6 text-xs flex-wrap">
+                        <button onclick="setPomoMode('work')" id="pomoMode-work" class="px-3 py-1.5 rounded font-bold bg-[#2c599d] text-white shadow" data-i18n="pomo.work">Work (25m)</button>
+                        <button onclick="setPomoMode('shortBreak')" id="pomoMode-shortBreak" class="px-3 py-1.5 rounded font-bold bg-white border border-gray-300 text-gray-700" data-i18n="pomo.shortBreak">Short Break (5m)</button>
+                        <button onclick="setPomoMode('longBreak')" id="pomoMode-longBreak" class="px-3 py-1.5 rounded font-bold bg-white border border-gray-300 text-gray-700" data-i18n="pomo.longBreak">Long Break (15m)</button>
+                    </div>
+                    <div class="bg-white border-2 border-[#7a9fd1] rounded-xl p-6 shadow-inner mb-6">
+                        <div id="pomoClockDisplay" class="mono-font text-5xl sm:text-6xl font-bold text-[#12437a] tracking-wider">25:00</div>
+                        <div id="pomoStatusText" class="text-xs text-gray-500 mt-2 font-semibold" data-i18n="pomo.ready">Ready to focus & stay productive</div>
+                    </div>
+                    <div class="flex justify-center items-center gap-3 mb-6 flex-wrap">
+                        <button onclick="startPomodoro()" id="pomoStartBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-1.5">
+                            <i class="fa-solid fa-play"></i> <span data-i18n="pomo.start">Start</span>
+                        </button>
+                        <button onclick="pausePomodoro()" id="pomoPauseBtn" class="bg-amber-600 hover:bg-amber-700 text-white px-5 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-1.5 hidden">
+                            <i class="fa-solid fa-pause"></i> <span data-i18n="pomo.pause">Pause</span>
+                        </button>
+                        <button onclick="resetPomodoro()" class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-1.5">
+                            <i class="fa-solid fa-rotate-right"></i> <span data-i18n="pomo.reset">Reset</span>
+                        </button>
+                    </div>
+                    <div class="text-xs text-gray-600 font-semibold bg-[#eef3f9] p-2.5 rounded border border-[#b4d0f0]">
+                        <span data-i18n="pomo.completedToday">Completed Focus Sessions Today:</span> <span id="pomoCompletedCount" class="text-[#ff6600] font-bold text-sm">0</span> 🌟
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Task Modal -->
+    <div id="taskModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="retro-titlebar">
+                <span id="taskModalTitle" data-i18n="modal.task.addTitle">Add New Task</span>
+                <button onclick="closeTaskModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
+            </div>
+            <div class="p-4 space-y-3 text-xs">
+                <input type="hidden" id="taskIdEdit">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1" data-i18n="modal.task.titleLabel">Task Title:</label>
+                    <input type="text" id="taskInputTitle" placeholder="e.g. Finish MYDESK homepage design..." data-i18n-placeholder="modal.task.titlePlaceholder" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1" data-i18n="modal.task.priorityLabel">Priority:</label>
+                        <select id="taskInputPriority" class="w-full px-2 py-1.5 border border-[#7a9fd1] rounded bg-white">
+                            <option value="High" data-i18n="modal.task.high">🔴 High Priority</option>
+                            <option value="Medium" selected data-i18n="modal.task.medium">🟡 Medium Priority</option>
+                            <option value="Low" data-i18n="modal.task.low">🟢 Low Priority</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1" data-i18n="modal.task.categoryLabel">Category:</label>
+                        <input type="text" id="taskInputCategory" value="General" data-i18n-value="modal.task.categoryDefault" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1" data-i18n="modal.task.dueLabel">Due Date / Notes:</label>
+                    <input type="text" id="taskInputDue" placeholder="e.g. Tomorrow / 5pm" data-i18n-placeholder="modal.task.duePlaceholder" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button onclick="closeTaskModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold" data-i18n="modal.cancel">Cancel</button>
+                    <button onclick="saveTaskFromModal()" class="bg-[#2c599d] hover:bg-[#1a3863] text-white px-4 py-1.5 rounded font-bold shadow" data-i18n="modal.task.save">Save Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar Modal -->
+    <div id="calModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="retro-titlebar">
+                <span id="calModalDateTitle">Calendar Entry</span>
+                <button onclick="closeCalModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
+            </div>
+            <div class="p-4 space-y-3 text-xs">
+                <input type="hidden" id="calModalDateKey">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1" data-i18n="modal.cal.notesLabel">Diary Entry / Event Notes:</label>
+                    <textarea id="calModalText" rows="4" placeholder="Write thoughts, appointments, or diary notes for this day..." data-i18n-placeholder="modal.cal.notesPlaceholder" class="w-full p-2.5 border border-[#7a9fd1] rounded bg-white focus:outline-none resize-none"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button onclick="closeCalModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold" data-i18n="modal.cancel">Cancel</button>
+                    <button onclick="saveCalEvent()" class="bg-[#2c599d] hover:bg-[#1a3863] text-white px-4 py-1.5 rounded font-bold shadow" data-i18n="modal.cal.save">Save Entry</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link Modal -->
+    <div id="linkModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="retro-titlebar">
+                <span>🔗 Insert Hyperlink</span>
+                <button onclick="closeLinkModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
+            </div>
+            <div class="p-4 space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Display Text:</label>
+                    <input type="text" id="linkTextInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="Link text...">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">URL:</label>
+                    <input type="text" id="linkUrlInput" class="w-full px-3 py-1.5 border border-[#7a9fd1] rounded bg-white focus:outline-none" placeholder="https://example.com">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button onclick="closeLinkModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold">Cancel</button>
+                    <button onclick="insertLinkFromModal()" class="bg-[#2c599d] hover:bg-[#1a3863] text-white px-4 py-1.5 rounded font-bold shadow">Insert Link</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Microphone Permission Modal -->
+    <div id="micPermModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white border-2 border-[#5579b1] rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="retro-titlebar">
+                <span>🎤 Microphone Permission Required</span>
+                <button onclick="closeMicPermModal()" class="text-white hover:text-red-200 font-bold px-1.5">✕</button>
+            </div>
+            <div class="p-5 space-y-3 text-xs text-gray-700">
+                <div class="flex items-start gap-3">
+                    <div class="bg-amber-100 text-amber-700 rounded-full p-2 flex-shrink-0">
+                        <i class="fa-solid fa-microphone-slash text-lg"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-800 mb-1">We need microphone access to record voice notes.</p>
+                        <p class="text-[11px] text-gray-600">Your browser will ask you to allow microphone access. Look for a popup near the address bar.</p>
+                    </div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded p-3 text-[11px] space-y-1">
+                    <div class="font-bold text-blue-900">📋 How to enable:</div>
+                    <ul class="list-disc list-inside text-gray-700 space-y-0.5">
+                        <li>Click the button below</li>
+                        <li>When your browser asks, click <b>Allow</b></li>
+                        <li>If it doesn't appear, click the 🔒 icon next to the URL</li>
+                        <li>Set Microphone to <b>Allow</b> and reload the page</li>
+                    </ul>
+                </div>
+                <div id="micPermStatus" class="text-[11px] text-center font-bold"></div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button onclick="closeMicPermModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1.5 rounded font-bold">Later</button>
+                    <button onclick="requestMicPermission(true)" class="bg-[#2c599d] hover:bg-[#1a3863] text-white px-4 py-1.5 rounded font-bold shadow flex items-center gap-1">
+                        <i class="fa-solid fa-key"></i> Grant Microphone Access
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-900 text-white text-xs px-3 py-2 rounded shadow-lg hidden z-50"></div>
+
+    <script>
+        // ================================================================
+        // TRANSLATIONS
+        // ================================================================
+        const TRANSLATIONS = {
+            en: {
+                'header.today': 'TODAY', 'header.total': 'TOTAL', 'header.backupReady': 'BACKUP READY',
+                'tab.docs': 'Docs & Pages', 'tab.todo': 'To-Do List', 'tab.calendar': 'Calendar', 'tab.pomodoro': 'Focus Timer',
+                'btn.backup': 'Backup', 'btn.restore': 'Restore', 'btn.reset': 'Reset', 'backup.fullExport': 'Full database export',
+                'docs.pageTitle': 'Page Title...', 'docs.saved': 'Saved locally', 'docs.body': 'Write notes Notion-style...',
+                'docs.footer': 'MYDESK Notion Docs • Offline Mode', 'docs.delete': 'Delete page',
+                'docs.statsFormat': '{words} words | {chars} characters | {lines} lines',
+                'docs.newPageTitle': 'New Notion Page ★', 'docs.newPageBody': '',
+                'docs.untitled': 'Untitled Page', 'docs.emptyNote': 'Empty note...', 'docs.noPages': 'No pages found.',
+                'docs.searchPlaceholder': 'Search pages...', 'docs.workspacePages': 'Workspace Pages', 'docs.newPage': 'New Page',
+                'todo.title': 'MYDESK Task Manager & To-Do Board', 'todo.subtitle': 'Organize your daily tasks, projects, and goals with priority tags.',
+                'todo.addTask': 'Add Task', 'todo.filter': 'Filter:', 'todo.all': 'All', 'todo.active': 'Active', 'todo.completed': 'Completed',
+                'todo.total': 'Total', 'todo.done': 'Done', 'todo.noTasks': 'No tasks found. Click "Add Task" to create one.',
+                'todo.quickSummary': 'Task Quick Summary', 'todo.activeTasks': 'Active Tasks:', 'todo.completedTasks': 'Completed:', 'todo.addTaskShort': 'Add Task +',
+                'cal.title': 'MYDESK Retro Calendar', 'cal.subtitle': 'Click the month/year below to jump quickly. Click a date to add notes.',
+                'cal.prevMonth': 'Previous month', 'cal.nextMonth': 'Next month', 'cal.jumpTitle': 'Click to jump to a different month or year',
+                'cal.jumpPanelTitle': 'Quick Jump — Year & Month', 'cal.close': 'Close', 'cal.year': 'Year:', 'cal.jumpToday': 'Jump to Today',
+                'cal.quickJump': 'Calendar Quick Jump', 'cal.quickJumpHint': 'Use the month/year title to open the quick jump panel.',
+                'cal.quickJumpHint2': 'Click dates to add diary entries & events.', 'cal.entryTitle': 'Calendar Entry',
+                'day.sun': 'Sun', 'day.mon': 'Mon', 'day.tue': 'Tue', 'day.wed': 'Wed', 'day.thu': 'Thu', 'day.fri': 'Fri', 'day.sat': 'Sat',
+                'pomo.title': 'Pomodoro Focus Timer', 'pomo.work': 'Work (25m)', 'pomo.shortBreak': 'Short Break (5m)', 'pomo.longBreak': 'Long Break (15m)',
+                'pomo.ready': 'Ready to focus & stay productive', 'pomo.focusInProgress': 'Focus session in progress...', 'pomo.breakInProgress': 'Break time in progress...',
+                'pomo.paused': 'Timer paused', 'pomo.start': 'Start', 'pomo.pause': 'Pause', 'pomo.reset': 'Reset', 'pomo.completedToday': 'Completed Focus Sessions Today:',
+                'pomo.focusComplete': 'Focus session completed! Great job! Take a short break.', 'pomo.breakComplete': 'Break time finished! Ready for another focus session?',
+                'pomo.focusTips': 'Focus Tips', 'pomo.tip1': '<b>Pomodoro Technique:</b> 25 mins deep work, 5 mins break.', 'pomo.tip2': '♪ Play Jukebox music while working!',
+                'modal.cancel': 'Cancel', 'modal.task.addTitle': 'Add New Task', 'modal.task.editTitle': 'Edit Task', 'modal.task.titleLabel': 'Task Title:',
+                'modal.task.titlePlaceholder': 'e.g. Finish MYDESK homepage design...', 'modal.task.priorityLabel': 'Priority:',
+                'modal.task.high': '🔴 High Priority', 'modal.task.medium': '🟡 Medium Priority', 'modal.task.low': '🟢 Low Priority',
+                'modal.task.categoryLabel': 'Category:', 'modal.task.categoryDefault': 'General', 'modal.task.dueLabel': 'Due Date / Notes:',
+                'modal.task.duePlaceholder': 'e.g. Tomorrow / 5pm', 'modal.task.save': 'Save Task', 'modal.task.enterTitle': 'Please enter a task title.',
+                'modal.cal.notesLabel': 'Diary Entry / Event Notes:', 'modal.cal.notesPlaceholder': 'Write thoughts, appointments, or diary notes for this day...',
+                'modal.cal.save': 'Save Entry',
+                'alert.restored': '✅ Full workspace restored successfully!', 'alert.invalidBackup': '❌ Invalid backup file: missing required documents or tasks array.',
+                'alert.parseError': '❌ Error parsing JSON backup file.', 'alert.resetConfirm': 'Are you sure you want to reset the entire workspace to default templates?',
+                'alert.keepOnePage': 'You must keep at least one page!', 'alert.backupDownloaded': '✅ Backup downloaded!', 'alert.yearRange': 'Please enter a year between 1900 and 2200.',
+                'lang.name': 'English'
+            },
+            zh: {
+                'header.today': '今日', 'header.total': '总计', 'header.backupReady': '备份就绪',
+                'tab.docs': '文档与页面', 'tab.todo': '待办清单', 'tab.calendar': '日历', 'tab.pomodoro': '专注计时',
+                'btn.backup': '备份', 'btn.restore': '恢复', 'btn.reset': '重置', 'backup.fullExport': '完整数据库导出',
+                'docs.pageTitle': '页面标题...', 'docs.saved': '已保存到本地', 'docs.body': '以 Notion 风格撰写笔记...',
+                'docs.footer': 'MYDESK Notion 文档 • 离线模式', 'docs.delete': '删除页面',
+                'docs.statsFormat': '{words} 词 | {chars} 字符 | {lines} 行',
+                'docs.newPageTitle': '新 Notion 页面 ★', 'docs.newPageBody': '',
+                'docs.untitled': '未命名页面', 'docs.emptyNote': '空笔记...', 'docs.noPages': '未找到页面。',
+                'docs.searchPlaceholder': '搜索页面...', 'docs.workspacePages': '工作区页面', 'docs.newPage': '新建页面',
+                'todo.title': 'MYDESK 任务管理器与待办看板', 'todo.subtitle': '使用优先级标签管理每日任务、项目与目标。',
+                'todo.addTask': '添加任务', 'todo.filter': '筛选：', 'todo.all': '全部', 'todo.active': '进行中', 'todo.completed': '已完成',
+                'todo.total': '总计', 'todo.done': '已完成', 'todo.noTasks': '未找到任务。点击"添加任务"创建一个。',
+                'todo.quickSummary': '任务快速摘要', 'todo.activeTasks': '进行中任务：', 'todo.completedTasks': '已完成：', 'todo.addTaskShort': '添加任务 +',
+                'cal.title': 'MYDESK 复古日历', 'cal.subtitle': '点击下方的月份/年份可快速跳转。点击日期添加备注。',
+                'cal.prevMonth': '上个月', 'cal.nextMonth': '下个月', 'cal.jumpTitle': '点击跳转到其他月份或年份',
+                'cal.jumpPanelTitle': '快速跳转 — 年份与月份', 'cal.close': '关闭', 'cal.year': '年份：', 'cal.jumpToday': '跳到今天',
+                'cal.quickJump': '日历快速跳转', 'cal.quickJumpHint': '使用月份/年份标题打开快速跳转面板。',
+                'cal.quickJumpHint2': '点击日期添加日记与事件。', 'cal.entryTitle': '日历条目',
+                'day.sun': '日', 'day.mon': '一', 'day.tue': '二', 'day.wed': '三', 'day.thu': '四', 'day.fri': '五', 'day.sat': '六',
+                'pomo.title': '番茄专注计时器', 'pomo.work': '工作 (25分钟)', 'pomo.shortBreak': '短休息 (5分钟)', 'pomo.longBreak': '长休息 (15分钟)',
+                'pomo.ready': '准备专注并保持高效', 'pomo.focusInProgress': '专注进行中...', 'pomo.breakInProgress': '休息进行中...',
+                'pomo.paused': '计时已暂停', 'pomo.start': '开始', 'pomo.pause': '暂停', 'pomo.reset': '重置', 'pomo.completedToday': '今日完成的专注时段：',
+                'pomo.focusComplete': '专注时段完成！做得好！休息一下吧。', 'pomo.breakComplete': '休息结束！准备开始下一个专注时段了吗？',
+                'pomo.focusTips': '专注提示', 'pomo.tip1': '<b>番茄工作法：</b>25 分钟深度工作，5 分钟休息。', 'pomo.tip2': '♪ 工作时播放点唱机音乐！',
+                'modal.cancel': '取消', 'modal.task.addTitle': '添加新任务', 'modal.task.editTitle': '编辑任务', 'modal.task.titleLabel': '任务标题：',
+                'modal.task.titlePlaceholder': '例如：完成 MYDESK 主页设计...', 'modal.task.priorityLabel': '优先级：',
+                'modal.task.high': '🔴 高优先级', 'modal.task.medium': '🟡 中优先级', 'modal.task.low': '🟢 低优先级',
+                'modal.task.categoryLabel': '分类：', 'modal.task.categoryDefault': '常规', 'modal.task.dueLabel': '截止日期 / 备注：',
+                'modal.task.duePlaceholder': '例如：明天 / 下午5点', 'modal.task.save': '保存任务', 'modal.task.enterTitle': '请输入任务标题。',
+                'modal.cal.notesLabel': '日记 / 事件备注：', 'modal.cal.notesPlaceholder': '写下今天的想法、约会或日记...',
+                'modal.cal.save': '保存条目',
+                'alert.restored': '✅ 工作区已成功恢复！', 'alert.invalidBackup': '❌ 无效的备份文件：缺少文档或任务数组。',
+                'alert.parseError': '❌ 解析 JSON 备份文件时出错。', 'alert.resetConfirm': '确定要将整个工作区重置为默认模板吗？',
+                'alert.keepOnePage': '您必须至少保留一个页面！', 'alert.backupDownloaded': '✅ 备份已下载！', 'alert.yearRange': '请输入 1900 至 2200 之间的年份。',
+                'lang.name': '中文'
+            },
+            ja: {
+                'header.today': '今日', 'header.total': '累計', 'header.backupReady': 'バックアップ準備完了',
+                'tab.docs': 'ドキュメント', 'tab.todo': 'To-Do リスト', 'tab.calendar': 'カレンダー', 'tab.pomodoro': '集中タイマー',
+                'btn.backup': 'バックアップ', 'btn.restore': '復元', 'btn.reset': 'リセット', 'backup.fullExport': 'データベース全体をエクスポート',
+                'docs.pageTitle': 'ページタイトル...', 'docs.saved': 'ローカルに保存済み', 'docs.body': 'Notion 風にメモを書く...',
+                'docs.footer': 'MYDESK Notion ドキュメント • オフラインモード', 'docs.delete': 'ページを削除',
+                'docs.statsFormat': '{words} 語 | {chars} 文字 | {lines} 行',
+                'docs.newPageTitle': '新しい Notion ページ ★', 'docs.newPageBody': '',
+                'docs.untitled': '無題のページ', 'docs.emptyNote': '空のメモ...', 'docs.noPages': 'ページが見つかりません。',
+                'docs.searchPlaceholder': 'ページを検索...', 'docs.workspacePages': 'ワークスペースページ', 'docs.newPage': '新規ページ',
+                'todo.title': 'MYDESK タスク管理 & To-Do ボード', 'todo.subtitle': '優先度タグで毎日のタスク・プロジェクト・目標を整理。',
+                'todo.addTask': 'タスク追加', 'todo.filter': 'フィルター：', 'todo.all': 'すべて', 'todo.active': '未完了', 'todo.completed': '完了',
+                'todo.total': '合計', 'todo.done': '完了', 'todo.noTasks': 'タスクが見つかりません。「タスク追加」をクリックして作成してください。',
+                'todo.quickSummary': 'タスク概要', 'todo.activeTasks': '未完了タスク：', 'todo.completedTasks': '完了：', 'todo.addTaskShort': 'タスク追加 +',
+                'cal.title': 'MYDESK レトロカレンダー', 'cal.subtitle': '下の月/年をクリックして素早く移動。日付をクリックしてメモを追加。',
+                'cal.prevMonth': '前月', 'cal.nextMonth': '翌月', 'cal.jumpTitle': 'クリックして別の月や年に移動',
+                'cal.jumpPanelTitle': 'クイックジャンプ — 年と月', 'cal.close': '閉じる', 'cal.year': '年：', 'cal.jumpToday': '今日にジャンプ',
+                'cal.quickJump': 'カレンダークイックジャンプ', 'cal.quickJumpHint': '月/年のタイトルを使ってクイックジャンプパネルを開きます。',
+                'cal.quickJumpHint2': '日付をクリックして日記やイベントを追加。', 'cal.entryTitle': 'カレンダー項目',
+                'day.sun': '日', 'day.mon': '月', 'day.tue': '火', 'day.wed': '水', 'day.thu': '木', 'day.fri': '金', 'day.sat': '土',
+                'pomo.title': 'ポモドーロ集中タイマー', 'pomo.work': '作業 (25分)', 'pomo.shortBreak': '短休憩 (5分)', 'pomo.longBreak': '長休憩 (15分)',
+                'pomo.ready': '集中して生産的に過ごす準備', 'pomo.focusInProgress': '集中セッション進行中...', 'pomo.breakInProgress': '休憩時間中...',
+                'pomo.paused': 'タイマー一時停止', 'pomo.start': '開始', 'pomo.pause': '一時停止', 'pomo.reset': 'リセット', 'pomo.completedToday': '今日の完了集中セッション：',
+                'pomo.focusComplete': '集中セッション完了！お疲れ様！少し休憩しましょう。', 'pomo.breakComplete': '休憩終了！次の集中セッションの準備はいいですか？',
+                'pomo.focusTips': '集中のヒント', 'pomo.tip1': '<b>ポモドーロ・テクニック：</b>25 分の深い作業、5 分の休憩。', 'pomo.tip2': '♪ 作業中はジュークボックスの音楽を！',
+                'modal.cancel': 'キャンセル', 'modal.task.addTitle': '新規タスク追加', 'modal.task.editTitle': 'タスク編集', 'modal.task.titleLabel': 'タスク名：',
+                'modal.task.titlePlaceholder': '例：MYDESK ホームページのデザインを完成...', 'modal.task.priorityLabel': '優先度：',
+                'modal.task.high': '🔴 高優先度', 'modal.task.medium': '🟡 中優先度', 'modal.task.low': '🟢 低優先度',
+                'modal.task.categoryLabel': 'カテゴリ：', 'modal.task.categoryDefault': '一般', 'modal.task.dueLabel': '期限 / メモ：',
+                'modal.task.duePlaceholder': '例：明日 / 17時', 'modal.task.save': 'タスク保存', 'modal.task.enterTitle': 'タスク名を入力してください。',
+                'modal.cal.notesLabel': '日記 / イベントメモ：', 'modal.cal.notesPlaceholder': 'この日の考え、予定、日記を書く...',
+                'modal.cal.save': '項目を保存',
+                'alert.restored': '✅ ワークスペースが正常に復元されました！', 'alert.invalidBackup': '❌ 無効なバックアップファイル：ドキュメントまたはタスク配列がありません。',
+                'alert.parseError': '❌ JSON バックアップファイルの解析エラー。', 'alert.resetConfirm': 'ワークスペース全体をデフォルトテンプレートにリセットしてもよろしいですか？',
+                'alert.keepOnePage': '少なくとも 1 ページは残す必要があります！', 'alert.backupDownloaded': '✅ バックアップをダウンロードしました！', 'alert.yearRange': '1900 から 2200 の間の年を入力してください。',
+                'lang.name': '日本語'
+            },
+            ko: {
+                'header.today': '오늘', 'header.total': '전체', 'header.backupReady': '백업 준비됨',
+                'tab.docs': '문서 & 페이지', 'tab.todo': '할 일 목록', 'tab.calendar': '캘린더', 'tab.pomodoro': '집중 타이머',
+                'btn.backup': '백업', 'btn.restore': '복원', 'btn.reset': '초기화', 'backup.fullExport': '전체 데이터베이스 내보내기',
+                'docs.pageTitle': '페이지 제목...', 'docs.saved': '로컬에 저장됨', 'docs.body': 'Notion 스타일로 메모 작성...',
+                'docs.footer': 'MYDESK Notion 문서 • 오프라인 모드', 'docs.delete': '페이지 삭제',
+                'docs.statsFormat': '{words} 단어 | {chars} 문자 | {lines} 줄',
+                'docs.newPageTitle': '새 Notion 페이지 ★', 'docs.newPageBody': '',
+                'docs.untitled': '제목 없는 페이지', 'docs.emptyNote': '빈 메모...', 'docs.noPages': '페이지를 찾을 수 없습니다.',
+                'docs.searchPlaceholder': '페이지 검색...', 'docs.workspacePages': '워크스페이스 페이지', 'docs.newPage': '새 페이지',
+                'todo.title': 'MYDESK 작업 관리자 & 할 일 보드', 'todo.subtitle': '우선순위 태그로 일일 작업, 프로젝트, 목표를 정리하세요.',
+                'todo.addTask': '작업 추가', 'todo.filter': '필터:', 'todo.all': '전체', 'todo.active': '진행 중', 'todo.completed': '완료',
+                'todo.total': '전체', 'todo.done': '완료', 'todo.noTasks': '작업이 없습니다. "작업 추가"를 클릭하여 만드세요.',
+                'todo.quickSummary': '작업 빠른 요약', 'todo.activeTasks': '진행 중 작업:', 'todo.completedTasks': '완료:', 'todo.addTaskShort': '작업 추가 +',
+                'cal.title': 'MYDESK 레트로 캘린더', 'cal.subtitle': '아래 월/년을 클릭하여 빠르게 이동하세요. 날짜를 클릭하여 메모 추가.',
+                'cal.prevMonth': '이전 달', 'cal.nextMonth': '다음 달', 'cal.jumpTitle': '다른 월 또는 연도로 이동하려면 클릭',
+                'cal.jumpPanelTitle': '빠른 이동 — 년 & 월', 'cal.close': '닫기', 'cal.year': '년:', 'cal.jumpToday': '오늘로 이동',
+                'cal.quickJump': '캘린더 빠른 이동', 'cal.quickJumpHint': '월/년 제목을 사용하여 빠른 이동 패널을 여세요.',
+                'cal.quickJumpHint2': '날짜를 클릭하여 일기와 이벤트를 추가하세요.', 'cal.entryTitle': '캘린더 항목',
+                'day.sun': '일', 'day.mon': '월', 'day.tue': '화', 'day.wed': '수', 'day.thu': '목', 'day.fri': '금', 'day.sat': '토',
+                'pomo.title': '뽀모도로 집중 타이머', 'pomo.work': '작업 (25분)', 'pomo.shortBreak': '짧은 휴식 (5분)', 'pomo.longBreak': '긴 휴식 (15분)',
+                'pomo.ready': '집중하고 생산적으로 시작할 준비', 'pomo.focusInProgress': '집중 세션 진행 중...', 'pomo.breakInProgress': '휴식 시간 진행 중...',
+                'pomo.paused': '타이머 일시정지', 'pomo.start': '시작', 'pomo.pause': '일시정지', 'pomo.reset': '초기화', 'pomo.completedToday': '오늘 완료한 집중 세션:',
+                'pomo.focusComplete': '집중 세션 완료! 잘했어요! 잠시 휴식하세요.', 'pomo.breakComplete': '휴식 끝! 다음 집중 세션 준비되셨나요?',
+                'pomo.focusTips': '집중 팁', 'pomo.tip1': '<b>뽀모도로 기법:</b> 25분 깊은 작업, 5분 휴식.', 'pomo.tip2': '♪ 작업 중 주크박스 음악을 재생하세요!',
+                'modal.cancel': '취소', 'modal.task.addTitle': '새 작업 추가', 'modal.task.editTitle': '작업 편집', 'modal.task.titleLabel': '작업 제목:',
+                'modal.task.titlePlaceholder': '예: MYDESK 홈페이지 디자인 완성...', 'modal.task.priorityLabel': '우선순위:',
+                'modal.task.high': '🔴 높은 우선순위', 'modal.task.medium': '🟡 중간 우선순위', 'modal.task.low': '🟢 낮은 우선순위',
+                'modal.task.categoryLabel': '카테고리:', 'modal.task.categoryDefault': '일반', 'modal.task.dueLabel': '마감일 / 메모:',
+                'modal.task.duePlaceholder': '예: 내일 / 오후 5시', 'modal.task.save': '작업 저장', 'modal.task.enterTitle': '작업 제목을 입력하세요.',
+                'modal.cal.notesLabel': '일기 / 이벤트 메모:', 'modal.cal.notesPlaceholder': '이 날의 생각, 약속, 일기를 작성하세요...',
+                'modal.cal.save': '항목 저장',
+                'alert.restored': '✅ 워크스페이스가 성공적으로 복원되었습니다!', 'alert.invalidBackup': '❌ 잘못된 백업 파일: 문서 또는 작업 배열이 없습니다.',
+                'alert.parseError': '❌ JSON 백업 파일 구문 분석 오류.', 'alert.resetConfirm': '전체 워크스페이스를 기본 템플릿으로 초기화하시겠습니까?',
+                'alert.keepOnePage': '최소 한 개의 페이지는 유지해야 합니다!', 'alert.backupDownloaded': '✅ 백업이 다운로드되었습니다!', 'alert.yearRange': '1900에서 2200 사이의 연도를 입력하세요.',
+                'lang.name': '한국어'
+            }
+        };
+
+        const MONTH_NAMES_I18N = {
+            en: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+            zh: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+            ja: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+            ko: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"]
+        };
+        const MONTH_SHORT_I18N = {
+            en: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+            zh: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+            ja: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+            ko: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"]
+        };
+        const YEAR_LABEL_I18N = { en:(y)=>`${y}`, zh:(y)=>`${y}年`, ja:(y)=>`${y}年`, ko:(y)=>`${y}년` };
+
+        let currentLang = localStorage.getItem('cy_workspace_lang') || 'en';
+        function t(key) { return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || TRANSLATIONS.en[key] || key; }
+
+        function setLanguage(lang) {
+            if (!TRANSLATIONS[lang]) lang = 'en';
+            currentLang = lang;
+            localStorage.setItem('cy_workspace_lang', lang);
+            document.body.className = document.body.className.replace(/lang-\w+/, 'lang-' + lang);
+            applyTranslations();
+            renderCalendar();
+            renderTasks();
+            renderSidebarContext();
+            if (activeTab === 'documents') renderDocumentTree();
+            updatePomoDisplay();
+            updateLangButtons();
+        }
+
+        function updateLangButtons() {
+            ['en','zh','ja','ko'].forEach(l => {
+                const btn = document.getElementById('langBtn-' + l);
+                if (btn) btn.className = l === currentLang
+                    ? 'lang-btn active px-1.5 py-0.5 rounded text-[10px] border border-[#cc5200] bg-[#ff6600] text-white font-bold'
+                    : 'lang-btn px-1.5 py-0.5 rounded text-[10px] border border-transparent hover:bg-white';
+            });
+        }
+
+        function applyTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (['docStats','calendarMonthTitleText','calModalDateTitle','rteVoiceStatus'].includes(el.id)) return;
+                el.innerHTML = t(key);
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = t(el.getAttribute('data-i18n-placeholder')));
+            document.querySelectorAll('[data-i18n-title]').forEach(el => el.title = t(el.getAttribute('data-i18n-title')));
+            document.querySelectorAll('[data-i18n-value]').forEach(el => { if (!el.dataset.originalValue) el.dataset.originalValue = el.value; });
+            const editorEl = document.getElementById('rteEditor');
+            if (editorEl) updateDocumentStats(editorEl.innerText || '');
+        }
+
+        // ---------- DEFAULTS ----------
+        const defaultDocuments = [
+            {
+                id: 'doc-1',
+                title: '★ MYDESK Notion Workspace Guide',
+                html: '<h1>Welcome to MYDESK</h1><p>Your 2008 <b>Cyworld Notion-style</b> productivity suite. All data is stored locally in your browser.</p><h2>✨ Features</h2><ul><li><b>Rich Text Editor</b> — bold, italic, headings, lists, quotes</li><li>🖼️ <b>Images</b> — click the image icon to insert</li><li>🎵 <b>Audio & Voice Recording</b> — click the music/mic icons</li><li>📊 <b>Tables</b> — click the table icon</li><li>🔗 <b>Auto-Link Detection</b> — type <code>https://example.com</code> and press space</li></ul><blockquote class="callout">💡 Tip: Your links, images, audio, and tables are all backed up when you click <b>Backup</b> in the sidebar.</blockquote>',
+                text: 'Welcome to MYDESK — Your 2008 Cyworld Notion-style productivity suite.'
+            },
+            {
+                id: 'doc-2',
+                title: '♪ 2008 Playlist & Inspiration',
+                html: '<h2>♪ 2008 Playlist</h2><ul><li>Epik High - Fly</li><li>Wonder Girls - Tell Me</li><li>Big Bang - Lies</li></ul><blockquote class="callout">💡 "Nostalgia is the heart of the digital web."</blockquote><p>Let\'s build amazing things today! (^_^)</p>',
+                text: '2008 Playlist & Inspiration'
+            }
+        ];
+        const defaultTasks = [
+            { id: 'task-1', title: 'Design MYDESK retro layout', priority: 'High', category: 'Design', completed: true, due: 'Today' },
+            { id: 'task-2', title: 'Implement Notion-style document tree', priority: 'High', category: 'Coding', completed: true, due: 'Today' },
+            { id: 'task-3', title: 'Add Pomodoro focus timer with audio chime', priority: 'Medium', category: 'Features', completed: false, due: 'Tomorrow' },
+            { id: 'task-4', title: 'Listen to 2008 K-Indie / HipHop BGM', priority: 'Low', category: 'Vibes', completed: false, due: 'Anytime' }
+        ];
+
+        // ---------- STATE ----------
+        let documents = JSON.parse(localStorage.getItem('cy_workspace_docs')) || defaultDocuments;
+        let activeDocId = documents[0] ? documents[0].id : defaultDocuments[0].id;
+        let tasks = JSON.parse(localStorage.getItem('cy_workspace_tasks')) || defaultTasks;
+        let taskFilter = 'all';
+        let calendarEvents = JSON.parse(localStorage.getItem('cy_workspace_cal')) || {};
+        let userMood = localStorage.getItem('cy_workspace_mood') || '♫ Coding & organizing memories...';
+        let activeTab = 'documents';
+        let currentDate = new Date();
+        let currentYear = currentDate.getFullYear();
+        let currentMonth = currentDate.getMonth();
+        let pomoMode = 'work';
+        let pomoSecondsLeft = 25 * 60;
+        let pomoTimerInterval = null;
+        let pomoIsRunning = false;
+        let pomoCompletedToday = parseInt(localStorage.getItem('cy_pomo_count') || '3');
+
+        // Voice recording state
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let isRecordingVoice = false;
+        let recordingStartTime = 0;
+        let recordingTimerInterval = null;
+        let micStream = null;
+        let micPermissionState = 'unknown'; // 'unknown' | 'granted' | 'denied' | 'prompt'
+
+        // ================================================================
+        // MICROPHONE PERMISSION HANDLING
+        // ================================================================
+        async function checkMicPermission() {
+            if (!navigator.permissions || !navigator.permissions.query) {
+                micPermissionState = 'unknown';
+                updateMicBanner();
+                return;
+            }
+            try {
+                const status = await navigator.permissions.query({ name: 'microphone' });
+                micPermissionState = status.state; // 'granted' | 'denied' | 'prompt'
+                status.onchange = () => {
+                    micPermissionState = status.state;
+                    updateMicBanner();
+                };
+                updateMicBanner();
+            } catch (e) {
+                micPermissionState = 'unknown';
+                updateMicBanner();
+            }
+        }
+
+        function updateMicBanner() {
+            const banner = document.getElementById('micPermBanner');
+            const text = document.getElementById('micPermText');
+            if (!banner) return;
+            if (micPermissionState === 'granted') {
+                banner.className = 'perm-banner ok';
+                banner.innerHTML = '<i class="fa-solid fa-microphone"></i><span>Microphone access granted — voice recording ready.</span>';
+                banner.classList.remove('hidden');
+                setTimeout(() => { if (micPermissionState === 'granted') banner.classList.add('hidden'); }, 3000);
+            } else if (micPermissionState === 'denied') {
+                banner.className = 'perm-banner denied';
+                banner.innerHTML = '<i class="fa-solid fa-microphone-slash"></i><span>Microphone access is blocked. Enable it in your browser settings.</span>' +
+                    '<button onclick="showMicHelp()" class="ml-auto bg-red-600 hover:bg-red-700 text-white px-2 py-0.5 rounded text-[10px] font-bold"><i class="fa-solid fa-circle-question"></i> Help</button>';
+                banner.classList.remove('hidden');
+            } else if (micPermissionState === 'prompt' || micPermissionState === 'unknown') {
+                banner.className = 'perm-banner';
+                banner.innerHTML = '<i class="fa-solid fa-microphone-slash"></i><span>Microphone access required for voice recording.</span>' +
+                    '<button onclick="requestMicPermission()" class="ml-auto bg-amber-600 hover:bg-amber-700 text-white px-2 py-0.5 rounded text-[10px] font-bold"><i class="fa-solid fa-key"></i> Grant Permission</button>';
+                banner.classList.remove('hidden');
+            }
+        }
+
+        async function requestMicPermission(fromModal = false) {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert('❌ Microphone is not supported in this browser.');
+                return false;
+            }
+            const statusEl = fromModal ? document.getElementById('micPermStatus') : null;
+            if (statusEl) { statusEl.innerText = 'Requesting permission...'; statusEl.className = 'text-[11px] text-center font-bold text-blue-600'; }
+            try {
+                micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                micPermissionState = 'granted';
+                updateMicBanner();
+                if (statusEl) { statusEl.innerText = '✅ Permission granted!'; statusEl.className = 'text-[11px] text-center font-bold text-green-600'; }
+                // Close modal after a short delay
+                if (fromModal) setTimeout(() => { closeMicPermModal(); updateMicBanner(); }, 800);
+                showToast('🎤 Microphone ready!');
+                return true;
+            } catch (err) {
+                console.error(err);
+                micPermissionState = err.name === 'NotAllowedError' ? 'denied' : 'unknown';
+                updateMicBanner();
+                if (statusEl) {
+                    if (err.name === 'NotAllowedError') statusEl.innerText = '❌ Permission denied. Click the 🔒 icon in the URL bar to allow.';
+                    else if (err.name === 'NotFoundError') statusEl.innerText = '❌ No microphone found on this device.';
+                    else statusEl.innerText = '❌ Error: ' + err.message;
+                    statusEl.className = 'text-[11px] text-center font-bold text-red-600';
+                }
+                if (!fromModal) alert('Microphone access denied or unavailable. Check browser settings.');
+                return false;
+            }
+        }
+
+        function showMicHelp() {
+            document.getElementById('micPermModal').classList.remove('hidden');
+            document.getElementById('micPermModal').classList.add('flex');
+        }
+        function closeMicPermModal() {
+            document.getElementById('micPermModal').classList.remove('flex');
+            document.getElementById('micPermModal').classList.add('hidden');
+        }
+
+        // ================================================================
+        // AUDIO LIBRARY / GLOBAL PLAYER
+        // ================================================================
+        let globalAudio = new Audio();
+        let currentTrackSrc = null;
+        let currentTrackName = '';
+
+        function openAudioPanel() {
+            const panel = document.getElementById('audioPanel');
+            panel.classList.remove('hidden');
+            scanAudioFromDocs();
+        }
+        function closeAudioPanel() {
+            document.getElementById('audioPanel').classList.add('hidden');
+        }
+
+        function scanAudioFromDocs() {
+            // Scan all documents for <audio src="..."> and .audio-block elements
+            const tracks = [];
+            documents.forEach(doc => {
+                if (!doc.html) return;
+                const temp = document.createElement('div');
+                temp.innerHTML = doc.html;
+                // Find all audio elements
+                temp.querySelectorAll('audio').forEach(audioEl => {
+                    const src = audioEl.getAttribute('src');
+                    if (!src) return;
+                    // Find the label (may be in sibling .audio-label)
+                    let name = '';
+                    const block = audioEl.closest('.audio-block');
+                    if (block) {
+                        const nameEl = block.querySelector('.audio-name');
+                        if (nameEl) name = nameEl.textContent.trim();
+                        else {
+                            const labelEl = block.querySelector('.audio-label');
+                            if (labelEl) name = labelEl.textContent.replace(/^[🎵📼]\s*/, '').trim();
+                        }
+                    }
+                    if (!name) name = 'Audio in "' + (doc.title || 'Untitled') + '"';
+                    tracks.push({
+                        id: 'track-' + Math.random().toString(36).slice(2, 9),
+                        src: src,
+                        name: name,
+                        docId: doc.id,
+                        docTitle: doc.title || 'Untitled'
+                    });
+                });
+            });
+            renderAudioPanel(tracks);
+            // Update badge
+            const badge = document.getElementById('audioCountBadge');
+            if (badge) badge.innerText = tracks.length;
+            return tracks;
+        }
+
+        function renderAudioPanel(tracks) {
+            const list = document.getElementById('audioPanelList');
+            const countEl = document.getElementById('audioPanelCount');
+            if (!list) return;
+            if (countEl) countEl.innerText = tracks.length + ' track' + (tracks.length === 1 ? '' : 's');
+
+            if (tracks.length === 0) {
+                list.innerHTML = '<div class="text-center text-[11px] text-gray-400 py-6">🎧 No audio found. Record a voice note or import an audio file in a document.</div>';
+                return;
+            }
+            list.innerHTML = '';
+            tracks.forEach(track => {
+                const el = document.createElement('div');
+                el.className = 'audio-track';
+                el.dataset.trackId = track.id;
+                el.innerHTML = `
+                    <div class="track-play" onclick="toggleTrackPlay('${track.id}', '${escapeAttr(track.src)}', '${escapeAttr(track.name)}')">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <div class="track-info" style="flex:1;min-width:0;">
+                        <div class="track-name">${escapeHtml(track.name)}</div>
+                        <div class="track-meta">
+                            <span><i class="fa-solid fa-file-lines"></i> ${escapeHtml(track.docTitle)}</span>
+                        </div>
+                        <div class="track-progress">
+                            <div class="track-progress-bar" data-bar></div>
+                        </div>
+                    </div>
+                    <div class="track-delete" onclick="removeAudioFromDoc('${track.docId}', '${track.id}')" title="Remove from document">
+                        <i class="fa-solid fa-trash"></i>
+                    </div>
+                `;
+                list.appendChild(el);
+            });
+
+            // Sync playing state if current src matches
+            if (currentTrackSrc) {
+                document.querySelectorAll('.audio-track').forEach(el => {
+                    const trackId = el.dataset.trackId;
+                    const track = tracks.find(t => t.id === trackId);
+                    if (track && track.src === currentTrackSrc) {
+                        el.classList.add('playing');
+                        el.querySelector('.track-play i').className = globalAudio.paused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
+                    }
+                });
+            }
+        }
+
+        function toggleTrackPlay(trackId, src, name) {
+            if (currentTrackSrc === src) {
+                // Same track - toggle play/pause
+                if (globalAudio.paused) globalAudio.play();
+                else globalAudio.pause();
+            } else {
+                // New track
+                playGlobalAudio(src, name);
+            }
+        }
+
+        function playGlobalAudio(src, name) {
+            currentTrackSrc = src;
+            currentTrackName = name;
+            globalAudio.src = src;
+            globalAudio.load();
+            globalAudio.play().catch(e => {
+                console.warn('Playback failed:', e);
+                showToast('❌ Audio playback failed');
+            });
+            document.getElementById('globalPlayer').classList.remove('hidden');
+            document.getElementById('gpTitle').innerText = name || 'Untitled';
+            showToast('▶️ ' + (name || 'Playing'));
+        }
+
+        function toggleGlobalPlay() {
+            if (!currentTrackSrc) {
+                showToast('🎧 No track selected. Open the audio library.');
+                return;
+            }
+            if (globalAudio.paused) globalAudio.play();
+            else globalAudio.pause();
+        }
+
+        function globalAudioSkip(seconds) {
+            if (!currentTrackSrc) return;
+            globalAudio.currentTime = Math.max(0, Math.min(globalAudio.duration || 0, globalAudio.currentTime + seconds));
+        }
+
+        function toggleGlobalLoop() {
+            globalAudio.loop = !globalAudio.loop;
+            const btn = document.getElementById('gpLoopBtn');
+            if (btn) btn.style.background = globalAudio.loop ? 'rgba(255,102,0,0.4)' : '';
+            showToast(globalAudio.loop ? '🔁 Loop on' : '➡️ Loop off');
+        }
+
+        function globalAudioVolume(val) {
+            if (val === 0) {
+                // Mute toggle
+                globalAudio.muted = !globalAudio.muted;
+                document.getElementById('gpVolumeSlider').value = globalAudio.muted ? 0 : 100;
+                document.getElementById('gpVolIcon').className = globalAudio.muted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+                return;
+            }
+            globalAudio.muted = false;
+            globalAudio.volume = Math.max(0, Math.min(1, val / 100));
+            document.getElementById('gpVolIcon').className = val > 50 ? 'fa-solid fa-volume-high' : val > 0 ? 'fa-solid fa-volume-low' : 'fa-solid fa-volume-xmark';
+        }
+
+        function seekGlobalAudio(event) {
+            if (!currentTrackSrc || !globalAudio.duration) return;
+            const rect = event.currentTarget.getBoundingClientRect();
+            const pct = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+            globalAudio.currentTime = pct * globalAudio.duration;
+        }
+
+        function formatTime(sec) {
+            if (!isFinite(sec) || isNaN(sec)) return '0:00';
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return m + ':' + String(s).padStart(2, '0');
+        }
+
+        function escapeAttr(str) {
+            return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        // Global audio event listeners
+        globalAudio.addEventListener('timeupdate', () => {
+            const cur = globalAudio.currentTime;
+            const dur = globalAudio.duration || 0;
+            const pct = dur > 0 ? (cur / dur) * 100 : 0;
+            document.getElementById('gpProgressBar').style.width = pct + '%';
+            document.getElementById('gpTime').innerText = formatTime(cur) + ' / ' + formatTime(dur);
+            // Update track bar in panel
+            document.querySelectorAll('.audio-track').forEach(el => {
+                const bar = el.querySelector('[data-bar]');
+                if (!bar) return;
+                if (el.classList.contains('playing')) bar.style.width = pct + '%';
+            });
+        });
+
+        globalAudio.addEventListener('play', () => {
+            document.getElementById('gpPlayIcon').className = 'fa-solid fa-pause';
+            document.querySelectorAll('.audio-track').forEach(el => {
+                const trackId = el.dataset.trackId;
+                // Check if this track matches current src                const track = scanAudioFromDocsCache().find(t => t.id === trackId);
+                if (track && track.src === currentTrackSrc) {
+                    el.classList.add('playing');
+                    el.querySelector('.track-play i').className = 'fa-solid fa-pause';
+                } else {
+                    el.classList.remove('playing');
+                    el.querySelector('.track-play i').className = 'fa-solid fa-play';
+                }
+            });
+        });
+
+        globalAudio.addEventListener('pause', () => {
+            document.getElementById('gpPlayIcon').className = 'fa-solid fa-play';
+            document.querySelectorAll('.audio-track.playing').forEach(el => {
+                el.querySelector('.track-play i').className = 'fa-solid fa-play';
+            });
+        });
+
+        globalAudio.addEventListener('ended', () => {
+            document.getElementById('gpPlayIcon').className = 'fa-solid fa-play';
+            document.querySelectorAll('.audio-track').forEach(el => {
+                el.classList.remove('playing');
+                el.querySelector('.track-play i').className = 'fa-solid fa-play';
+                const bar = el.querySelector('[data-bar]');
+                if (bar) bar.style.width = '0%';
+            });
+        });
+
+        globalAudio.addEventListener('error', () => {
+            showToast('❌ Error loading audio');
+        });
+
+        // Cache to avoid re-scanning during play events
+        let _audioCache = [];
+        function scanAudioFromDocsCache() { return _audioCache; }
+
+        function removeAudioFromDoc(docId, trackId) {
+            if (!confirm('Remove this audio track from the document?')) return;
+            const doc = documents.find(d => d.id === docId);
+            if (!doc || !doc.html) return;
+            const temp = document.createElement('div');
+            temp.innerHTML = doc.html;
+            const tracks = temp.querySelectorAll('audio');
+            // Since we can't map IDs reliably, we remove by matching track order
+            // Simpler: user selected from list, we need to find which one
+            const visibleTrack = document.querySelector(`.audio-track[data-track-id="${trackId}"]`);
+            if (!visibleTrack) return;
+            const name = visibleTrack.querySelector('.track-name').textContent;
+            // Find the first audio block whose label matches
+            let removed = false;
+            temp.querySelectorAll('.audio-block').forEach(block => {
+                if (removed) return;
+                const labelEl = block.querySelector('.audio-label');
+                const blockName = labelEl ? labelEl.textContent.replace(/^[🎵📼]\s*/, '').trim() : '';
+                if (blockName === name || blockName.includes(name)) {
+                    block.remove();
+                    removed = true;
+                }
+            });
+            if (!removed) {
+                // Fallback: just remove first audio
+                const firstAudio = temp.querySelector('audio');
+                if (firstAudio) {
+                    const block = firstAudio.closest('.audio-block');
+                    if (block) block.remove();
+                    else firstAudio.remove();
+                }
+            }
+            doc.html = temp.innerHTML;
+            saveDocsToStorage();
+            if (doc.id === activeDocId) loadActiveDocument();
+            scanAudioFromDocs();
+            showToast('🗑️ Audio removed');
+        }
+
+        // ================================================================
+        // RICH TEXT EDITOR
+        // ================================================================
+        const rteEditor = () => document.getElementById('rteEditor');
+
+        function rteExec(command, value = null) {
+            document.execCommand(command, false, value);
+            rteEditor().focus();
+            autoSaveActiveDoc();
+        }
+        function rteInsertCallout() { rteExec('insertHTML', '<blockquote class="callout">💡 Callout: Important note or tip here...</blockquote><p><br></p>'); }
+        function rteInsertEmotion(symbol) { rteExec('insertText', symbol); }
+        function rteInsertLink() {
+            const sel = window.getSelection();
+            const selectedText = sel && sel.toString().trim();
+            document.getElementById('linkTextInput').value = selectedText || '';
+            document.getElementById('linkUrlInput').value = '';
+            document.getElementById('linkModal').classList.remove('hidden');
+            document.getElementById('linkModal').classList.add('flex');
+            setTimeout(() => document.getElementById('linkUrlInput').focus(), 50);
+        }
+        function insertLinkFromModal() {
+            const text = document.getElementById('linkTextInput').value.trim();
+            const url = document.getElementById('linkUrlInput').value.trim();
+            if (!url) { alert('Please enter a URL.'); return; }
+            const finalUrl = /^https?:\/\//i.test(url) ? url : 'https://' + url;
+            const displayText = text || finalUrl;
+            const html = `<a href="${escapeHtml(finalUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(displayText)}</a>`;
+            rteEditor().focus();
+            document.execCommand('insertHTML', false, html);
+            closeLinkModal();
+            autoSaveActiveDoc();
+        }
+        function closeLinkModal() { document.getElementById('linkModal').classList.remove('flex'); document.getElementById('linkModal').classList.add('hidden'); }
+
+        function handleRteImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) { alert('Please select an image file.'); return; }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                rteEditor().focus();
+                document.execCommand('insertHTML', false, `<img src="${dataUrl}" alt="${escapeHtml(file.name)}" title="${escapeHtml(file.name)}"><p><br></p>`);
+                autoSaveActiveDoc();
+            };
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        function handleRteAudio(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('audio/')) { alert('Please select an audio file.'); return; }
+            const reader = new FileReader();
+            reader.onload = function(e) { insertAudioBlock(e.target.result, file.name); };
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        function insertAudioBlock(dataUrl, label) {
+            rteEditor().focus();
+            const safeLabel = escapeHtml(label || 'Audio recording');
+            const html = `<div class="audio-block" contenteditable="false"><div class="audio-label">🎵 <span class="audio-name">${safeLabel}</span></div><audio controls src="${dataUrl}"></audio></div><p><br></p>`;
+            document.execCommand('insertHTML', false, html);
+            autoSaveActiveDoc();
+            // Auto-open the audio panel and refresh
+            openAudioPanel();
+        }
+
+        // ---- VOICE RECORDING ----
+        async function toggleVoiceRecording() {
+            if (isRecordingVoice) {
+                stopVoiceRecording();
+                return;
+            }
+            // Request permission first
+            if (micPermissionState !== 'granted') {
+                const ok = await requestMicPermission();
+                if (!ok) {
+                    // Show the help modal
+                    document.getElementById('micPermModal').classList.remove('hidden');
+                    document.getElementById('micPermModal').classList.add('flex');
+                    return;
+                }
+            }
+            startVoiceRecording();
+        }
+
+        function startVoiceRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                micStream = stream;
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                recordingStartTime = Date.now();
+
+                mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+                mediaRecorder.onstop = function() {
+                    const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const duration = Math.round((Date.now() - recordingStartTime) / 1000);
+                        insertAudioBlock(e.target.result, `Voice recording (${duration}s)`);
+                    };
+                    reader.readAsDataURL(blob);
+                    if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+                };
+
+                mediaRecorder.start();
+                isRecordingVoice = true;
+                micPermissionState = 'granted';
+                updateMicBanner();
+
+                const btn = document.getElementById('rteVoiceBtn');
+                btn.classList.add('recording-pulse');
+                btn.style.background = '#fee2e2';
+                btn.style.borderColor = '#ef4444';
+
+                document.getElementById('rteVoiceStatus').innerHTML = '<span class="text-red-600 font-bold">🔴 Recording...</span>';
+                recordingTimerInterval = setInterval(() => {
+                    const secs = Math.round((Date.now() - recordingStartTime) / 1000);
+                    document.getElementById('rteVoiceStatus').innerHTML = `<span class="text-red-600 font-bold">🔴 Recording ${secs}s — click mic to stop</span>`;
+                }, 500);
+            }).catch(err => {
+                console.error(err);
+                micPermissionState = err.name === 'NotAllowedError' ? 'denied' : 'unknown';
+                updateMicBanner();
+                document.getElementById('micPermModal').classList.remove('hidden');
+                document.getElementById('micPermModal').classList.add('flex');
+            });
+        }
+
+        function stopVoiceRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+            isRecordingVoice = false;
+            if (recordingTimerInterval) clearInterval(recordingTimerInterval);
+            const btn = document.getElementById('rteVoiceBtn');
+            btn.classList.remove('recording-pulse');
+            btn.style.background = '';
+            btn.style.borderColor = '';
+            document.getElementById('rteVoiceStatus').innerHTML = '<span class="text-green-600 font-bold">✓ Voice saved</span>';
+            setTimeout(() => { document.getElementById('rteVoiceStatus').innerHTML = ''; }, 2500);
+        }
+
+        // ---- TABLE ----
+        function showTableForm() {
+            const form = document.getElementById('rteTableForm');
+            form.classList.toggle('hidden');
+            if (!form.classList.contains('hidden')) setTimeout(() => document.getElementById('rteTableRows').focus(), 30);
+        }
+        function rteInsertTable() {
+            const rows = Math.max(1, Math.min(20, parseInt(document.getElementById('rteTableRows').value) || 3));
+            const cols = Math.max(1, Math.min(10, parseInt(document.getElementById('rteTableCols').value) || 3));
+            let html = '<table><thead><tr>';
+            for (let c = 0; c < cols; c++) html += `<th>Header ${c + 1}</th>`;
+            html += '</tr></thead><tbody>';
+            for (let r = 0; r < rows - 1; r++) {
+                html += '<tr>';
+                for (let c = 0; c < cols; c++) html += '<td>&nbsp;</td>';
+                html += '</tr>';
+            }
+            html += '</tbody></table><p><br></p>';
+            rteEditor().focus();
+            document.execCommand('insertHTML', false, html);
+            document.getElementById('rteTableForm').classList.add('hidden');
+            autoSaveActiveDoc();
+        }
+
+        // ---- LINK AUTO-DETECTION ----
+        function setupLinkAutoDetection() {
+            const editor = document.getElementById('rteEditor');
+            if (!editor) return;
+            editor.addEventListener('input', function(e) {
+                const sel = window.getSelection();
+                if (!sel || sel.rangeCount === 0) return;
+                const range = sel.getRangeAt(0);
+                const node = range.startContainer;
+                if (node.nodeType !== Node.TEXT_NODE) return;
+                const text = node.textContent;
+                const offset = range.startOffset;
+                const before = text.substring(0, offset);
+                const urlRegex = /(https?:\/\/[^\s<>"']+)$/i;
+                const match = before.match(urlRegex);
+                if (match) {
+                    const url = match[1];
+                    const startIdx = offset - url.length;
+                    const after = text.substring(offset);
+                    const link = document.createElement('a');
+                    link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+                    link.textContent = url;
+                    const beforeNode = document.createTextNode(text.substring(0, startIdx));
+                    const afterNode = document.createTextNode(after);
+                    const parent = node.parentNode;
+                    parent.insertBefore(beforeNode, node);
+                    parent.insertBefore(link, node);
+                    parent.insertBefore(afterNode, node);
+                    parent.removeChild(node);
+                    const newRange = document.createRange();
+                    newRange.setStart(afterNode, 0); newRange.collapse(true);
+                    sel.removeAllRanges(); sel.addRange(newRange);
+                    autoSaveActiveDoc();
+                }
+            });
+            editor.addEventListener('paste', function(e) {
+                const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                if (!pastedText) return;
+                const urlOnly = pastedText.trim();
+                if (/^https?:\/\/[^\s<>"']+$/i.test(urlOnly)) {
+                    e.preventDefault();
+                    document.execCommand('insertHTML', false, `<a href="${escapeHtml(urlOnly)}" target="_blank" rel="noopener noreferrer">${escapeHtml(urlOnly)}</a>`);
+                    autoSaveActiveDoc();
+                }
+            });
+        }
+
+        // ---- SAVE / LOAD ----
+        function autoSaveActiveDoc() {
+            const doc = documents.find(d => d.id === activeDocId);
+            if (!doc) return;
+            const editor = rteEditor();
+            doc.html = editor.innerHTML;
+            doc.text = editor.innerText || '';
+            updateDocumentStats(doc.text);
+            saveDocsToStorage();
+            const searchInput = document.getElementById('docSearch');
+            if (activeTab === 'documents') renderDocumentTree(searchInput ? searchInput.value : '');
+        }
+
+        function loadActiveDocument() {
+            const doc = documents.find(d => d.id === activeDocId);
+            if (!doc) return;
+            document.getElementById('activeDocTitle').value = doc.title || '';
+            const editor = rteEditor();
+            editor.innerHTML = doc.html || (doc.body ? escapeHtml(doc.body).replace(/\n/g, '<br>') : '');
+            updateDocumentStats(editor.innerText || '');
+            // Refresh audio panel if visible
+            if (!document.getElementById('audioPanel').classList.contains('hidden')) scanAudioFromDocs();
+            // Refresh audio count badge
+            setTimeout(() => { scanAudioFromDocs(); _audioCache = scanAudioFromDocsCache(); }, 100);
+        }
+
+        function exportDocTxt() {
+            const doc = documents.find(d => d.id === activeDocId);
+            if (!doc) return;
+            const text = (doc.title || 'Untitled') + '\n\n' + (doc.text || rteEditor().innerText || '');
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url;
+            a.download = (doc.title || 'document').replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.txt';
+            a.click(); URL.revokeObjectURL(url);
+        }
+        function exportDocHtml() {
+            const doc = documents.find(d => d.id === activeDocId);
+            if (!doc) return;
+            const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHtml(doc.title)}</title><style>body{font-family:sans-serif;max-width:800px;margin:40px auto;padding:0 20px;line-height:1.7;color:#333}img{max-width:100%}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:6px}.callout{background:#fffbeb;border-left:4px solid #f59e0b;padding:12px;border-radius:4px}.audio-block{background:#f0f9ff;border:1px solid #bae6fd;padding:10px;border-radius:8px;margin:8px 0}</style></head><body><h1>${escapeHtml(doc.title)}</h1>${doc.html || ''}</body></html>`;
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url;
+            a.download = (doc.title || 'document').replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.html';
+            a.click(); URL.revokeObjectURL(url);
+        }
+        function exportDocJson() {
+            const doc = documents.find(d => d.id === activeDocId);
+            if (!doc) return;
+            const blob = new Blob([JSON.stringify(doc, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url;
+            a.download = (doc.title || 'document').replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.json';
+            a.click(); URL.revokeObjectURL(url);
+        }
+
+        // ================================================================
+        // TAB SWITCHING
+        // ================================================================
+        const TABS = ['documents', 'todo', 'calendar', 'pomodoro'];
+        function switchTab(tabId) {
+            if (!TABS.includes(tabId)) tabId = 'documents';
+            activeTab = tabId;
+            TABS.forEach(v => {
+                const viewEl = document.getElementById('view-' + v);
+                const btnEl = document.getElementById('tabBtn-' + v);
+                if (!viewEl || !btnEl) return;
+                if (v === tabId) {
+                    viewEl.classList.remove('hidden'); viewEl.classList.add('flex');
+                    btnEl.className = 'tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1 bg-[#2c599d] text-white shadow-sm';
+                } else {
+                    viewEl.classList.add('hidden'); viewEl.classList.remove('flex');
+                    btnEl.className = 'tab-btn py-1 px-2 rounded font-bold flex items-center justify-center gap-1 bg-white text-[#12437a] border border-[#a4c2f4] hover:bg-gray-50';
+                }
+            });
+            if (tabId !== 'calendar') closeJumpPanel();
+            renderSidebarContext();
+        }
+        function initTabs() {
+            document.getElementById('tabBtn-documents').addEventListener('click', () => switchTab('documents'));
+            document.getElementById('tabBtn-todo').addEventListener('click', () => switchTab('todo'));
+            document.getElementById('tabBtn-calendar').addEventListener('click', () => switchTab('calendar'));
+            document.getElementById('tabBtn-pomodoro').addEventListener('click', () => switchTab('pomodoro'));
+        }
+
+        function renderSidebarContext() {
+            const container = document.getElementById('sidebarContextContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            if (activeTab === 'documents') {
+                container.innerHTML = `
+                    <div class="flex justify-between items-center mb-2 px-1">
+                        <span class="font-bold text-xs text-[#12437a] flex items-center gap-1"><i class="fa-solid fa-book text-blue-600"></i> ${t('docs.workspacePages')}</span>
+                        <button onclick="createNewDocument()" class="bg-[#2c599d] hover:bg-[#1a3863] text-white px-2 py-0.5 rounded text-[11px] shadow flex items-center gap-1">
+                            <i class="fa-solid fa-plus"></i> ${t('docs.newPage')}
+                        </button>
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" id="docSearch" oninput="filterDocuments(this.value)" placeholder="${t('docs.searchPlaceholder')}" class="w-full text-[11px] px-2 py-1 border border-[#7a9fd1] rounded bg-white focus:outline-none">
+                    </div>
+                    <div id="documentListTree" class="space-y-1"></div>
+                `;
+                renderDocumentTree();
+            } else if (activeTab === 'todo') {
+                container.innerHTML = `
+                    <div class="font-bold text-xs text-[#12437a] mb-2 px-1 flex items-center gap-1"><i class="fa-solid fa-list-check text-blue-600"></i> ${t('todo.quickSummary')}</div>
+                    <div class="bg-blue-50 p-2.5 rounded border border-blue-200 text-xs space-y-1.5 text-gray-700">
+                        <div><b>${t('todo.activeTasks')}</b> <span id="sbActiveCount">0</span></div>
+                        <div><b>${t('todo.completedTasks')}</b> <span id="sbDoneCount" class="text-green-600">0</span></div>
+                        <button onclick="openNewTaskModal()" class="w-full mt-2 bg-[#2c599d] text-white py-1 rounded font-bold text-center shadow">${t('todo.addTaskShort')}</button>
+                    </div>
+                `;
+                updateTaskSidebarCounts();
+            } else if (activeTab === 'calendar') {
+                container.innerHTML = `
+                    <div class="font-bold text-xs text-[#12437a] mb-2 px-1 flex items-center gap-1"><i class="fa-solid fa-calendar-days text-blue-600"></i> ${t('cal.quickJump')}</div>
+                    <div class="bg-blue-50 p-2.5 rounded border border-blue-200 text-xs space-y-2 text-gray-700">
+                        <div class="text-[11px]">${t('cal.quickJumpHint')}</div>
+                        <div class="text-[10px] text-gray-500">${t('cal.quickJumpHint2')}</div>
+                        <div class="flex flex-wrap gap-1 mt-1">
+                            <button onclick="jumpYear(-5)" class="bg-white border border-blue-300 rounded px-1.5 py-0.5 text-[10px] hover:bg-blue-100">-5y</button>
+                            <button onclick="jumpYear(-1)" class="bg-white border border-blue-300 rounded px-1.5 py-0.5 text-[10px] hover:bg-blue-100">-1y</button>
+                            <button onclick="jumpToToday()" class="bg-[#ff6600] text-white rounded px-1.5 py-0.5 text-[10px] font-bold">${t('cal.jumpToday')}</button>
+                            <button onclick="jumpYear(1)" class="bg-white border border-blue-300 rounded px-1.5 py-0.5 text-[10px] hover:bg-blue-100">+1y</button>
+                            <button onclick="jumpYear(5)" class="bg-white border border-blue-300 rounded px-1.5 py-0.5 text-[10px] hover:bg-blue-100">+5y</button>
+                        </div>
+                    </div>
+                `;
+            } else if (activeTab === 'pomodoro') {
+                container.innerHTML = `
+                    <div class="font-bold text-xs text-[#12437a] mb-2 px-1 flex items-center gap-1"><i class="fa-solid fa-clock text-blue-600"></i> ${t('pomo.focusTips')}</div>
+                    <div class="bg-blue-50 p-2.5 rounded border border-blue-200 text-xs space-y-1.5 text-gray-700">
+                        <div>${t('pomo.tip1')}</div>
+                        <div class="mt-2 text-amber-700 font-bold">${t('pomo.tip2')}</div>
+                    </div>
+                `;
+            }
+        }
+
+        // ---------- DOCUMENTS (page tree) ----------
+        function renderDocumentTree(filterText = '') {
+            const treeContainer = document.getElementById('documentListTree');
+            if (!treeContainer) return;
+            treeContainer.innerHTML = '';
+            const q = (filterText || '').toLowerCase();
+            const filtered = documents.filter(d =>
+                (d.title || '').toLowerCase().includes(q) ||
+                (d.text || '').toLowerCase().includes(q) ||
+                (d.body || '').toLowerCase().includes(q));
+            if (filtered.length === 0) {
+                treeContainer.innerHTML = `<div class="p-2 text-center text-[11px] text-gray-400">${t('docs.noPages')}</div>`;
+                return;
+            }
+            filtered.forEach(doc => {
+                const item = document.createElement('div');
+                item.className = `p-2 rounded cursor-pointer text-xs transition-colors ${doc.id === activeDocId ? 'bg-blue-100 border-l-4 border-[#ff6600] font-bold text-[#12437a]' : 'hover:bg-gray-100 text-gray-700'}`;
+                item.onclick = () => switchDocument(doc.id);
+                const preview = (doc.text || doc.body || '').substring(0, 50);
+                item.innerHTML = `
+                    <div class="font-bold truncate flex items-center gap-1.5"><i class="fa-solid fa-file-lines text-blue-500 text-[10px]"></i> ${escapeHtml(doc.title || t('docs.untitled'))}</div>
+                    <div class="text-[10px] text-gray-500 truncate mt-0.5 pl-4">${escapeHtml(preview || t('docs.emptyNote'))}</div>
+                `;
+                treeContainer.appendChild(item);
+            });
+        }
+        function switchDocument(id) { autoSaveActiveDoc(); activeDocId = id; const s = document.getElementById('docSearch'); renderDocumentTree(s ? s.value : ''); loadActiveDocument(); }
+        function createNewDocument() {
+            const newDoc = { id: 'doc-' + Date.now(), title: t('docs.newPageTitle'), html: '', text: '' };
+            documents.unshift(newDoc);
+            autoSaveActiveDoc();
+            activeDocId = newDoc.id;
+            saveDocsToStorage();
+            renderDocumentTree();
+            loadActiveDocument();
+            rteEditor().focus();
+        }
+        function updateActiveTitle(val) {
+            const doc = documents.find(d => d.id === activeDocId);
+            if (!doc) return;
+            doc.title = val;
+            saveDocsToStorage();
+            const s = document.getElementById('docSearch');
+            renderDocumentTree(s ? s.value : '');
+        }
+        function deleteActiveDocument() {
+            if (documents.length <= 1) { alert(t('alert.keepOnePage')); return; }
+            documents = documents.filter(d => d.id !== activeDocId);
+            activeDocId = documents[0].id;
+            saveDocsToStorage();
+            renderDocumentTree();
+            loadActiveDocument();
+        }
+        function filterDocuments(val) { renderDocumentTree(val); }
+        function updateDocumentStats(text) {
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const chars = text.length;
+            const lines = text.split(/\r\n|\r|\n/).length;
+            document.getElementById('docStats').innerText = t('docs.statsFormat').replace('{words}', words).replace('{chars}', chars).replace('{lines}', lines);
+        }
+        function saveDocsToStorage() {
+            try {
+                localStorage.setItem('cy_workspace_docs', JSON.stringify(documents));
+                const status = document.getElementById('saveStatus');
+                if (status) { status.innerText = t('docs.saved'); status.style.color = ''; }
+            } catch (e) {
+                const status = document.getElementById('saveStatus');
+                if (status) { status.innerText = '⚠️ Storage full — export backup!'; status.style.color = '#dc2626'; }
+            }
+        }
+
+        // ---------- TASKS ----------
+        function renderTasks() {
+            const container = document.getElementById('tasksListContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            const filtered = tasks.filter(t => {
+                if (taskFilter === 'active') return !t.completed;
+                if (taskFilter === 'completed') return t.completed;
+                return true;
+            });
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="p-6 text-center text-xs text-gray-400 bg-white rounded border border-gray-200">${t('todo.noTasks')}</div>`;
+                updateTaskStats(); return;
+            }
+            filtered.forEach(task => {
+                const item = document.createElement('div');
+                item.className = `p-3 rounded border flex items-center justify-between gap-3 text-xs bg-white shadow-sm transition-all ${task.completed ? 'opacity-60 bg-gray-50' : 'hover:border-blue-300'}`;
+                const pc = task.priority === 'High' ? 'text-red-600 bg-red-50 border-red-200' : task.priority === 'Medium' ? 'text-amber-600 bg-amber-50 border-amber-200' : 'text-green-600 bg-green-50 border-green-200';
+                item.innerHTML = `
+                    <div class="flex items-center gap-3 flex-1">
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTaskComplete('${task.id}')" class="w-4 h-4 rounded text-blue-600 cursor-pointer">
+                        <div class="flex flex-col">
+                            <span class="font-bold ${task.completed ? 'line-through text-gray-500' : 'text-gray-800'}">${escapeHtml(task.title)}</span>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold border ${pc}">${task.priority}</span>
+                                <span class="text-[10px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded">${escapeHtml(task.category)}</span>
+                                ${task.due ? `<span class="text-[10px] text-blue-600"><i class="fa-solid fa-clock"></i> ${escapeHtml(task.due)}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button onclick="editTask('${task.id}')" class="text-gray-400 hover:text-blue-600 px-1.5 py-1"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteTask('${task.id}')" class="text-gray-400 hover:text-red-600 px-1.5 py-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+            updateTaskStats();
+        }
+        function filterTasks(filter) {
+            taskFilter = filter;
+            ['all','active','completed'].forEach(f => {
+                const btn = document.getElementById('filter-' + f);
+                if (btn) btn.className = f === filter ? 'px-2 py-1 bg-[#2c599d] text-white rounded font-bold' : 'px-2 py-1 bg-white border border-gray-300 rounded text-gray-700';
+            });
+            renderTasks();
+        }
+        function toggleTaskComplete(id) { const task = tasks.find(t => t.id === id); if (task) { task.completed = !task.completed; saveTasksToStorage(); renderTasks(); if (activeTab === 'todo') updateTaskSidebarCounts(); } }
+        function deleteTask(id) { tasks = tasks.filter(t => t.id !== id); saveTasksToStorage(); renderTasks(); if (activeTab === 'todo') updateTaskSidebarCounts(); }
+        function openNewTaskModal() {
+            document.getElementById('taskModalTitle').innerText = t('modal.task.addTitle');
+            document.getElementById('taskIdEdit').value = '';
+            document.getElementById('taskInputTitle').value = '';
+            document.getElementById('taskInputPriority').value = 'Medium';
+            document.getElementById('taskInputCategory').value = t('modal.task.categoryDefault');
+            document.getElementById('taskInputDue').value = '';
+            document.getElementById('taskModal').classList.remove('hidden');
+            document.getElementById('taskModal').classList.add('flex');
+        }
+        function editTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (!task) return;
+            document.getElementById('taskModalTitle').innerText = t('modal.task.editTitle');
+            document.getElementById('taskIdEdit').value = task.id;
+            document.getElementById('taskInputTitle').value = task.title;
+            document.getElementById('taskInputPriority').value = task.priority;
+            document.getElementById('taskInputCategory').value = task.category;
+            document.getElementById('taskInputDue').value = task.due;
+            document.getElementById('taskModal').classList.remove('hidden');
+            document.getElementById('taskModal').classList.add('flex');
+        }
+        function closeTaskModal() { document.getElementById('taskModal').classList.remove('flex'); document.getElementById('taskModal').classList.add('hidden'); }
+        function saveTaskFromModal() {
+            const id = document.getElementById('taskIdEdit').value;
+            const title = document.getElementById('taskInputTitle').value.trim();
+            const priority = document.getElementById('taskInputPriority').value;
+            const category = document.getElementById('taskInputCategory').value.trim() || t('modal.task.categoryDefault');
+            const due = document.getElementById('taskInputDue').value.trim();
+            if (!title) { alert(t('modal.task.enterTitle')); return; }
+            if (id) { const task = tasks.find(t => t.id === id); if (task) { task.title = title; task.priority = priority; task.category = category; task.due = due; } }
+            else tasks.unshift({ id: 'task-' + Date.now(), title, priority, category, completed: false, due });
+            saveTasksToStorage(); closeTaskModal(); renderTasks(); if (activeTab === 'todo') updateTaskSidebarCounts();
+        }
+        function saveTasksToStorage() { localStorage.setItem('cy_workspace_tasks', JSON.stringify(tasks)); }
+        function updateTaskStats() {
+            const total = tasks.length;
+            const done = tasks.filter(t => t.completed).length;
+            const a = document.getElementById('taskCountTotal'); const b = document.getElementById('taskCountDone');
+            if (a) a.innerText = total;
+            if (b) b.innerText = done;
+        }
+        function updateTaskSidebarCounts() {
+            const active = tasks.filter(t => !t.completed).length;
+            const done = tasks.filter(t => t.completed).length;
+            const a = document.getElementById('sbActiveCount'); const b = document.getElementById('sbDoneCount');
+            if (a) a.innerText = active;
+            if (b) b.innerText = done;
+        }
+
+        // ---------- CALENDAR ----------
+        function renderCalendar() {
+            const grid = document.getElementById('calendarDaysGrid');
+            const titleTextEl = document.getElementById('calendarMonthTitleText');
+            if (!grid || !titleTextEl) return;
+            grid.innerHTML = '';
+            const monthName = MONTH_NAMES_I18N[currentLang][currentMonth];
+            const yearLabel = YEAR_LABEL_I18N[currentLang](currentYear);
+            titleTextEl.innerText = currentLang === 'en' ? `${monthName} ${currentYear}` : `${yearLabel} ${monthName}`;
+            const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const todayStr = new Date().toISOString().split('T')[0];
+            for (let i = 0; i < firstDayIndex; i++) {
+                const ec = document.createElement('div');
+                ec.className = 'bg-gray-50 border border-gray-200 rounded p-1 opacity-40';
+                grid.appendChild(ec);
+            }
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const cell = document.createElement('div');
+                const isToday = dateKey === todayStr;
+                const hasEvent = calendarEvents[dateKey] && calendarEvents[dateKey].trim().length > 0;
+                cell.className = `bg-white border rounded p-1.5 flex flex-col justify-between cursor-pointer transition-all hover:bg-blue-50 relative ${isToday ? 'border-2 border-[#ff6600] bg-yellow-50/50' : 'border-gray-200'}`;
+                cell.onclick = () => openCalModal(dateKey);
+                cell.innerHTML = `
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold ${isToday ? 'text-[#ff6600]' : 'text-gray-700'}">${day}</span>
+                        ${hasEvent ? '<span class="w-2 h-2 rounded-full bg-blue-600"></span>' : ''}
+                    </div>
+                    <div class="text-[10px] text-gray-500 truncate mt-1">${hasEvent ? escapeHtml(calendarEvents[dateKey]) : ''}</div>
+                `;
+                grid.appendChild(cell);
+            }
+            if (!document.getElementById('jumpPanel').classList.contains('hidden')) renderJumpPanel();
+        }
+        function changeMonth(dir) {
+            currentMonth += dir;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            else if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar();
+        }
+        function toggleJumpPanel() {
+            const p = document.getElementById('jumpPanel');
+            if (p.classList.contains('hidden')) { renderJumpPanel(); p.classList.remove('hidden'); }
+            else p.classList.add('hidden');
+        }
+        function closeJumpPanel() { const p = document.getElementById('jumpPanel'); if (p) p.classList.add('hidden'); }
+        function renderJumpPanel() {
+            const yr = document.getElementById('yearQuickRow');
+            if (yr) {
+                yr.innerHTML = '';
+                for (let o = -3; o <= 3; o++) {
+                    const y = currentYear + o;
+                    const b = document.createElement('button');
+                    b.className = `year-quick-btn px-2 py-0.5 rounded text-[11px] font-bold border ${y === currentYear ? 'bg-[#2c599d] text-white border-[#1a3863]' : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-100'}`;
+                    b.innerText = y; b.onclick = () => jumpToYear(y);
+                    yr.appendChild(b);
+                }
+            }
+            const yi = document.getElementById('jumpYearInput');
+            if (yi) yi.value = currentYear;
+            const mg = document.getElementById('monthQuickGrid');
+            if (mg) {
+                mg.innerHTML = '';
+                for (let m = 0; m < 12; m++) {
+                    const b = document.createElement('button');
+                    const a = m === currentMonth;
+                    b.className = `month-quick-btn py-1.5 rounded text-[11px] font-bold border transition-all ${a ? 'bg-[#2c599d] text-white border-[#1a3863] shadow' : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-100 hover:border-blue-400'}`;
+                    b.innerText = MONTH_SHORT_I18N[currentLang][m];
+                    b.onclick = () => jumpToMonth(m);
+                    mg.appendChild(b);
+                }
+            }
+        }
+        function jumpToYear(y) { const n = parseInt(y); if (isNaN(n) || n < 1900 || n > 2200) { alert(t('alert.yearRange')); return; } currentYear = n; renderCalendar(); renderJumpPanel(); }
+        function jumpYear(d) { currentYear += d; if (currentYear < 1900) currentYear = 1900; if (currentYear > 2200) currentYear = 2200; renderCalendar(); renderJumpPanel(); }
+        function jumpToMonth(m) { if (m < 0 || m > 11) return; currentMonth = m; renderCalendar(); renderJumpPanel(); }
+        function jumpToToday() { const n = new Date(); currentYear = n.getFullYear(); currentMonth = n.getMonth(); renderCalendar(); renderJumpPanel(); }
+        function openCalModal(k) {
+            document.getElementById('calModalDateKey').value = k;
+            document.getElementById('calModalDateTitle').innerText = t('cal.entryTitle') + ': ' + k;
+            document.getElementById('calModalText').value = calendarEvents[k] || '';
+            document.getElementById('calModal').classList.remove('hidden');
+            document.getElementById('calModal').classList.add('flex');
+        }
+        function closeCalModal() { document.getElementById('calModal').classList.remove('flex'); document.getElementById('calModal').classList.add('hidden'); }
+        function saveCalEvent() {
+            const k = document.getElementById('calModalDateKey').value;
+            const v = document.getElementById('calModalText').value.trim();
+            if (v) calendarEvents[k] = v; else delete calendarEvents[k];
+            localStorage.setItem('cy_workspace_cal', JSON.stringify(calendarEvents));
+            closeCalModal(); renderCalendar();
+        }
+
+        // ---------- POMODORO ----------
+        function setPomoMode(mode) {
+            pomoMode = mode; pausePomodoro();
+            ['work','shortBreak','longBreak'].forEach(m => {
+                const b = document.getElementById('pomoMode-' + m);
+                if (b) b.className = m === mode ? 'px-3 py-1.5 rounded font-bold bg-[#2c599d] text-white shadow' : 'px-3 py-1.5 rounded font-bold bg-white border border-gray-300 text-gray-700';
+            });
+            if (mode === 'work') pomoSecondsLeft = 25 * 60;
+            if (mode === 'shortBreak') pomoSecondsLeft = 5 * 60;
+            if (mode === 'longBreak') pomoSecondsLeft = 15 * 60;
+            updatePomoDisplay();
+        }
+        function updatePomoDisplay() {
+            const m = Math.floor(pomoSecondsLeft / 60), s = pomoSecondsLeft % 60;
+            const d = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            const c = document.getElementById('pomoClockDisplay'); if (c) c.innerText = d;
+            const n = document.getElementById('pomoCompletedCount'); if (n) n.innerText = pomoCompletedToday;
+        }
+        function startPomodoro() {
+            if (pomoIsRunning) return;
+            pomoIsRunning = true;
+            document.getElementById('pomoStartBtn').classList.add('hidden');
+            document.getElementById('pomoPauseBtn').classList.remove('hidden');
+            document.getElementById('pomoStatusText').innerText = pomoMode === 'work' ? t('pomo.focusInProgress') : t('pomo.breakInProgress');
+            pomoTimerInterval = setInterval(() => {
+                pomoSecondsLeft--;
+                updatePomoDisplay();
+                if (pomoSecondsLeft <= 0) {
+                    clearInterval(pomoTimerInterval); pomoIsRunning = false;
+                    playPomoChime();
+                    if (pomoMode === 'work') {
+                        pomoCompletedToday++;
+                        localStorage.setItem('cy_pomo_count', pomoCompletedToday);
+                        alert(t('pomo.focusComplete'));
+                        setPomoMode('shortBreak');
+                    } else { alert(t('pomo.breakComplete')); setPomoMode('work'); }
+                }
+            }, 1000);
+        }
+        function pausePomodoro() {
+            if (!pomoIsRunning) return;
+            clearInterval(pomoTimerInterval); pomoIsRunning = false;
+            document.getElementById('pomoStartBtn').classList.remove('hidden');
+            document.getElementById('pomoPauseBtn').classList.add('hidden');
+            document.getElementById('pomoStatusText').innerText = t('pomo.paused');
+        }
+        function resetPomodoro() {
+            pausePomodoro();
+            if (pomoMode === 'work') pomoSecondsLeft = 25 * 60;
+            if (pomoMode === 'shortBreak') pomoSecondsLeft = 5 * 60;
+            if (pomoMode === 'longBreak') pomoSecondsLeft = 15 * 60;
+            updatePomoDisplay();
+            document.getElementById('pomoStatusText').innerText = t('pomo.ready');
+        }
+        function playPomoChime() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.start(); osc.stop(ctx.currentTime + 1.3);
+            } catch (e) {}
+        }
+
+        // ---------- BACKUP / RESTORE ----------
+        function exportAllWorkspaceJSON() {
+            autoSaveActiveDoc();
+            const workspace = {
+                documents, tasks, calendarEvents,
+                userMood, pomoCompletedToday, currentLang,
+                bgmTitle: document.getElementById('bgmTitle').innerText,
+                bgmSelectValue: document.getElementById('bgmSelect').value,
+                activeTab, activeDocId, currentYear, currentMonth,
+                exportDate: new Date().toISOString(),
+                _counts: { documents: documents.length, tasks: tasks.length, calendarEvents: Object.keys(calendarEvents).length }
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(workspace, null, 2));
+            const dl = document.createElement('a');
+            dl.setAttribute("href", dataStr);
+            dl.setAttribute("download", `MYDESK_notion_backup_${new Date().toISOString().slice(0, 10)}.json`);
+            document.body.appendChild(dl); dl.click(); dl.remove();
+            const s = document.getElementById('saveStatus');
+            if (s) { s.innerText = t('alert.backupDownloaded'); setTimeout(() => { s.innerText = t('docs.saved'); }, 2500); }
+        }
+        function importWorkspaceJSON(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.documents && Array.isArray(imported.documents) && imported.tasks && Array.isArray(imported.tasks)) {
+                        documents = imported.documents;
+                        tasks = imported.tasks;
+                        calendarEvents = imported.calendarEvents || {};
+                        userMood = imported.userMood || '♫ Coding & organizing memories...';
+                        pomoCompletedToday = imported.pomoCompletedToday !== undefined ? imported.pomoCompletedToday : 0;
+                        if (imported.currentYear && imported.currentMonth !== undefined) { currentYear = imported.currentYear; currentMonth = imported.currentMonth; }
+                        if (imported.activeTab && TABS.includes(imported.activeTab)) activeTab = imported.activeTab;
+                        if (imported.activeDocId && documents.some(d => d.id === imported.activeDocId)) activeDocId = imported.activeDocId;
+                        else if (documents.length > 0) activeDocId = documents[0].id;
+                        if (imported.bgmSelectValue) {
+                            const sel = document.getElementById('bgmSelect');
+                            if (sel && [...sel.options].some(o => o.value === imported.bgmSelectValue)) {
+                                sel.value = imported.bgmSelectValue;
+                                document.getElementById('bgmTitle').innerText = imported.bgmSelectValue;
+                            }
+                        }
+                        localStorage.setItem('cy_workspace_docs', JSON.stringify(documents));
+                        localStorage.setItem('cy_workspace_tasks', JSON.stringify(tasks));
+                        localStorage.setItem('cy_workspace_cal', JSON.stringify(calendarEvents));
+                        localStorage.setItem('cy_workspace_mood', userMood);
+                        localStorage.setItem('cy_pomo_count', pomoCompletedToday);
+                        if (imported.currentLang && TRANSLATIONS[imported.currentLang]) setLanguage(imported.currentLang);
+                        document.getElementById('userMood').value = userMood;
+                        document.getElementById('pomoCompletedCount').innerText = pomoCompletedToday;
+                        switchTab(activeTab);
+                        renderTasks(); renderCalendar(); updatePomoDisplay();
+                        if (activeTab === 'documents') { renderDocumentTree(); loadActiveDocument(); }
+                        if (activeTab === 'todo') updateTaskSidebarCounts();
+                        scanAudioFromDocs();
+                        alert(t('alert.restored'));
+                    } else alert(t('alert.invalidBackup'));
+                } catch (err) { console.error(err); alert(t('alert.parseError')); }
+            };
+            reader.readAsText(file); event.target.value = '';
+        }
+        function resetWorkspace() {
+            if (confirm(t('alert.resetConfirm'))) {
+                documents = JSON.parse(JSON.stringify(defaultDocuments));
+                tasks = JSON.parse(JSON.stringify(defaultTasks));
+                calendarEvents = {};
+                activeDocId = defaultDocuments[0].id;
+                userMood = '♫ Coding & organizing memories...';
+                pomoCompletedToday = 3;
+                currentYear = new Date().getFullYear();
+                currentMonth = new Date().getMonth();
+                saveDocsToStorage(); saveTasksToStorage();
+                localStorage.setItem('cy_workspace_cal', JSON.stringify(calendarEvents));
+                localStorage.setItem('cy_workspace_mood', userMood);
+                localStorage.setItem('cy_pomo_count', pomoCompletedToday);
+                document.getElementById('userMood').value = userMood;
+                document.getElementById('pomoCompletedCount').innerText = pomoCompletedToday;
+                switchTab('documents'); renderTasks(); renderCalendar(); updatePomoDisplay();
+                if (activeTab === 'documents') { renderDocumentTree(); loadActiveDocument(); }
+                scanAudioFromDocs();
+            }
+        }
+        function saveMood(val) { userMood = val; localStorage.setItem('cy_workspace_mood', val); }
+
+        // ---------- BGM ----------
+        let isPlayingBGM = false, audioCtx = null, bgmTimer = null;
+        function togglePlayBGM() {
+            isPlayingBGM = !isPlayingBGM;
+            const i = document.getElementById('bgmIcon');
+            if (isPlayingBGM) { i.className = 'fa-solid fa-pause'; startRetroBGM(); }
+            else { i.className = 'fa-solid fa-play'; stopRetroBGM(); }
+        }
+        function changeBGM(val) {
+            document.getElementById('bgmTitle').innerText = val;
+            if (isPlayingBGM) { stopRetroBGM(); startRetroBGM(); }
+        }
+        function startRetroBGM() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23];
+            let step = 0;
+            bgmTimer = setInterval(() => {
+                if (!audioCtx || !isPlayingBGM) return;
+                try {
+                    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+                    o.type = 'triangle';
+                    o.frequency.setValueAtTime(notes[step % notes.length], audioCtx.currentTime);
+                    g.gain.setValueAtTime(0.025, audioCtx.currentTime);
+                    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.start(); o.stop(audioCtx.currentTime + 0.35);
+                    step++;
+                } catch (e) {}
+            }, 350);
+        }
+        function stopRetroBGM() { if (bgmTimer) clearInterval(bgmTimer); }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.innerText = msg;
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 2200);
+        }
+
+        // ================================================================
+        // INIT
+        // ================================================================
+        document.addEventListener('DOMContentLoaded', function () {
+            document.body.className = document.body.className.replace(/lang-\w+/, 'lang-' + currentLang);
+            initTabs();
+            document.getElementById('userMood').value = userMood;
+            updateLangButtons();
+            applyTranslations();
+            switchTab('documents');
+            renderCalendar(); renderTasks(); updatePomoDisplay();
+
+            // Check microphone permission on load
+            checkMicPermission();
+
+            // Rich text editor setup
+            const editor = document.getElementById('rteEditor');
+            editor.addEventListener('input', autoSaveActiveDoc);
+            editor.addEventListener('keyup', autoSaveActiveDoc);
+            editor.addEventListener('blur', autoSaveActiveDoc);
+            editor.addEventListener('keydown', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    if (e.key === 'b') { e.preventDefault(); rteExec('bold'); }
+                    else if (e.key === 'i') { e.preventDefault(); rteExec('italic'); }
+                    else if (e.key === 'u') { e.preventDefault(); rteExec('underline'); }
+                    else if (e.key === 'k') { e.preventDefault(); rteInsertLink(); }
+                }
+            });
+            editor.addEventListener('click', function(e) {
+                const a = e.target.closest('a');
+                if (a && a.href) {
+                    if (e.ctrlKey || e.metaKey) { e.preventDefault(); window.open(a.href, '_blank'); }
+                }
+            });
+            setupLinkAutoDetection();
+
+            // Table trigger
+            document.querySelectorAll('[data-rte-table-trigger]').forEach(btn => {
+                btn.addEventListener('click', function(e) { e.preventDefault(); showTableForm(); });
+            });
+
+            // Load first doc
+            loadActiveDocument();
+            // Initial audio scan
+            scanAudioFromDocs();
+
+            // Close jump panel on outside click
+            document.addEventListener('click', function (e) {
+                const panel = document.getElementById('jumpPanel');
+                const titleBtn = document.getElementById('calendarMonthTitle');
+                if (!panel || panel.classList.contains('hidden')) return;
+                if (!panel.contains(e.target) && !titleBtn.contains(e.target)) closeJumpPanel();
+            });
+
+            // Warn on unload if recording
+            window.addEventListener('beforeunload', function(e) {
+                if (isRecordingVoice) { e.preventDefault(); e.returnValue = ''; }
+            });
+        });
+    </script>
+</body>
+</html>
