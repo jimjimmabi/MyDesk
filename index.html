@@ -2256,25 +2256,43 @@
         function switchMenu(tabId) {
             if (!MENU_TABS.includes(tabId)) tabId = 'home';
             activeTab = tabId;
+
             MENU_TABS.forEach(v => {
                 const viewEl = document.getElementById('view-' + v);
                 const menuEl = document.querySelector(`.side-menu-item[data-menu="${v}"]`);
                 if (viewEl) {
-                    viewEl.classList.toggle('hidden', v !== tabId);
-                    viewEl.classList.toggle('flex', v === tabId);
-                }
-                if (menuEl) menuEl.classList.toggle('active', v === tabId);
-            });
+                viewEl.classList.toggle('hidden', v !== tabId);
+                viewEl.classList.toggle('flex', v === tabId);
+            }
+            if (menuEl) menuEl.classList.toggle('active', v === tabId);
+        });
+
+        // Toggle sidebar context container (only visible on Docs tab)
+        const ctx = document.getElementById('sidebarContextContainer');
+        if (ctx) {
+            if (tabId === 'documents') {
+                ctx.style.display = 'block';
+                renderDocumentTree();
+            } else {
+                ctx.style.display = 'none';
+            }
+        }
+
+        try {
             if (tabId === 'home') renderHomePage();
             else if (tabId === 'diary') renderDiaryList();
             else if (tabId === 'album') renderAlbum();
             else if (tabId === 'guestbook') renderGuestbook();
-            else if (tabId === 'documents') { renderDocumentTree(); loadActiveDocument(); }
+            else if (tabId === 'documents') loadActiveDocument();
             else if (tabId === 'todo') renderTasks();
             else if (tabId === 'calendar') renderCalendar();
             else if (tabId === 'pomodoro') updatePomoDisplay();
-            if (tabId !== 'calendar') closeJumpPanel();
+        } catch (e) {
+            console.error('Error rendering tab ' + tabId + ':', e);
         }
+
+        if (tabId !== 'calendar') closeJumpPanel();
+    }
 
         // ================================================================
         // HOME
