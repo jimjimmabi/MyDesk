@@ -1,2058 +1,714 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이데스크 • 도토리숲 도구들</title>
-    
-    <!-- Fonts from Dotorisup -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Gaegu:wght@400;700&family=Nanum+Gothic:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* ============================================
-           DOTORISUP DESIGN SYSTEM
-           ============================================ */
-        :root {
-            --bg: #F5F5F5;
-            --panel: #FFFFFF;
-            --border: #CCCCCC;
-            --border-dark: #999999;
-            --pink: #FF9EC4;
-            --pink-dark: #E87BA8;
-            --blue: #A8D8FF;
-            --blue-dark: #6FB8E8;
-            --text: #333333;
-            --text-light: #888888;
-            --link: #0066CC;
-            --acorn: #C68B4A;
-            --acorn-dark: #8B5E2E;
-            --cream: #FFF8F0;
-            --cream-dark: #F0E4D4;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Nanum Gothic', 'Dotum', sans-serif;
-            background: linear-gradient(to bottom, #EAF6FF 0%, #F5F5F5 200px);
-            min-height: 100vh;
-            color: var(--text);
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 12px;
-        }
-
-        .container { width: 100%; max-width: 1200px; }
-
-        /* ============================================
-           HEADER
-           ============================================ */
-        .app-header {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 12px 18px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-        .app-header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: repeating-linear-gradient(135deg, var(--pink) 0 10px, var(--cream) 10px 20px, var(--blue) 20px 30px, var(--cream) 30px 40px);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Gaegu', cursive;
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--acorn-dark);
-        }
-        .brand i { color: var(--pink-dark); }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .status-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            background: var(--cream);
-            border: 1px solid var(--cream-dark);
-            border-radius: 999px;
-            font-size: 11px;
-            font-weight: bold;
-            color: var(--acorn-dark);
-        }
-        .status-chip i { color: #4CAF50; }
-
-        .lang-selector {
-            display: flex;
-            gap: 2px;
-            background: var(--cream);
-            border: 1px solid var(--cream-dark);
-            border-radius: 4px;
-            padding: 2px;
-        }
-        .lang-btn {
-            padding: 4px 10px;
-            font-size: 11px;
-            font-weight: bold;
-            border-radius: 3px;
-            border: 1px solid transparent;
-            background: transparent;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .lang-btn:hover { background: #fff; color: var(--acorn-dark); }
-        .lang-btn.active {
-            background: linear-gradient(to bottom, #FFB8D4, var(--pink));
-            border-color: var(--pink-dark);
-            color: #fff;
-        }
-
-        /* ============================================
-           MAIN LAYOUT
-           ============================================ */
-        .app-body {
-            display: flex;
-            gap: 12px;
-            min-height: 80vh;
-        }
-
-        .sidebar {
-            width: 260px;
-            flex-shrink: 0;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .sidebar-profile {
-            background: linear-gradient(to bottom, var(--cream), var(--cream-dark));
-            padding: 14px;
-            border-bottom: 1px solid var(--border);
-            text-align: center;
-        }
-        .avatar-box {
-            width: 70px; height: 70px;
-            background: linear-gradient(to bottom, #EAF6FF, #FFF8F0);
-            border: 2px solid var(--pink);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 36px;
-            margin: 0 auto 10px;
-            box-shadow: 0 2px 6px rgba(232, 123, 168, 0.2);
-        }
-        .sidebar-profile input {
-            width: 100%;
-            text-align: center;
-            font-size: 11px;
-            padding: 4px 8px;
-            border: 1px solid var(--border);
-            border-radius: 3px;
-            background: rgba(255,255,255,0.8);
-            color: var(--text);
-            font-family: inherit;
-        }
-
-        .sidebar-tabs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            background: var(--cream-dark);
-            padding: 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .sidebar-tab {
-            padding: 10px 4px;
-            text-align: center;
-            font-size: 11px;
-            font-weight: bold;
-            background: var(--cream);
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.15s;
-            border: none;
-            font-family: inherit;
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-        }
-        .sidebar-tab:hover { background: #fff; color: var(--acorn-dark); }
-        .sidebar-tab.active {
-            background: var(--panel);
-            color: var(--acorn-dark);
-            box-shadow: inset 0 -2px 0 var(--pink);
-        }
-        .sidebar-tab i { font-size: 16px; }
-
-        .sidebar-context {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-            background: #fff;
-        }
-
-        .sidebar-footer {
-            padding: 10px;
-            border-top: 1px solid var(--border);
-            background: var(--cream);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .main-content {
-            flex: 1;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            min-width: 0;
-        }
-
-        /* ============================================
-           PANEL COMPONENTS (Reusable)
-           ============================================ */
-        .panel-header {
-            background: linear-gradient(to bottom, var(--cream), var(--cream-dark));
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .panel-title {
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--acorn-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .panel-title i { color: var(--pink-dark); }
-
-        .panel-body { padding: 16px; flex: 1; overflow-y: auto; }
-
-        /* ============================================
-           BUTTONS
-           ============================================ */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 14px;
-            background: linear-gradient(to bottom, #FFFFFF, #F0F0F0);
-            border: 1px solid var(--border);
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: bold;
-            color: var(--text);
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: inherit;
-            text-decoration: none;
-        }
-        .btn:hover {
-            background: linear-gradient(to bottom, #FFF8F0, #FFEEDD);
-            border-color: var(--pink);
-            color: var(--pink-dark);
-            transform: translateY(-1px);
-        }
-        .btn-primary {
-            background: linear-gradient(to bottom, #FFB8D4, var(--pink));
-            border-color: var(--pink-dark);
-            color: #fff;
-        }
-        .btn-primary:hover {
-            background: linear-gradient(to bottom, var(--pink), var(--pink-dark));
-            color: #fff;
-        }
-        .btn-danger { border-color: #E8A0A0; color: #C04040; }
-        .btn-danger:hover { background: #FFF0F0; border-color: #C04040; color: #A03030; }
-
-        /* ============================================
-           RICH TEXT EDITOR
-           ============================================ */
-        .rte-toolbar {
-            background: #fafcff;
-            border-bottom: 1px solid var(--border);
-            padding: 6px 10px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            align-items: center;
-        }
-        .rte-toolbar button, .rte-toolbar select {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 3px;
-            padding: 4px 8px;
-            font-size: 11px;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.1s;
-            color: var(--text);
-        }
-        .rte-toolbar button:hover, .rte-toolbar select:hover {
-            background: var(--cream);
-            border-color: var(--pink);
-        }
-        .rte-toolbar button.active {
-            background: var(--acorn-dark);
-            color: #fff;
-            border-color: var(--acorn-dark);
-        }
-        .rte-toolbar .divider { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
-
-        .rte-editor {
-            flex: 1;
-            padding: 24px 32px;
-            font-size: 14px;
-            line-height: 1.8;
-            overflow-y: auto;
-            outline: none;
-            color: #1f2937;
-            background: #fff;
-            min-height: 0;
-        }
-        .rte-editor:empty:before {
-            content: attr(data-placeholder);
-            color: #9ca3af;
-            font-style: italic;
-        }
-        .rte-editor h1 { font-size: 1.8em; font-weight: bold; margin: 0.6em 0 0.3em; color: var(--acorn-dark); }
-        .rte-editor h2 { font-size: 1.4em; font-weight: bold; margin: 0.5em 0 0.2em; color: var(--acorn-dark); }
-        .rte-editor h3 { font-size: 1.2em; font-weight: bold; margin: 0.4em 0 0.2em; color: var(--acorn-dark); }
-        .rte-editor p { margin: 0.4em 0; }
-        .rte-editor ul, .rte-editor ol { margin: 0.5em 0; padding-left: 1.5em; }
-        .rte-editor ul { list-style: disc; }
-        .rte-editor ol { list-style: decimal; }
-        .rte-editor blockquote {
-            border-left: 4px solid var(--pink);
-            background: #fff7ed;
-            padding: 10px 14px;
-            margin: 0.6em 0;
-            border-radius: 4px;
-            color: #7c2d12;
-        }
-        .rte-editor blockquote.callout {
-            border-left-color: #f59e0b;
-            background: #fffbeb;
-            color: #78350f;
-        }
-        .rte-editor pre {
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 12px;
-            overflow-x: auto;
-            margin: 0.6em 0;
-            white-space: pre-wrap;
-        }
-        .rte-editor code {
-            background: #f1f5f9;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.9em;
-            color: var(--pink-dark);
-        }
-        .rte-editor a { color: var(--link); text-decoration: underline; cursor: pointer; }
-        .rte-editor img { max-width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--border); margin: 0.6em 0; display: block; }
-        .rte-editor table { border-collapse: collapse; width: 100%; margin: 0.8em 0; font-size: 13px; }
-        .rte-editor table th, .rte-editor table td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; }
-        .rte-editor table th { background: #e0edf8; font-weight: bold; color: var(--acorn-dark); }
-        .rte-editor table tr:nth-child(even) td { background: #f8fafc; }
-        .rte-editor audio { width: 100%; margin: 0.6em 0; border-radius: 30px; }
-
-        .rte-editor .audio-block {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            border: 1px solid #7dd3fc;
-            border-radius: 10px;
-            padding: 10px 14px;
-            margin: 0.6em 0;
-            box-shadow: 0 1px 3px rgba(2, 132, 199, 0.08);
-        }
-        .rte-editor .audio-block .audio-label {
-            font-size: 11px;
-            color: #0369a1;
-            font-weight: bold;
-            margin-bottom: 0.4em;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* ============================================
-           TASK LIST
-           ============================================ */
-        .task-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            margin-bottom: 8px;
-            transition: all 0.15s;
-        }
-        .task-item:hover { border-color: var(--pink); background: var(--cream); }
-        .task-item.completed { opacity: 0.55; }
-        .task-item.completed .task-title { text-decoration: line-through; color: var(--text-light); }
-        .task-checkbox {
-            width: 18px; height: 18px;
-            accent-color: var(--pink-dark);
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .task-content { flex: 1; min-width: 0; }
-        .task-title { font-size: 13px; font-weight: bold; color: var(--acorn-dark); }
-        .task-meta { display: flex; gap: 8px; margin-top: 4px; font-size: 10px; flex-wrap: wrap; }
-        .task-tag {
-            padding: 2px 8px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            background: var(--cream);
-        }
-        .task-priority-high { color: #C04040; border-color: #E8A0A0; background: #FFF0F0; }
-        .task-priority-medium { color: #B8860B; border-color: #E8D0A0; background: #FFFBF0; }
-        .task-priority-low { color: #4A8A4A; border-color: #A0D0A0; background: #F0FFF0; }
-        .task-actions { display: flex; gap: 4px; }
-
-        /* ============================================
-           CALENDAR
-           ============================================ */
-        .cal-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
-            background: var(--border);
-            padding: 3px;
-            border-radius: 6px;
-        }
-        .cal-header {
-            background: var(--cream-dark);
-            padding: 8px 4px;
-            text-align: center;
-            font-size: 11px;
-            font-weight: bold;
-            color: var(--acorn-dark);
-            border-radius: 4px;
-        }
-        .cal-cell {
-            background: #fff;
-            min-height: 70px;
-            padding: 6px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.15s;
-            position: relative;
-            font-size: 11px;
-        }
-        .cal-cell:hover { background: var(--cream); }
-        .cal-cell.empty { background: #fafafa; cursor: default; }
-        .cal-cell.today { box-shadow: inset 0 0 0 2px var(--pink); background: #FFF8F0; }
-        .cal-cell .cal-day-num { font-weight: bold; color: var(--acorn-dark); }
-        .cal-cell .cal-event {
-            font-size: 9px;
-            color: var(--text-light);
-            margin-top: 2px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            line-height: 1.3;
-        }
-        .cal-cell .cal-dot {
-            width: 5px; height: 5px;
-            background: var(--pink-dark);
-            border-radius: 50%;
-            position: absolute;
-            top: 6px; right: 6px;
-        }
-
-        /* ============================================
-           POMODORO
-           ============================================ */
-        .pomo-container {
-            max-width: 440px;
-            margin: 40px auto;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 32px;
-            text-align: center;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-        }
-        .pomo-modes { display: flex; justify-content: center; gap: 6px; margin-bottom: 24px; flex-wrap: wrap; }
-        .pomo-mode-btn {
-            padding: 6px 14px;
-            border: 1px solid var(--border);
-            background: #fff;
-            border-radius: 999px;
-            font-size: 11px;
-            font-weight: bold;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: inherit;
-        }
-        .pomo-mode-btn.active { background: var(--acorn-dark); color: #fff; border-color: var(--acorn-dark); }
-        .pomo-clock {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 72px;
-            color: var(--acorn-dark);
-            letter-spacing: 2px;
-            margin: 20px 0;
-            text-shadow: 0 2px 0 var(--cream-dark);
-        }
-        .pomo-controls { display: flex; justify-content: center; gap: 10px; }
-        .pomo-btn {
-            padding: 10px 24px;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: 1px solid;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.15s;
-        }
-        .pomo-btn.start { background: linear-gradient(to bottom, #7FD8A5, #4CAF50); color: #fff; border-color: #3E8E41; }
-        .pomo-btn.start:hover { background: linear-gradient(to bottom, #4CAF50, #3E8E41); }
-        .pomo-btn.pause { background: linear-gradient(to bottom, #FFD87F, #FFB84D); color: #fff; border-color: #E8A030; }
-        .pomo-btn.reset { background: linear-gradient(to bottom, #fff, #f0f0f0); color: var(--text); border-color: var(--border); }
-        .pomo-status {
-            margin-top: 20px;
-            font-size: 12px;
-            color: var(--text-light);
-            font-style: italic;
-        }
-        .pomo-completed {
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-            font-size: 12px;
-            color: var(--acorn-dark);
-            font-weight: bold;
-        }
-
-        /* ============================================
-           MODALS
-           ============================================ */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-        .modal-overlay.hidden { display: none; }
-        .modal-box {
-            background: var(--panel);
-            border: 2px solid var(--border-dark);
-            border-radius: 6px;
-            width: 100%;
-            max-width: 480px;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-        .modal-header {
-            background: linear-gradient(to bottom, var(--cream), var(--cream-dark));
-            padding: 10px 16px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--acorn-dark);
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-            color: var(--text-light);
-            padding: 2px 6px;
-        }
-        .modal-close:hover { color: var(--pink-dark); }
-        .modal-body { padding: 20px; overflow-y: auto; }
-        .modal-footer {
-            padding: 12px 16px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            background: #fafafa;
-        }
-
-        .form-group { margin-bottom: 14px; }
-        .form-group label {
-            display: block;
-            font-size: 11px;
-            font-weight: bold;
-            color: var(--acorn-dark);
-            margin-bottom: 5px;
-        }
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid var(--border);
-            border-radius: 3px;
-            font-size: 12px;
-            font-family: inherit;
-            background: var(--cream);
-            color: var(--text);
-            outline: none;
-        }
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            border-color: var(--pink);
-            background: #fff;
-        }
-        .form-textarea { resize: vertical; min-height: 80px; }
-
-        /* ============================================
-           TOAST
-           ============================================ */
-        .toast {
-            position: fixed;
-            bottom: 24px; right: 24px;
-            background: var(--acorn-dark);
-            color: #fff;
-            padding: 10px 18px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: bold;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-            z-index: 2000;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s;
-            pointer-events: none;
-        }
-        .toast.show { opacity: 1; transform: translateY(0); }
-
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
-        @media (max-width: 768px) {
-            .app-body { flex-direction: column; }
-            .sidebar { width: 100%; }
-            .sidebar-tabs { grid-template-columns: 1fr 1fr; }
-            .pomo-clock { font-size: 56px; }
-            .cal-cell { min-height: 50px; }
-        }
-
-        /* ============================================
-           UTILITY
-           ============================================ */
-        .hidden { display: none !important; }
-        .flex { display: flex; }
-        .text-center { text-align: center; }
-        .mt-2 { margin-top: 8px; }
-        .mb-2 { margin-bottom: 8px; }
-        .w-full { width: 100%; }
-        .gap-2 { gap: 8px; }
-    </style>
-</head>
-<body>
-
-<div class="container">
-
-    <!-- ============================================
-         HEADER
-         ============================================ -->
-    <header class="app-header">
-        <div class="brand">
-            <i class="fa-solid fa-desktop"></i>
-            마이데스크
-        </div>
-        <div class="header-right">
-            <span class="status-chip"><i class="fa-regular fa-circle-check"></i> Saved locally</span>
-            <div class="lang-selector">
-                <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
-                <button class="lang-btn" data-lang="ko" onclick="setLanguage('ko')">한</button>
-                <button class="lang-btn" data-lang="ja" onclick="setLanguage('ja')">日</button>
-                <button class="lang-btn" data-lang="zh" onclick="setLanguage('zh')">中</button>
-            </div>
-        </div>
-    </header>
-
-    <!-- ============================================
-         MAIN APP BODY
-         ============================================ -->
-    <div class="app-body">
-
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="sidebar-profile">
-                <div class="avatar-box">👩‍💻</div>
-                <input type="text" id="userMood" placeholder="What's your mood?" onchange="saveMood(this.value)">
-            </div>
-
-            <nav class="sidebar-tabs">
-                <button class="sidebar-tab active" data-tab="documents" onclick="switchTab('documents')">
-                    <i class="fa-solid fa-file-lines"></i>
-                    <span>Docs</span>
-                </button>
-                <button class="sidebar-tab" data-tab="todo" onclick="switchTab('todo')">
-                    <i class="fa-solid fa-list-check"></i>
-                    <span>Tasks</span>
-                </button>
-                <button class="sidebar-tab" data-tab="calendar" onclick="switchTab('calendar')">
-                    <i class="fa-solid fa-calendar-days"></i>
-                    <span>Calendar</span>
-                </button>
-                <button class="sidebar-tab" data-tab="pomodoro" onclick="switchTab('pomodoro')">
-                    <i class="fa-solid fa-clock"></i>
-                    <span>Focus</span>
-                </button>
-            </nav>
-
-            <div class="sidebar-context" id="sidebarContext">
-                <!-- Dynamic content per tab -->
-            </div>
-
-            <div class="sidebar-footer">
-                <button class="btn w-full" onclick="exportAllWorkspaceJSON()">
-                    <i class="fa-solid fa-download"></i> Backup
-                </button>
-                <label class="btn w-full" style="cursor:pointer;">
-                    <i class="fa-solid fa-upload"></i> Restore
-                    <input type="file" id="importFile" accept=".json" onchange="importWorkspaceJSON(event)" class="hidden">
-                </label>
-                <button class="btn w-full btn-danger" onclick="resetWorkspace()">
-                    <i class="fa-solid fa-trash"></i> Reset All
-                </button>
-            </div>
-        </aside>
-
-        <!-- MAIN CONTENT -->
-        <main class="main-content" id="mainContent">
-
-            <!-- ============================================
-                 DOCUMENTS VIEW
-                 ============================================ -->
-            <div id="view-documents" class="workspace-view" style="display:flex;flex-direction:column;flex:1;min-height:0;">
-                <div class="panel-header">
-                    <input type="text" id="activeDocTitle" placeholder="Page Title..." oninput="updateActiveTitle(this.value)"
-                           style="flex:1;min-width:200px;font-size:16px;font-weight:bold;color:var(--acorn-dark);background:transparent;border:none;border-bottom:1px solid transparent;padding:4px 0;font-family:inherit;outline:none;"
-                           onfocus="this.style.borderBottomColor='var(--pink)'" onblur="this.style.borderBottomColor='transparent'">
-                    <div style="display:flex;gap:6px;">
-                        <button class="btn" onclick="exportDocTxt()"><i class="fa-solid fa-file-lines"></i> .txt</button>
-                        <button class="btn" onclick="exportDocHtml()"><i class="fa-solid fa-code"></i> .html</button>
-                        <button class="btn" onclick="exportDocJson()"><i class="fa-solid fa-database"></i> .json</button>
-                        <button class="btn btn-danger" onclick="deleteActiveDocument()"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </div>
-
-                <!-- TOOLBAR -->
-                <div class="rte-toolbar">
-                    <select onchange="rteExec('formatBlock', this.value); this.selectedIndex=0;">
-                        <option value="">Paragraph</option>
-                        <option value="h1">Heading 1</option>
-                        <option value="h2">Heading 2</option>
-                        <option value="h3">Heading 3</option>
-                        <option value="p">Paragraph</option>
-                        <option value="pre">Code Block</option>
-                        <option value="blockquote">Quote</option>
-                    </select>
-                    <span class="divider"></span>
-                    <button onclick="rteExec('bold')" title="Bold"><i class="fa-solid fa-bold"></i></button>
-                    <button onclick="rteExec('italic')" title="Italic"><i class="fa-solid fa-italic"></i></button>
-                    <button onclick="rteExec('underline')" title="Underline"><i class="fa-solid fa-underline"></i></button>
-                    <button onclick="rteExec('strikeThrough')" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
-                    <span class="divider"></span>
-                    <button onclick="rteExec('insertUnorderedList')" title="Bullet list"><i class="fa-solid fa-list-ul"></i></button>
-                    <button onclick="rteExec('insertOrderedList')" title="Numbered list"><i class="fa-solid fa-list-ol"></i></button>
-                    <button onclick="rteInsertCallout()" title="Callout"><i class="fa-solid fa-lightbulb" style="color:#f59e0b;"></i></button>
-                    <span class="divider"></span>
-                    <button onclick="rteInsertLink()" title="Insert link"><i class="fa-solid fa-link" style="color:var(--link);"></i></button>
-                    <button onclick="document.getElementById('rteImageInput').click()" title="Insert image"><i class="fa-solid fa-image" style="color:#4CAF50;"></i></button>
-                    <button onclick="showTableForm()" title="Insert table"><i class="fa-solid fa-table" style="color:#9C27B0;"></i></button>
-                    <button onclick="document.getElementById('rteAudioInput').click()" title="Insert audio"><i class="fa-solid fa-music" style="color:var(--pink-dark);"></i></button>
-                    <button onclick="toggleVoiceRecording()" id="voiceBtn" title="Record voice"><i class="fa-solid fa-microphone" style="color:#C04040;"></i></button>
-                    <span class="divider"></span>
-                    <button onclick="rteExec('undo')" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
-                    <button onclick="rteExec('redo')" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
-                    <button onclick="rteExec('removeFormat')" title="Clear format"><i class="fa-solid fa-eraser"></i></button>
-
-                    <input type="file" id="rteImageInput" accept="image/*" class="hidden" onchange="handleRteImage(event)">
-                    <input type="file" id="rteAudioInput" accept="audio/*" class="hidden" onchange="handleRteAudio(event)">
-
-                    <!-- Table form inline -->
-                    <span id="tableForm" class="hidden" style="display:inline-flex;gap:4px;align-items:center;background:#f0f4ff;padding:2px 8px;border-radius:4px;border:1px solid #c0d0e8;">
-                        <input type="number" id="tableRows" value="3" min="1" max="20" style="width:36px;padding:2px;border:1px solid var(--border);border-radius:3px;text-align:center;font-size:11px;">
-                        <span style="font-size:10px;">×</span>
-                        <input type="number" id="tableCols" value="3" min="1" max="10" style="width:36px;padding:2px;border:1px solid var(--border);border-radius:3px;text-align:center;font-size:11px;">
-                        <button onclick="rteInsertTable()" style="background:var(--acorn-dark);color:#fff;border-color:var(--acorn-dark);font-size:10px;padding:2px 8px;">Insert</button>
-                        <button onclick="document.getElementById('tableForm').classList.add('hidden')" style="font-size:10px;padding:2px 6px;">✕</button>
-                    </span>
-                </div>
-
-                <!-- EDITOR -->
-                <div id="rteEditor" class="rte-editor" contenteditable="true" data-placeholder="Start writing your notes..."></div>
-
-                <!-- STATUS BAR -->
-                <div style="padding:6px 16px;background:var(--cream);border-top:1px solid var(--border);font-size:10px;color:var(--text-light);display:flex;justify-content:space-between;">
-                    <span id="docStats">0 words · 0 characters</span>
-                    <span id="voiceStatus"></span>
-                </div>
-            </div>
-
-            <!-- ============================================
-                 TODO VIEW
-                 ============================================ -->
-            <div id="view-todo" class="workspace-view" style="display:none;flex-direction:column;flex:1;min-height:0;">
-                <div class="panel-header">
-                    <div class="panel-title"><i class="fa-solid fa-list-check"></i> Tasks</div>
-                    <button class="btn btn-primary" onclick="openTaskModal()"><i class="fa-solid fa-plus"></i> Add Task</button>
-                </div>
-                <div class="panel-body" id="taskList"></div>
-            </div>
-
-            <!-- ============================================
-                 CALENDAR VIEW
-                 ============================================ -->
-            <div id="view-calendar" class="workspace-view" style="display:none;flex-direction:column;flex:1;min-height:0;">
-                <div class="panel-header">
-                    <div class="panel-title"><i class="fa-solid fa-calendar-days"></i> Calendar</div>
-                    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-                        <button class="btn" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-                        <span id="calMonthTitle" style="font-weight:bold;font-size:13px;color:var(--acorn-dark);min-width:130px;text-align:center;">October 2026</span>
-                        <button class="btn" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
-                        <span class="divider" style="width:1px;height:20px;background:var(--border);margin:0 4px;"></span>
-                        <button class="btn" onclick="exportCalendarICS()" title="Export this month to .ics"><i class="fa-solid fa-file-export" style="color:#4CAF50;"></i> .ics</button>
-                        <label class="btn" style="cursor:pointer;" title="Import .ics file">
-                            <i class="fa-solid fa-file-import" style="color:#2196F3;"></i> .ics
-                            <input type="file" id="icsInput" accept=".ics" onchange="importCalendarICS(event)" class="hidden">
-                        </label>
-                    </div>
-                </div>
-                <div class="panel-body" style="display:flex;flex-direction:column;gap:12px;">
-                    <div class="cal-grid" id="calGrid"></div>
-                    <div style="font-size:11px;color:var(--text-light);text-align:center;">
-                        Click any date to add a diary entry or event.
-                        <br>
-                        <i class="fa-solid fa-file-export" style="color:#4CAF50;"></i> Export this month as .ics &nbsp;·&nbsp;
-                        <i class="fa-solid fa-file-import" style="color:#2196F3;"></i> Import events from .ics
-                    </div>
-                </div>
-            </div>
-
-            <!-- ============================================
-                 POMODORO VIEW
-                 ============================================ -->
-            <div id="view-pomodoro" class="workspace-view" style="display:none;flex-direction:column;flex:1;min-height:0;">
-                <div class="panel-header">
-                    <div class="panel-title"><i class="fa-solid fa-clock"></i> Focus Timer</div>
-                </div>
-                <div class="panel-body">
-                    <div class="pomo-container">
-                        <div class="pomo-modes">
-                            <button class="pomo-mode-btn active" data-mode="work" onclick="setPomoMode('work')">Focus (25m)</button>
-                            <button class="pomo-mode-btn" data-mode="shortBreak" onclick="setPomoMode('shortBreak')">Short Break (5m)</button>
-                            <button class="pomo-mode-btn" data-mode="longBreak" onclick="setPomoMode('longBreak')">Long Break (15m)</button>
-                        </div>
-                        <div class="pomo-clock" id="pomoClock">25:00</div>
-                        <div class="pomo-controls">
-                            <button class="pomo-btn start" id="pomoStart" onclick="startPomodoro()"><i class="fa-solid fa-play"></i> Start</button>
-                            <button class="pomo-btn pause hidden" id="pomoPause" onclick="pausePomodoro()"><i class="fa-solid fa-pause"></i> Pause</button>
-                            <button class="pomo-btn reset" onclick="resetPomodoro()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
-                        </div>
-                        <div class="pomo-status" id="pomoStatus">Ready to focus</div>
-                        <div class="pomo-completed">Completed today: <span id="pomoCount">0</span> 🍅</div>
-                    </div>
-                </div>
-            </div>
-
-        </main>
-    </div>
-</div>
-
-<!-- ============================================
-     MODALS
-     ============================================ -->
-
-<!-- Task Modal -->
-<div id="taskModal" class="modal-overlay hidden">
-    <div class="modal-box">
-        <div class="modal-header">
-            <span id="taskModalTitle">Add Task</span>
-            <button class="modal-close" onclick="closeTaskModal()">✕</button>
-        </div>
-        <div class="modal-body">
-            <input type="hidden" id="taskId">
-            <div class="form-group">
-                <label>Task Title</label>
-                <input type="text" id="taskTitle" class="form-input" placeholder="What needs to be done?">
-            </div>
-            <div class="form-group">
-                <label>Priority</label>
-                <select id="taskPriority" class="form-select">
-                    <option value="High">🔴 High</option>
-                    <option value="Medium" selected>🟡 Medium</option>
-                    <option value="Low">🟢 Low</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Category</label>
-                <input type="text" id="taskCategory" class="form-input" value="General">
-            </div>
-            <div class="form-group">
-                <label>Due Date / Notes</label>
-                <input type="text" id="taskDue" class="form-input" placeholder="e.g. Tomorrow">
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" onclick="closeTaskModal()">Cancel</button>
-            <button class="btn btn-primary" onclick="saveTask()">Save Task</button>
-        </div>
-    </div>
-</div>
-
-<!-- Calendar Modal -->
-<div id="calModal" class="modal-overlay hidden">
-    <div class="modal-box">
-        <div class="modal-header">
-            <span id="calModalTitle">Event</span>
-            <button class="modal-close" onclick="closeCalModal()">✕</button>
-        </div>
-        <div class="modal-body">
-            <input type="hidden" id="calDateKey">
-            <div class="form-group">
-                <label>Note / Event</label>
-                <textarea id="calText" class="form-textarea" placeholder="Write your thoughts or plans..."></textarea>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" onclick="closeCalModal()">Cancel</button>
-            <button class="btn btn-primary" onclick="saveCalEvent()">Save</button>
-        </div>
-    </div>
-</div>
-
-<!-- Link Modal -->
-<div id="linkModal" class="modal-overlay hidden">
-    <div class="modal-box">
-        <div class="modal-header">
-            <span>Insert Link</span>
-            <button class="modal-close" onclick="closeLinkModal()">✕</button>
-        </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <label>Display Text</label>
-                <input type="text" id="linkText" class="form-input" placeholder="Link text...">
-            </div>
-            <div class="form-group">
-                <label>URL</label>
-                <input type="text" id="linkUrl" class="form-input" placeholder="https://...">
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" onclick="closeLinkModal()">Cancel</button>
-            <button class="btn btn-primary" onclick="insertLink()">Insert</button>
-        </div>
-    </div>
-</div>
-
-<!-- Mic Permission Modal -->
-<div id="micModal" class="modal-overlay hidden">
-    <div class="modal-box">
-        <div class="modal-header">
-            <span>🎤 Microphone Permission</span>
-            <button class="modal-close" onclick="closeMicModal()">✕</button>
-        </div>
-        <div class="modal-body" style="text-align:center;">
-            <p style="font-size:13px;margin-bottom:12px;">마이데스크 needs microphone access to record voice notes.</p>
-            <div style="background:var(--cream);border:1px solid var(--cream-dark);border-radius:6px;padding:14px;font-size:11px;text-align:left;line-height:1.6;">
-                <b>How to enable:</b>
-                <ol style="margin-left:16px;margin-top:6px;">
-                    <li>Click "Grant Access" below</li>
-                    <li>Click <b>Allow</b> when your browser asks</li>
-                    <li>If no prompt appears, click the 🔒 icon in the address bar and enable Microphone</li>
-                </ol>
-            </div>
-            <p id="micStatus" style="margin-top:12px;font-size:12px;font-weight:bold;"></p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" onclick="closeMicModal()">Later</button>
-            <button class="btn btn-primary" onclick="requestMicPermission()"><i class="fa-solid fa-key"></i> Grant Access</button>
-        </div>
-    </div>
-</div>
-
-<!-- Toast -->
-<div id="toast" class="toast"></div>
-
-<script>
 // ================================================================
-// STATE & STORAGE
+// MyDesk — Main App Logic + Cloud Sync
 // ================================================================
-const STORAGE = {
-    docs: '마이데스크_docs',
-    tasks: '마이데스크_tasks',
-    calendar: '마이데스크_calendar',
-    mood: '마이데스크_mood',
-    pomoCount: '마이데스크_pomo_count',
-    pomoMode: '마이데스크_pomo_mode',
-    lang: '마이데스크_lang'
+
+const STORAGE_KEYS = {
+  docs: '마이데스크_docs',
+  tasks: '마이데스크_tasks',
+  calendar: '마이데스크_calendar',
+  mood: '마이데스크_mood',
+  pomoCount: '마이데스크_pomo_count',
+  lang: '마이데스크_lang'
 };
 
-const defaultDocs = [{
-    id: 'doc-welcome',
-    title: 'Welcome to 마이데스크 ✨',
-    html: '<h1>Hello there! 👋</h1><p>Welcome to your personal <b>2008-style Notion</b> workspace.</p><h2>🎯 What you can do</h2><ul><li><b>Docs</b> — write rich notes with bold, lists, tables, images, and audio</li><li><b>Tasks</b> — manage your to-dos with priorities</li><li><b>Calendar</b> — keep track of events and diary entries, and import/export .ics files</li><li><b>Focus</b> — use the Pomodoro timer to stay productive</li></ul><blockquote class="callout">💡 Everything is saved locally in your browser. Use the <b>Backup</b> button in the sidebar to export your data.</blockquote>',
-    text: 'Welcome to 마이데스크'
-}];
+let documents = JSON.parse(localStorage.getItem(STORAGE_KEYS.docs)) || [];
+let tasks = JSON.parse(localStorage.getItem(STORAGE_KEYS.tasks)) || [];
+let calendarEvents = JSON.parse(localStorage.getItem(STORAGE_KEYS.calendar)) || {};
+let userMood = localStorage.getItem(STORAGE_KEYS.mood) || '';
+let pomoCount = parseInt(localStorage.getItem(STORAGE_KEYS.pomoCount) || '0');
+let currentLang = localStorage.getItem(STORAGE_KEYS.lang) || 'ko';
 
-const defaultTasks = [
-    { id: 'task-1', title: 'Explore 마이데스크 features', priority: 'High', category: 'Fun', completed: false, due: 'Today' },
-    { id: 'task-2', title: 'Write my first note', priority: 'Medium', category: 'Writing', completed: false, due: 'This week' }
-];
-
-let documents = JSON.parse(localStorage.getItem(STORAGE.docs)) || defaultDocs;
-let activeDocId = documents[0]?.id || 'doc-welcome';
-let tasks = JSON.parse(localStorage.getItem(STORAGE.tasks)) || defaultTasks;
-let calendarEvents = JSON.parse(localStorage.getItem(STORAGE.calendar)) || {};
-let userMood = localStorage.getItem(STORAGE.mood) || '';
-let pomoCount = parseInt(localStorage.getItem(STORAGE.pomoCount) || '0');
-let currentLang = localStorage.getItem(STORAGE.lang) || 'en';
-
-// Pomodoro state
-let pomoMode = 'work';
-let pomoSeconds = 25 * 60;
-let pomoTimer = null;
-let pomoRunning = false;
-
-// Calendar state
-let calDate = new Date();
-let calYear = calDate.getFullYear();
-let calMonth = calDate.getMonth();
-
-// Voice recording
-let mediaRecorder = null;
-let audioChunks = [];
-let recording = false;
-let micStream = null;
-let recordingStart = 0;
-let recordingInterval = null;
+let activeDocId = documents[0]?.id || null;
+let cloudSyncTimeout = null;
 
 // ================================================================
 // INIT
 // ================================================================
-document.addEventListener('DOMContentLoaded', () => {
-    const moodInput = document.getElementById('userMood');
-    if (moodInput) moodInput.value = userMood;
+document.addEventListener('DOMContentLoaded', async () => {
+  updateLangButtons();
+  applyLanguage(currentLang);
 
-    updateLangButtons();
-    applyLanguage(currentLang);
-    switchTab('documents');
-    initEditor();
-    updatePomoDisplay();
-    document.getElementById('pomoCount').innerText = pomoCount;
-    checkMicPermission();
+  await initAuth();
+  initEditor();
+  renderDocTree();
+  loadActiveDoc();
+  renderTasks();
+  renderCalendar();
+  updatePomoDisplay();
 
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey || e.metaKey) {
-            if (e.key === 'b') { e.preventDefault(); rteExec('bold'); }
-            if (e.key === 'i') { e.preventDefault(); rteExec('italic'); }
-            if (e.key === 'u') { e.preventDefault(); rteExec('underline'); }
-            if (e.key === 'k') { e.preventDefault(); rteInsertLink(); }
-        }
-    });
+  const moodInput = document.getElementById('userMood');
+  if (moodInput) moodInput.value = userMood;
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden'));
+    }
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', (e) => { if (e.target === m) m.classList.add('hidden'); });
+  });
 });
+
+// ================================================================
+// CLOUD SYNC
+// ================================================================
+async function initAuth() {
+  const statusChip = document.getElementById('syncStatus');
+  if (!statusChip) return;
+
+  if (typeof DotoriStorage === 'undefined') {
+    statusChip.innerHTML = '<i class="fa-solid fa-wifi" style="color:#999;"></i> 오프라인 모드';
+    return;
+  }
+
+  let profile = null;
+  try { profile = await DotoriStorage.getMyAcorn(); } catch (e) {
+    console.warn('Auth check failed:', e);
+  }
+
+  if (!profile) {
+    statusChip.innerHTML = '<i class="fa-solid fa-wifi" style="color:#999;"></i> 오프라인 모드';
+    statusChip.title = '도토리숲에 로그인하면 자동 백업됩니다.';
+    return;
+  }
+
+  statusChip.innerHTML = '<i class="fa-regular fa-circle-check"></i> 로컬 저장됨';
+  statusChip.title = `${profile.nickname}님으로 동기화 중`;
+
+  try {
+    const cloudData = await DotoriStorage.loadMyDeskBackup();
+    if (cloudData) {
+      if (cloudData.documents) documents = cloudData.documents;
+      if (cloudData.tasks) tasks = cloudData.tasks;
+      if (cloudData.calendarEvents) calendarEvents = cloudData.calendarEvents;
+      if (cloudData.userMood) userMood = cloudData.userMood;
+      if (cloudData.pomoCount) pomoCount = cloudData.pomoCount;
+
+      activeDocId = documents[0]?.id || null;
+      saveToLocal();
+      renderDocTree(); loadActiveDoc(); renderTasks(); renderCalendar(); updatePomoDisplay();
+      const moodInput = document.getElementById('userMood');
+      if (moodInput) moodInput.value = userMood;
+
+      showToast('☁️ 클라우드 백업을 불러왔습니다.');
+    }
+  } catch (e) {
+    console.warn('Cloud load failed:', e);
+  }
+}
+
+function triggerCloudSync() {
+  if (cloudSyncTimeout) clearTimeout(cloudSyncTimeout);
+
+  const statusChip = document.getElementById('syncStatus');
+  if (statusChip) statusChip.innerHTML = '<i class="fa-solid fa-rotate" style="color:#E87BA8;"></i> 동기화 중...';
+
+  cloudSyncTimeout = setTimeout(async () => {
+    if (typeof DotoriStorage === 'undefined') return;
+    let profile = null;
+    try { profile = await DotoriStorage.getMyAcorn(); } catch (e) {}
+    if (!profile) return;
+
+    const workspace = { documents, tasks, calendarEvents, userMood, pomoCount };
+    const success = await DotoriStorage.saveMyDeskBackup(workspace);
+
+    if (statusChip) {
+      if (success) {
+        statusChip.innerHTML = '<i class="fa-regular fa-circle-check" style="color:#4CAF50;"></i> 클라우드 동기화됨';
+        setTimeout(() => {
+          statusChip.innerHTML = '<i class="fa-regular fa-circle-check"></i> 로컬 저장됨';
+        }, 2000);
+      } else {
+        statusChip.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#C04040;"></i> 동기화 실패';
+      }
+    }
+  }, 2000);
+}
+
+function saveToLocal() {
+  localStorage.setItem(STORAGE_KEYS.docs, JSON.stringify(documents));
+  localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+  localStorage.setItem(STORAGE_KEYS.calendar, JSON.stringify(calendarEvents));
+  localStorage.setItem(STORAGE_KEYS.mood, userMood);
+  localStorage.setItem(STORAGE_KEYS.pomoCount, pomoCount);
+}
 
 // ================================================================
 // LANGUAGE
 // ================================================================
 const I18N = {
-    en: {
-        docs: 'Docs', tasks: 'Tasks', calendar: 'Calendar', pomo: 'Focus',
-        savedLocally: 'Saved locally', backup: 'Backup', restore: 'Restore', reset: 'Reset All',
-        addTask: 'Add Task', taskTitle: 'Task Title', priority: 'Priority', category: 'Category', dueDate: 'Due Date / Notes',
-        high: '🔴 High', medium: '🟡 Medium', low: '🟢 Low', cancel: 'Cancel', save: 'Save',
-        calEvent: 'Note / Event', calPlaceholder: 'Write your thoughts or plans...',
-        focus: 'Focus', shortBreak: 'Short Break', longBreak: 'Long Break', start: 'Start', pause: 'Pause', pomoReset: 'Reset',
-        readyToFocus: 'Ready to focus', completedToday: 'Completed today',
-        focusMsg: 'Time to focus!', breakMsg: 'Break time!'
-    },
-    ko: {
-        docs: '문서', tasks: '할 일', calendar: '캘린더', pomo: '집중',
-        savedLocally: '로컬 저장됨', backup: '백업', restore: '복원', reset: '전체 초기화',
-        addTask: '작업 추가', taskTitle: '작업 제목', priority: '우선순위', category: '카테고리', dueDate: '마감일 / 메모',
-        high: '🔴 높음', medium: '🟡 보통', low: '🟢 낮음', cancel: '취소', save: '저장',
-        calEvent: '메모 / 이벤트', calPlaceholder: '생각이나 계획을 적어보세요...',
-        focus: '집중', shortBreak: '짧은 휴식', longBreak: '긴 휴식', start: '시작', pause: '일시정지', pomoReset: '초기화',
-        readyToFocus: '집중할 준비 완료', completedToday: '오늘 완료',
-        focusMsg: '집중할 시간!', breakMsg: '휴식 시간!'
-    },
-    ja: {
-        docs: 'ドキュメント', tasks: 'タスク', calendar: 'カレンダー', pomo: '集中',
-        savedLocally: 'ローカル保存', backup: 'バックアップ', restore: '復元', reset: 'リセット',
-        addTask: 'タスク追加', taskTitle: 'タスク名', priority: '優先度', category: 'カテゴリ', dueDate: '期限 / メモ',
-        high: '🔴 高', medium: '🟡 中', low: '🟢 低', cancel: 'キャンセル', save: '保存',
-        calEvent: 'メモ / イベント', calPlaceholder: '考えや予定を書いてください...',
-        focus: '集中', shortBreak: '短い休憩', longBreak: '長い休憩', start: '開始', pause: '一時停止', pomoReset: 'リセット',
-        readyToFocus: '集中準備完了', completedToday: '今日完了',
-        focusMsg: '集中する時間！', breakMsg: '休憩時間！'
-    },
-    zh: {
-        docs: '文档', tasks: '任务', calendar: '日历', pomo: '专注',
-        savedLocally: '已保存到本地', backup: '备份', restore: '恢复', reset: '重置',
-        addTask: '添加任务', taskTitle: '任务标题', priority: '优先级', category: '分类', dueDate: '截止 / 备注',
-        high: '🔴 高', medium: '🟡 中', low: '🟢 低', cancel: '取消', save: '保存',
-        calEvent: '备注 / 事件', calPlaceholder: '写下你的想法或计划...',
-        focus: '专注', shortBreak: '短休息', longBreak: '长休息', start: '开始', pause: '暂停', pomoReset: '重置',
-        readyToFocus: '准备专注', completedToday: '今日完成',
-        focusMsg: '专注时间！', breakMsg: '休息时间！'
-    }
+  en: { docs: 'Docs', tasks: 'Tasks', calendar: 'Calendar', pomo: 'Focus' },
+  ko: { docs: '문서', tasks: '할 일', calendar: '캘린더', pomo: '집중' },
+  ja: { docs: 'ドキュメント', tasks: 'タスク', calendar: 'カレンダー', pomo: '集中' },
+  zh: { docs: '文档', tasks: '任务', calendar: '日历', pomo: '专注' }
 };
 
-function t(key) { return I18N[currentLang]?.[key] || I18N.en[key] || key; }
-
-function setLanguage(lang) {
-    if (!I18N[lang]) lang = 'en';
-    currentLang = lang;
-    localStorage.setItem(STORAGE.lang, lang);
-    updateLangButtons();
-    applyLanguage(lang);
-}
+window.setLanguage = function(lang) {
+  if (!I18N[lang]) lang = 'ko';
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEYS.lang, lang);
+  updateLangButtons();
+  applyLanguage(lang);
+};
 
 function updateLangButtons() {
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === currentLang);
-    });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === currentLang);
+  });
 }
 
 function applyLanguage(lang) {
-    document.querySelectorAll('.sidebar-tab').forEach((tab, i) => {
-        const keys = ['docs', 'tasks', 'calendar', 'pomo'];
-        if (tab.querySelector('span')) tab.querySelector('span').innerText = t(keys[i]);
-    });
-}
-
-function saveMood(val) {
-    userMood = val;
-    localStorage.setItem(STORAGE.mood, val);
+  const keys = ['docs', 'tasks', 'calendar', 'pomo'];
+  document.querySelectorAll('.sidebar-tab').forEach((tab, i) => {
+    if (tab.querySelector('span')) tab.querySelector('span').innerText = I18N[lang][keys[i]] || I18N.ko[keys[i]];
+  });
 }
 
 // ================================================================
 // TAB SWITCHING
 // ================================================================
-function switchTab(tab) {
-    document.querySelectorAll('.sidebar-tab').forEach(t => {
-        t.classList.toggle('active', t.dataset.tab === tab);
-    });
-    document.querySelectorAll('.workspace-view').forEach(v => {
-        v.style.display = 'none';
-    });
-    const view = document.getElementById('view-' + tab);
-    if (view) view.style.display = 'flex';
+window.switchTab = function(tab) {
+  document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.workspace-view').forEach(v => v.style.display = 'none');
+  const view = document.getElementById('view-' + tab);
+  if (view) view.style.display = 'flex';
 
-    renderSidebarContext(tab);
-
-    if (tab === 'documents') { renderDocTree(); loadActiveDoc(); }
-    if (tab === 'todo') renderTasks();
-    if (tab === 'calendar') renderCalendar();
-    if (tab === 'pomodoro') updatePomoDisplay();
-}
+  renderSidebarContext(tab);
+  if (tab === 'documents') { renderDocTree(); loadActiveDoc(); }
+  if (tab === 'todo') renderTasks();
+  if (tab === 'calendar') renderCalendar();
+  if (tab === 'pomodoro') updatePomoDisplay();
+};
 
 // ================================================================
 // SIDEBAR CONTEXT
 // ================================================================
 function renderSidebarContext(tab) {
-    const container = document.getElementById('sidebarContext');
-    if (!container) return;
+  const container = document.getElementById('sidebarContext');
+  if (!container) return;
 
-    if (tab === 'documents') {
-        container.innerHTML = `
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <span style="font-size:11px;font-weight:bold;color:var(--acorn-dark);"><i class="fa-solid fa-file-lines" style="color:var(--pink-dark);"></i> Pages</span>
-                <button class="btn btn-primary" style="padding:4px 8px;font-size:10px;" onclick="createNewDocument()"><i class="fa-solid fa-plus"></i> New</button>
-            </div>
-            <div id="docTree" style="display:flex;flex-direction:column;gap:4px;"></div>
-        `;
-        renderDocTree();
-    } else if (tab === 'todo') {
-        const active = tasks.filter(t => !t.completed).length;
-        const done = tasks.filter(t => t.completed).length;
-        container.innerHTML = `
-            <div style="font-size:11px;font-weight:bold;color:var(--acorn-dark);margin-bottom:10px;"><i class="fa-solid fa-list-check" style="color:var(--pink-dark);"></i> Summary</div>
-            <div style="background:var(--cream);padding:12px;border-radius:6px;border:1px solid var(--cream-dark);font-size:11px;line-height:1.8;">
-                <div><b>Active:</b> <span style="color:var(--pink-dark);font-weight:bold;">${active}</span></div>
-                <div><b>Completed:</b> <span style="color:#4CAF50;font-weight:bold;">${done}</span></div>
-                <div><b>Total:</b> ${tasks.length}</div>
-            </div>
-        `;
-    } else if (tab === 'calendar') {
-        container.innerHTML = `
-            <div style="font-size:11px;font-weight:bold;color:var(--acorn-dark);margin-bottom:10px;"><i class="fa-solid fa-calendar-days" style="color:var(--pink-dark);"></i> Quick Jump</div>
-            <div style="background:var(--cream);padding:10px;border-radius:6px;border:1px solid var(--cream-dark);font-size:11px;">
-                <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">
-                    <button class="btn" style="padding:3px 8px;font-size:10px;" onclick="jumpMonth(-12)">-1y</button>
-                    <button class="btn" style="padding:3px 8px;font-size:10px;" onclick="jumpMonth(-1)">-1m</button>
-                    <button class="btn btn-primary" style="padding:3px 8px;font-size:10px;" onclick="jumpToday()">Today</button>
-                    <button class="btn" style="padding:3px 8px;font-size:10px;" onclick="jumpMonth(1)">+1m</button>
-                    <button class="btn" style="padding:3px 8px;font-size:10px;" onclick="jumpMonth(12)">+1y</button>
-                </div>
-            </div>
-            <div style="margin-top:12px;font-size:11px;font-weight:bold;color:var(--acorn-dark);">.ics File</div>
-            <div style="background:var(--cream);padding:10px;border-radius:6px;border:1px solid var(--cream-dark);font-size:10px;line-height:1.7;color:var(--text-light);">
-                <div><i class="fa-solid fa-file-export" style="color:#4CAF50;"></i> <b>Export</b> — download this month's events</div>
-                <div style="margin-top:4px;"><i class="fa-solid fa-file-import" style="color:#2196F3;"></i> <b>Import</b> — add events from a .ics file</div>
-            </div>
-        `;
-    } else if (tab === 'pomodoro') {
-        container.innerHTML = `
-            <div style="font-size:11px;font-weight:bold;color:var(--acorn-dark);margin-bottom:10px;"><i class="fa-solid fa-clock" style="color:var(--pink-dark);"></i> Tips</div>
-            <div style="background:var(--cream);padding:10px;border-radius:6px;border:1px solid var(--cream-dark);font-size:11px;line-height:1.7;">
-                <div>🍅 Focus for 25 min</div>
-                <div>☕ Break for 5 min</div>
-                <div>🔁 Repeat 4 times</div>
-                <div style="margin-top:8px;color:var(--acorn-dark);font-weight:bold;">Stay productive! 💪</div>
-            </div>
-        `;
-    }
+  if (tab === 'documents') {
+    container.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="font-size:11px;font-weight:bold;color:var(--acorn-dark);"><i class="fa-solid fa-file-lines" style="color:var(--pink-dark);"></i> 페이지</span>
+        <button class="btn btn-primary" style="padding:4px 8px;font-size:10px;" onclick="createNewDocument()"><i class="fa-solid fa-plus"></i> 새로 만들기</button>
+      </div>
+      <div id="docTree" style="display:flex;flex-direction:column;gap:4px;"></div>
+    `;
+    renderDocTree();
+  } else if (tab === 'todo') {
+    const active = tasks.filter(t => !t.completed).length;
+    const done = tasks.filter(t => t.completed).length;
+    container.innerHTML = `
+      <div style="font-size:11px;font-weight:bold;color:var(--acorn-dark);margin-bottom:10px;"><i class="fa-solid fa-list-check" style="color:var(--pink-dark);"></i> 요약</div>
+      <div style="background:var(--cream);padding:12px;border-radius:6px;border:1px solid var(--cream-dark);font-size:11px;line-height:1.8;">
+        <div><b>진행 중:</b> <span style="color:var(--pink-dark);font-weight:bold;">${active}</span></div>
+        <div><b>완료:</b> <span style="color:#4CAF50;font-weight:bold;">${done}</span></div>
+        <div><b>전체:</b> ${tasks.length}</div>
+      </div>
+    `;
+  } else if (tab === 'calendar') {
+    container.innerHTML = `
+      <div style="font-size:11px;font-weight:bold;color:var(--acorn-dark);margin-bottom:10px;"><i class="fa-solid fa-calendar-days" style="color:var(--pink-dark);"></i> 빠른 이동</div>
+      <div style="background:var(--cream);padding:10px;border-radius:6px;border:1px solid var(--cream-dark);font-size:11px;">
+        <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">
+          <button class="btn" style="padding:3px 8px;font-size:10px;" onclick="jumpMonth(-12)">-1년</button>
+          <button class="btn" style="padding:3px 8px;font-size:10px;" onclick="jumpMonth(-1)">-1개월</button>
+          <button class="btn btn-primary" style="padding:3px 8px;font-size:10px;" onclick="jumpToday()">오늘</button>
+          <button class="btn" style="padding:3px 8px;font-size:10px;" onclick="jumpMonth(1)">+1개월</button>
+          <button class="btn" style="padding:3px 8px;font-size:10px;" onclick="jumpMonth(12)">+1년</button>
+        </div>
+      </div>
+    `;
+  } else if (tab === 'pomodoro') {
+    container.innerHTML = `
+      <div style="font-size:11px;font-weight:bold;color:var(--acorn-dark);margin-bottom:10px;"><i class="fa-solid fa-clock" style="color:var(--pink-dark);"></i> 팁</div>
+      <div style="background:var(--cream);padding:10px;border-radius:6px;border:1px solid var(--cream-dark);font-size:11px;line-height:1.7;">
+        <div>🍅 25분 집중</div>
+        <div>☕ 5분 휴식</div>
+        <div>🔁 4회 반복</div>
+        <div style="margin-top:8px;color:var(--acorn-dark);font-weight:bold;">화이팅! 💪</div>
+      </div>
+    `;
+  }
 }
 
 // ================================================================
 // DOCUMENTS
 // ================================================================
 function renderDocTree() {
-    const container = document.getElementById('docTree');
-    if (!container) return;
-    container.innerHTML = '';
-    documents.forEach(doc => {
-        const el = document.createElement('div');
-        el.style.cssText = `padding:8px 10px;border-radius:5px;cursor:pointer;font-size:11px;transition:all 0.15s;${doc.id === activeDocId ? 'background:var(--cream);border-left:3px solid var(--pink);font-weight:bold;color:var(--acorn-dark);' : 'color:var(--text-light);border-left:3px solid transparent;'}`;
-        el.innerHTML = `<i class="fa-solid fa-file-lines" style="font-size:10px;margin-right:6px;color:${doc.id === activeDocId ? 'var(--pink-dark)' : 'var(--border-dark)'};"></i>${escapeHtml(doc.title || 'Untitled')}`;
-        el.onclick = () => switchDoc(doc.id);
-        container.appendChild(el);
-    });
+  const container = document.getElementById('docTree');
+  if (!container) return;
+  container.innerHTML = '';
+
+  if (documents.length === 0) {
+    container.innerHTML = '<div style="font-size:11px;color:#999;text-align:center;padding:10px;">페이지가 없습니다.<br>새로 만들어보세요!</div>';
+    return;
+  }
+
+  documents.forEach(doc => {
+    const el = document.createElement('div');
+    el.style.cssText = `padding:8px 10px;border-radius:5px;cursor:pointer;font-size:11px;transition:all 0.15s;${doc.id === activeDocId ? 'background:var(--cream);border-left:3px solid var(--pink);font-weight:bold;color:var(--acorn-dark);' : 'color:var(--text-light);border-left:3px solid transparent;'}`;
+    el.innerHTML = `<i class="fa-solid fa-file-lines" style="font-size:10px;margin-right:6px;color:${doc.id === activeDocId ? 'var(--pink-dark)' : 'var(--border-dark)'};"></i>${escapeHtml(doc.title || '제목 없음')}`;
+    el.onclick = () => switchDoc(doc.id);
+    container.appendChild(el);
+  });
 }
+
+window.createNewDocument = function() {
+  const newDoc = { id: 'doc-' + Date.now(), title: '새 페이지', html: '', text: '' };
+  documents.unshift(newDoc);
+  activeDocId = newDoc.id;
+  saveToLocal();
+  renderDocTree();
+  loadActiveDoc();
+  triggerCloudSync();
+  document.getElementById('rteEditor').focus();
+};
 
 function switchDoc(id) {
-    autoSaveActiveDoc();
-    activeDocId = id;
-    renderDocTree();
-    loadActiveDoc();
-}
-
-function createNewDocument() {
-    const newDoc = { id: 'doc-' + Date.now(), title: 'New Page', html: '', text: '' };
-    documents.unshift(newDoc);
-    autoSaveActiveDoc();
-    activeDocId = newDoc.id;
-    saveDocs();
-    renderDocTree();
-    loadActiveDoc();
-    document.getElementById('rteEditor').focus();
-    showToast('✨ New page created');
+  autoSaveActiveDoc();
+  activeDocId = id;
+  renderDocTree();
+  loadActiveDoc();
 }
 
 function loadActiveDoc() {
-    const doc = documents.find(d => d.id === activeDocId);
-    if (!doc) return;
-    document.getElementById('activeDocTitle').value = doc.title || '';
-    document.getElementById('rteEditor').innerHTML = doc.html || '';
-    updateDocStats();
+  const doc = documents.find(d => d.id === activeDocId);
+  if (!doc) {
+    document.getElementById('rteEditor').innerHTML = '';
+    document.getElementById('activeDocTitle').value = '';
+    return;
+  }
+  document.getElementById('activeDocTitle').value = doc.title || '';
+  document.getElementById('rteEditor').innerHTML = doc.html || '';
 }
 
 function autoSaveActiveDoc() {
-    const doc = documents.find(d => d.id === activeDocId);
-    if (!doc) return;
-    const editor = document.getElementById('rteEditor');
-    doc.html = editor.innerHTML;
-    doc.text = editor.innerText || '';
-    saveDocs();
-    updateDocStats();
+  const doc = documents.find(d => d.id === activeDocId);
+  if (!doc) return;
+  const editor = document.getElementById('rteEditor');
+  doc.html = editor.innerHTML;
+  doc.text = editor.innerText || '';
+  saveToLocal();
+  triggerCloudSync();
 }
 
-function saveDocs() {
-    try {
-        localStorage.setItem(STORAGE.docs, JSON.stringify(documents));
-        document.querySelector('.status-chip').innerHTML = '<i class="fa-regular fa-circle-check"></i> Saved locally';
-    } catch (e) {
-        document.querySelector('.status-chip').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Storage full';
-    }
+window.updateActiveTitle = function(val) {
+  const doc = documents.find(d => d.id === activeDocId);
+  if (doc) { doc.title = val; saveToLocal(); renderDocTree(); triggerCloudSync(); }
+};
+
+window.deleteActiveDocument = function() {
+  if (documents.length <= 1) { showToast('⚠️ 최소 한 개의 페이지는 남겨두어야 해요.'); return; }
+  if (!confirm('이 페이지를 삭제할까요?')) return;
+  documents = documents.filter(d => d.id !== activeDocId);
+  activeDocId = documents[0].id;
+  saveToLocal();
+  renderDocTree();
+  loadActiveDoc();
+  triggerCloudSync();
+};
+
+function initEditor() {
+  const editor = document.getElementById('rteEditor');
+  if (!editor) return;
+  editor.addEventListener('input', () => { autoSaveActiveDoc(); });
+  editor.addEventListener('blur', () => { autoSaveActiveDoc(); });
 }
 
-function updateDocStats() {
-    const text = document.getElementById('rteEditor').innerText || '';
-    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-    const chars = text.length;
-    document.getElementById('docStats').innerText = `${words} words · ${chars} characters`;
-}
+window.rteExec = function(cmd, val = null) {
+  document.execCommand(cmd, false, val);
+  document.getElementById('rteEditor').focus();
+  autoSaveActiveDoc();
+};
 
-function updateActiveTitle(val) {
-    const doc = documents.find(d => d.id === activeDocId);
-    if (doc) { doc.title = val; saveDocs(); renderDocTree(); }
-}
+window.rteInsertLink = function() {
+  const url = prompt('링크 주소를 입력하세요:');
+  if (url) rteExec('createLink', url);
+};
 
-function deleteActiveDocument() {
-    if (documents.length <= 1) { showToast('⚠️ You must keep at least one page'); return; }
-    if (!confirm('Delete this page?')) return;
-    documents = documents.filter(d => d.id !== activeDocId);
-    activeDocId = documents[0].id;
-    saveDocs();
-    renderDocTree();
-    loadActiveDoc();
-}
+window.rteInsertCallout = function() {
+  rteExec('insertHTML', '<blockquote class="callout">💡 메모: 여기에 팁을 적어보세요...</blockquote><p><br></p>');
+};
 
-function exportDocTxt() {
-    const doc = documents.find(d => d.id === activeDocId);
-    if (!doc) return;
-    download(`${sanitize(doc.title)}.txt`, `${doc.title}\n\n${doc.text || ''}`, 'text/plain');
-}
+window.rteInsertTable = function() {
+  const html = '<table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p><br></p>';
+  rteExec('insertHTML', html);
+};
 
-function exportDocHtml() {
-    const doc = documents.find(d => d.id === activeDocId);
-    if (!doc) return;
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHtml(doc.title)}</title></head><body>${doc.html}</body></html>`;
-    download(`${sanitize(doc.title)}.html`, html, 'text/html');
-}
+window.handleRteImage = function(e) {
+  const file = e.target.files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    document.getElementById('rteEditor').focus();
+    document.execCommand('insertHTML', false, `<img src="${ev.target.result}" alt="${escapeHtml(file.name)}"><p><br></p>`);
+    autoSaveActiveDoc();
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+};
 
-function exportDocJson() {
-    const doc = documents.find(d => d.id === activeDocId);
-    if (!doc) return;
-    download(`${sanitize(doc.title)}.json`, JSON.stringify(doc, null, 2), 'application/json');
+// Export doc helpers
+function download(filename, content, type) {
+  const blob = new Blob([content], { type: type + ';charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 function sanitize(s) { return (s || 'document').replace(/[^a-z0-9]/gi, '_').toLowerCase(); }
 
-function download(filename, content, type) {
-    const blob = new Blob([content], { type: type + ';charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
-}
+window.exportDocTxt = function() {
+  const doc = documents.find(d => d.id === activeDocId);
+  if (!doc) return;
+  download(`${sanitize(doc.title)}.txt`, `${doc.title}\n\n${doc.text || ''}`, 'text/plain');
+};
 
-// ================================================================
-// RICH TEXT EDITOR
-// ================================================================
-function initEditor() {
-    const editor = document.getElementById('rteEditor');
-    if (!editor) return;
-    editor.addEventListener('input', () => { autoSaveActiveDoc(); });
-    editor.addEventListener('blur', () => { autoSaveActiveDoc(); });
-}
+window.exportDocHtml = function() {
+  const doc = documents.find(d => d.id === activeDocId);
+  if (!doc) return;
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHtml(doc.title)}</title></head><body>${doc.html}</body></html>`;
+  download(`${sanitize(doc.title)}.html`, html, 'text/html');
+};
 
-function rteExec(cmd, val = null) {
-    document.execCommand(cmd, false, val);
-    document.getElementById('rteEditor').focus();
-    autoSaveActiveDoc();
-}
-
-function rteInsertCallout() {
-    rteExec('insertHTML', '<blockquote class="callout">💡 Note: Add your tip here...</blockquote><p><br></p>');
-}
-
-function rteInsertLink() {
-    document.getElementById('linkText').value = '';
-    document.getElementById('linkUrl').value = '';
-    document.getElementById('linkModal').classList.remove('hidden');
-    setTimeout(() => document.getElementById('linkUrl').focus(), 50);
-}
-
-function insertLink() {
-    const text = document.getElementById('linkText').value.trim();
-    const url = document.getElementById('linkUrl').value.trim();
-    if (!url) { showToast('⚠️ Please enter a URL'); return; }
-    const final = /^https?:\/\//i.test(url) ? url : 'https://' + url;
-    const display = text || final;
-    document.getElementById('rteEditor').focus();
-    document.execCommand('insertHTML', false, `<a href="${escapeHtml(final)}" target="_blank" rel="noopener">${escapeHtml(display)}</a>`);
-    closeLinkModal();
-    autoSaveActiveDoc();
-}
-
-function closeLinkModal() { document.getElementById('linkModal').classList.add('hidden'); }
-
-function handleRteImage(e) {
-    const file = e.target.files[0];
-    if (!file || !file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-        document.getElementById('rteEditor').focus();
-        document.execCommand('insertHTML', false, `<img src="${ev.target.result}" alt="${escapeHtml(file.name)}"><p><br></p>`);
-        autoSaveActiveDoc();
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
-}
-
-function handleRteAudio(e) {
-    const file = e.target.files[0];
-    if (!file || !file.type.startsWith('audio/')) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => { insertAudioBlock(ev.target.result, file.name); };
-    reader.readAsDataURL(file);
-    e.target.value = '';
-}
-
-function insertAudioBlock(dataUrl, label) {
-    document.getElementById('rteEditor').focus();
-    const html = `<div class="audio-block" contenteditable="false"><div class="audio-label">🎵 <span class="audio-name">${escapeHtml(label)}</span></div><audio controls src="${dataUrl}"></audio></div><p><br></p>`;
-    document.execCommand('insertHTML', false, html);
-    autoSaveActiveDoc();
-}
-
-function showTableForm() {
-    const form = document.getElementById('tableForm');
-    form.classList.toggle('hidden');
-    if (!form.classList.contains('hidden')) document.getElementById('tableRows').focus();
-}
-
-function rteInsertTable() {
-    const rows = Math.max(1, Math.min(20, parseInt(document.getElementById('tableRows').value) || 3));
-    const cols = Math.max(1, Math.min(10, parseInt(document.getElementById('tableCols').value) || 3));
-    let html = '<table><thead><tr>';
-    for (let c = 0; c < cols; c++) html += `<th>Header ${c + 1}</th>`;
-    html += '</tr></thead><tbody>';
-    for (let r = 0; r < rows - 1; r++) {
-        html += '<tr>';
-        for (let c = 0; c < cols; c++) html += '<td>&nbsp;</td>';
-        html += '</tr>';
-    }
-    html += '</tbody></table><p><br></p>';
-    document.getElementById('rteEditor').focus();
-    document.execCommand('insertHTML', false, html);
-    document.getElementById('tableForm').classList.add('hidden');
-    autoSaveActiveDoc();
-}
-
-// ================================================================
-// VOICE RECORDING
-// ================================================================
-async function checkMicPermission() {
-    if (!navigator.permissions?.query) return;
-    try {
-        const status = await navigator.permissions.query({ name: 'microphone' });
-        status.onchange = () => {};
-    } catch (e) {}
-}
-
-async function toggleVoiceRecording() {
-    if (recording) { stopRecording(); return; }
-    try {
-        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        startRecording();
-    } catch (err) {
-        console.error(err);
-        document.getElementById('micModal').classList.remove('hidden');
-    }
-}
-
-function startRecording() {
-    mediaRecorder = new MediaRecorder(micStream);
-    audioChunks = [];
-    recordingStart = Date.now();
-    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
-    mediaRecorder.onstop = () => {
-        const blob = new Blob(audioChunks, { type: 'audio/webm' });
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            const dur = Math.round((Date.now() - recordingStart) / 1000);
-            insertAudioBlock(ev.target.result, `Voice recording (${dur}s)`);
-        };
-        reader.readAsDataURL(blob);
-        if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
-    };
-    mediaRecorder.start();
-    recording = true;
-    const btn = document.getElementById('voiceBtn');
-    btn.classList.add('active');
-    btn.innerHTML = '<i class="fa-solid fa-stop" style="color:#C04040;"></i>';
-    document.getElementById('voiceStatus').innerHTML = '<span style="color:#C04040;font-weight:bold;">🔴 Recording...</span>';
-    recordingInterval = setInterval(() => {
-        const s = Math.round((Date.now() - recordingStart) / 1000);
-        document.getElementById('voiceStatus').innerHTML = `<span style="color:#C04040;font-weight:bold;">🔴 Recording ${s}s — click stop to save</span>`;
-    }, 500);
-}
-
-function stopRecording() {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
-    recording = false;
-    clearInterval(recordingInterval);
-    const btn = document.getElementById('voiceBtn');
-    btn.classList.remove('active');
-    btn.innerHTML = '<i class="fa-solid fa-microphone" style="color:#C04040;"></i>';
-    document.getElementById('voiceStatus').innerHTML = '<span style="color:#4CAF50;font-weight:bold;">✓ Voice saved</span>';
-    setTimeout(() => { document.getElementById('voiceStatus').innerHTML = ''; }, 2500);
-}
-
-async function requestMicPermission() {
-    try {
-        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        document.getElementById('micStatus').innerHTML = '✅ Permission granted!';
-        document.getElementById('micStatus').style.color = '#4CAF50';
-        setTimeout(() => { closeMicModal(); micStream.getTracks().forEach(t => t.stop()); micStream = null; }, 1000);
-    } catch (err) {
-        document.getElementById('micStatus').innerHTML = '❌ Permission denied. Check browser settings.';
-        document.getElementById('micStatus').style.color = '#C04040';
-    }
-}
-
-function closeMicModal() { document.getElementById('micModal').classList.add('hidden'); }
+window.exportDocJson = function() {
+  const doc = documents.find(d => d.id === activeDocId);
+  if (!doc) return;
+  download(`${sanitize(doc.title)}.json`, JSON.stringify(doc, null, 2), 'application/json');
+};
 
 // ================================================================
 // TASKS
 // ================================================================
 function renderTasks() {
-    const container = document.getElementById('taskList');
-    if (!container) return;
-    if (tasks.length === 0) {
-        container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:12px;">No tasks yet. Click "Add Task" to get started!</div>';
-        return;
-    }
-    container.innerHTML = '';
-    tasks.forEach(task => {
-        const el = document.createElement('div');
-        el.className = `task-item ${task.completed ? 'completed' : ''}`;
-        const pc = task.priority === 'High' ? 'task-priority-high' : task.priority === 'Medium' ? 'task-priority-medium' : 'task-priority-low';
-        el.innerHTML = `
-            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask('${task.id}')">
-            <div class="task-content">
-                <div class="task-title">${escapeHtml(task.title)}</div>
-                <div class="task-meta">
-                    <span class="task-tag ${pc}">${task.priority}</span>
-                    <span class="task-tag">${escapeHtml(task.category)}</span>
-                    ${task.due ? `<span class="task-tag">📅 ${escapeHtml(task.due)}</span>` : ''}
-                </div>
-            </div>
-            <div class="task-actions">
-                <button class="btn" style="padding:4px 8px;font-size:10px;" onclick="editTask('${task.id}')"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn btn-danger" style="padding:4px 8px;font-size:10px;" onclick="deleteTask('${task.id}')"><i class="fa-solid fa-trash"></i></button>
-            </div>
-        `;
-        container.appendChild(el);
-    });
+  const container = document.getElementById('taskList');
+  if (!container) return;
+  if (tasks.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);font-size:12px;">할 일이 없습니다. 새로운 할 일을 추가해보세요!</div>';
+    return;
+  }
+  container.innerHTML = '';
+  tasks.forEach(task => {
+    const el = document.createElement('div');
+    el.className = `task-item ${task.completed ? 'completed' : ''}`;
+    const pc = task.priority === 'High' ? 'task-priority-high' : task.priority === 'Medium' ? 'task-priority-medium' : 'task-priority-low';
+    el.innerHTML = `
+      <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask('${task.id}')">
+      <div class="task-content">
+        <div class="task-title">${escapeHtml(task.title)}</div>
+        <div class="task-meta">
+          <span class="task-tag ${pc}">${task.priority}</span>
+          <span class="task-tag">${escapeHtml(task.category)}</span>
+          ${task.due ? `<span class="task-tag">📅 ${escapeHtml(task.due)}</span>` : ''}
+        </div>
+      </div>
+      <div class="task-actions">
+        <button class="btn" style="padding:4px 8px;font-size:10px;" onclick="editTask('${task.id}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn btn-danger" style="padding:4px 8px;font-size:10px;" onclick="deleteTask('${task.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    `;
+    container.appendChild(el);
+  });
 }
 
-function toggleTask(id) {
+window.toggleTask = function(id) {
+  const task = tasks.find(t => t.id === id);
+  if (task) { task.completed = !task.completed; saveToLocal(); renderTasks(); triggerCloudSync(); }
+};
+
+window.openTaskModal = function() {
+  document.getElementById('taskModalTitle').innerText = '할 일 추가';
+  document.getElementById('taskId').value = '';
+  document.getElementById('taskTitle').value = '';
+  document.getElementById('taskPriority').value = 'Medium';
+  document.getElementById('taskCategory').value = '일반';
+  document.getElementById('taskDue').value = '';
+  document.getElementById('taskModal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('taskTitle').focus(), 50);
+};
+
+window.editTask = function(id) {
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
+  document.getElementById('taskModalTitle').innerText = '할 일 수정';
+  document.getElementById('taskId').value = task.id;
+  document.getElementById('taskTitle').value = task.title;
+  document.getElementById('taskPriority').value = task.priority;
+  document.getElementById('taskCategory').value = task.category;
+  document.getElementById('taskDue').value = task.due || '';
+  document.getElementById('taskModal').classList.remove('hidden');
+};
+
+window.closeTaskModal = function() {
+  document.getElementById('taskModal').classList.add('hidden');
+};
+
+window.saveTask = function() {
+  const id = document.getElementById('taskId').value;
+  const title = document.getElementById('taskTitle').value.trim();
+  const priority = document.getElementById('taskPriority').value;
+  const category = document.getElementById('taskCategory').value.trim() || '일반';
+  const due = document.getElementById('taskDue').value.trim();
+  if (!title) { showToast('⚠️ 제목을 입력해주세요'); return; }
+  if (id) {
     const task = tasks.find(t => t.id === id);
-    if (task) { task.completed = !task.completed; saveTasks(); renderTasks(); }
-}
+    if (task) { task.title = title; task.priority = priority; task.category = category; task.due = due; }
+  } else {
+    tasks.unshift({ id: 'task-' + Date.now(), title, priority, category, completed: false, due });
+  }
+  saveToLocal(); closeTaskModal(); renderTasks(); triggerCloudSync();
+};
 
-function saveTasks() { localStorage.setItem(STORAGE.tasks, JSON.stringify(tasks)); }
-
-function openTaskModal() {
-    document.getElementById('taskModalTitle').innerText = 'Add Task';
-    document.getElementById('taskId').value = '';
-    document.getElementById('taskTitle').value = '';
-    document.getElementById('taskPriority').value = 'Medium';
-    document.getElementById('taskCategory').value = 'General';
-    document.getElementById('taskDue').value = '';
-    document.getElementById('taskModal').classList.remove('hidden');
-    setTimeout(() => document.getElementById('taskTitle').focus(), 50);
-}
-
-function editTask(id) {
-    const task = tasks.find(t => t.id === id);
-    if (!task) return;
-    document.getElementById('taskModalTitle').innerText = 'Edit Task';
-    document.getElementById('taskId').value = task.id;
-    document.getElementById('taskTitle').value = task.title;
-    document.getElementById('taskPriority').value = task.priority;
-    document.getElementById('taskCategory').value = task.category;
-    document.getElementById('taskDue').value = task.due || '';
-    document.getElementById('taskModal').classList.remove('hidden');
-}
-
-function closeTaskModal() { document.getElementById('taskModal').classList.add('hidden'); }
-
-function saveTask() {
-    const id = document.getElementById('taskId').value;
-    const title = document.getElementById('taskTitle').value.trim();
-    const priority = document.getElementById('taskPriority').value;
-    const category = document.getElementById('taskCategory').value.trim() || 'General';
-    const due = document.getElementById('taskDue').value.trim();
-    if (!title) { showToast('⚠️ Please enter a title'); return; }
-    if (id) {
-        const task = tasks.find(t => t.id === id);
-        if (task) { task.title = title; task.priority = priority; task.category = category; task.due = due; }
-    } else {
-        tasks.unshift({ id: 'task-' + Date.now(), title, priority, category, completed: false, due });
-    }
-    saveTasks(); closeTaskModal(); renderTasks(); renderSidebarContext('todo');
-}
-
-function deleteTask(id) {
-    if (!confirm('Delete this task?')) return;
-    tasks = tasks.filter(t => t.id !== id);
-    saveTasks(); renderTasks(); renderSidebarContext('todo');
-}
+window.deleteTask = function(id) {
+  if (!confirm('이 할 일을 삭제할까요?')) return;
+  tasks = tasks.filter(t => t.id !== id);
+  saveToLocal(); renderTasks(); triggerCloudSync();
+};
 
 // ================================================================
-// CALENDAR + ICS
+// CALENDAR
 // ================================================================
-const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
 
 function renderCalendar() {
-    const grid = document.getElementById('calGrid');
-    const title = document.getElementById('calMonthTitle');
-    if (!grid || !title) return;
-    title.innerText = `${MONTHS[calMonth]} ${calYear}`;
-    grid.innerHTML = '';
+  const grid = document.getElementById('calGrid');
+  const title = document.getElementById('calMonthTitle');
+  if (!grid || !title) return;
 
-    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
-        const h = document.createElement('div');
-        h.className = 'cal-header';
-        h.innerText = d;
-        grid.appendChild(h);
-    });
+  title.innerText = `${calYear}년 ${MONTHS[calMonth]}`;
+  grid.innerHTML = '';
 
-    const firstDay = new Date(calYear, calMonth, 1).getDay();
-    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-    const todayStr = new Date().toISOString().split('T')[0];
+  ['일','월','화','수','목','금','토'].forEach(d => {
+    const h = document.createElement('div');
+    h.className = 'cal-header';
+    h.innerText = d;
+    grid.appendChild(h);
+  });
 
-    for (let i = 0; i < firstDay; i++) {
-        const e = document.createElement('div');
-        e.className = 'cal-cell empty';
-        grid.appendChild(e);
-    }
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const todayStr = new Date().toISOString().split('T')[0];
 
-    for (let d = 1; d <= daysInMonth; d++) {
-        const key = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        const cell = document.createElement('div');
-        cell.className = `cal-cell ${key === todayStr ? 'today' : ''}`;
-        
-        // FIX: Ensure we always treat the event as a string
-        const event = calendarEvents[key] ? String(calendarEvents[key]) : '';
-        
-        cell.innerHTML = `
-            <div class="cal-day-num">${d}</div>
-            ${event ? `<div class="cal-dot"></div><div class="cal-event">${escapeHtml(event)}</div>` : ''}
-        `;
-        cell.onclick = () => openCalModal(key);
-        grid.appendChild(cell);
-    }
+  for (let i = 0; i < firstDay; i++) {
+    const e = document.createElement('div');
+    e.className = 'cal-cell empty';
+    grid.appendChild(e);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const cell = document.createElement('div');
+    cell.className = `cal-cell ${key === todayStr ? 'today' : ''}`;
+    const event = calendarEvents[key] ? String(calendarEvents[key]) : '';
+    cell.innerHTML = `
+      <div class="cal-day-num">${d}</div>
+      ${event ? `<div class="cal-dot"></div><div class="cal-event">${escapeHtml(event)}</div>` : ''}
+    `;
+    cell.onclick = () => openCalModal(key);
+    grid.appendChild(cell);
+  }
 }
 
-function changeMonth(dir) {
-    calMonth += dir;
-    if (calMonth > 11) { calMonth = 0; calYear++; }
-    else if (calMonth < 0) { calMonth = 11; calYear--; }
-    renderCalendar();
-}
+window.changeMonth = function(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  else if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+};
 
-function jumpMonth(n) { changeMonth(n); }
-function jumpToday() {
-    const now = new Date();
-    calYear = now.getFullYear();
-    calMonth = now.getMonth();
-    renderCalendar();
-}
+window.jumpMonth = function(n) { changeMonth(n); };
 
-function openCalModal(key) {
-    document.getElementById('calDateKey').value = key;
-    document.getElementById('calModalTitle').innerText = key;
-    document.getElementById('calText').value = calendarEvents[key] ? String(calendarEvents[key]) : '';
-    document.getElementById('calModal').classList.remove('hidden');
-    setTimeout(() => document.getElementById('calText').focus(), 50);
-}
+window.jumpToday = function() {
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  renderCalendar();
+};
 
-function closeCalModal() { document.getElementById('calModal').classList.add('hidden'); }
+window.openCalModal = function(key) {
+  document.getElementById('calDateKey').value = key;
+  document.getElementById('calModalTitle').innerText = key;
+  document.getElementById('calText').value = calendarEvents[key] ? String(calendarEvents[key]) : '';
+  document.getElementById('calModal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('calText').focus(), 50);
+};
 
-function saveCalEvent() {
-    const key = document.getElementById('calDateKey').value;
-    const val = document.getElementById('calText').value.trim();
-    if (val) calendarEvents[key] = val;
-    else delete calendarEvents[key];
-    localStorage.setItem(STORAGE.calendar, JSON.stringify(calendarEvents));
-    closeCalModal(); renderCalendar();
-}
+window.closeCalModal = function() {
+  document.getElementById('calModal').classList.add('hidden');
+};
 
-// ----------------------------------------------------------------
-// ICS EXPORT
-// ----------------------------------------------------------------
-function pad2(n) { return String(n).padStart(2, '0'); }
-
-function formatICSDate(dateStr) {
-    return dateStr.replace(/-/g, '');
-}
-
-function escapeICSText(text) {
-    return String(text)
-        .replace(/\\/g, '\\\\')
-        .replace(/\n/g, '\\n')
-        .replace(/,/g, '\\,')
-        .replace(/;/g, '\\;');
-}
-
-function exportCalendarICS() {
-    const monthPrefix = `${calYear}-${pad2(calMonth + 1)}-`;
-    const events = Object.entries(calendarEvents).filter(([key]) => key.startsWith(monthPrefix));
-
-    if (events.length === 0) {
-        showToast('⚠️ No events to export for this month');
-        return;
-    }
-
-    const now = new Date();
-    const dtstamp = `${now.getUTCFullYear()}${pad2(now.getUTCMonth() + 1)}${pad2(now.getUTCDate())}T${pad2(now.getUTCHours())}${pad2(now.getUTCMinutes())}${pad2(now.getUTCSeconds())}Z`;
-
-    let ics = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//마이데스크//Calendar//EN',
-        'CALSCALE:GREGORIAN',
-        'METHOD:PUBLISH',
-        `X-WR-CALNAME:마이데스크 Calendar — ${MONTHS[calMonth]} ${calYear}`,
-        'X-WR-TIMEZONE:UTC'
-    ];
-
-    events.forEach(([dateKey, text]) => {
-        const firstLineText = String(text).split('\n')[0];
-        const uid = `마이데스크-${dateKey}-${Math.random().toString(36).slice(2, 9)}@마이데스크.local`;
-        const [y, m, d] = dateKey.split('-').map(Number);
-        const dtstart = formatICSDate(dateKey);
-        const nextDay = new Date(y, m - 1, d + 1);
-        const dtend = `${nextDay.getFullYear()}${pad2(nextDay.getMonth() + 1)}${pad2(nextDay.getDate())}`;
-
-        ics.push('BEGIN:VEVENT');
-        ics.push(`UID:${uid}`);
-        ics.push(`DTSTAMP:${dtstamp}`);
-        ics.push(`DTSTART;VALUE=DATE:${dtstart}`);
-        ics.push(`DTEND;VALUE=DATE:${dtend}`);
-        ics.push(`SUMMARY:${escapeICSText(firstLineText.substring(0, 75))}`);
-        if (firstLineText.length > 75) {
-            ics.push(`DESCRIPTION:${escapeICSText(firstLineText)}`);
-        }
-        ics.push('END:VEVENT');
-    });
-
-    ics.push('END:VCALENDAR');
-
-    const content = ics.join('\r\n');
-    const filename = `마이데스크_${calYear}-${pad2(calMonth + 1)}.ics`;
-    download(filename, content, 'text/calendar');
-    showToast(`📤 Exported ${events.length} event${events.length === 1 ? '' : 's'} as .ics`);
-}
-
-// ----------------------------------------------------------------
-// ICS IMPORT (FIXED)
-// ----------------------------------------------------------------
-function unescapeICSText(text) {
-    return String(text)
-        .replace(/\\n/g, '\n')
-        .replace(/\\,/g, ',')
-        .replace(/\\;/g, ';')
-        .replace(/\\\\/g, '\\');
-}
-
-function parseICSDate(value) {
-    const cleaned = value.trim().replace(/[TZ]/g, '');
-    const datePart = cleaned.substring(0, 8);
-    if (datePart.length !== 8) return null;
-    const y = datePart.substring(0, 4);
-    const m = datePart.substring(4, 6);
-    const d = datePart.substring(6, 8);
-    return `${y}-${m}-${d}`;
-}
-
-function unfoldICSLines(raw) {
-    const lines = raw.split(/\r\n|\n|\r/);
-    const unfolded = [];
-    for (let line of lines) {
-        line = line.replace(/\r$/, '');
-        if (line.startsWith(' ') || line.startsWith('\t')) {
-            if (unfolded.length > 0) {
-                unfolded[unfolded.length - 1] += line.substring(1);
-            }
-        } else {
-            unfolded.push(line);
-        }
-    }
-    return unfolded;
-}
-
-function importCalendarICS(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        try {
-            const raw = e.target.result;
-            const lines = unfoldICSLines(raw);
-
-            let inEvent = false;
-            let currentEvent = {};
-            const importedEvents = [];
-
-            for (const line of lines) {
-                if (line === 'BEGIN:VEVENT') {
-                    inEvent = true;
-                    currentEvent = {};
-                } else if (line === 'END:VEVENT') {
-                    inEvent = false;
-                    if (currentEvent.dtstart) {
-                        const dateKey = currentEvent.dtstart;
-                        let summary = currentEvent.summary || '';
-                        if (currentEvent.description) {
-                            summary = currentEvent.description;
-                        }
-                        if (summary) {
-                            importedEvents.push({ dateKey, summary: summary.trim() });
-                        }
-                    }
-                } else if (inEvent) {
-                    const colonIdx = line.indexOf(':');
-                    if (colonIdx === -1) continue;
-                    const propPart = line.substring(0, colonIdx);
-                    const value = line.substring(colonIdx + 1);
-                    const propName = propPart.split(';')[0].toUpperCase();
-
-                    if (propName === 'DTSTART') {
-                        const parsed = parseICSDate(value);
-                        if (parsed) currentEvent.dtstart = parsed;
-                    } else if (propName === 'SUMMARY') {
-                        currentEvent.summary = unescapeICSText(value);
-                    } else if (propName === 'DESCRIPTION') {
-                        currentEvent.description = unescapeICSText(value);
-                    }
-                }
-            }
-
-            if (importedEvents.length === 0) {
-                showToast('⚠️ No valid events found in .ics file');
-                return;
-            }
-
-            let importedCount = 0;
-            importedEvents.forEach(({ dateKey, summary }) => {
-                const existing = calendarEvents[dateKey] ? String(calendarEvents[dateKey]) : '';
-                if (existing) {
-                    calendarEvents[dateKey] = existing + '\n' + summary;
-                } else {
-                    calendarEvents[dateKey] = summary;
-                }
-                importedCount++;
-            });
-
-            localStorage.setItem(STORAGE.calendar, JSON.stringify(calendarEvents));
-            
-            renderCalendar();
-            renderSidebarContext('calendar');
-            showToast(`📥 Imported ${importedCount} event${importedCount === 1 ? '' : 's'} from .ics`);
-
-        } catch (err) {
-            console.error('ICS import error:', err);
-            showToast('❌ Failed to parse .ics file');
-        }
-    };
-    reader.readAsText(file);
-    event.target.value = '';
-}
+window.saveCalEvent = function() {
+  const key = document.getElementById('calDateKey').value;
+  const val = document.getElementById('calText').value.trim();
+  if (val) calendarEvents[key] = val;
+  else delete calendarEvents[key];
+  saveToLocal();
+  closeCalModal(); renderCalendar(); triggerCloudSync();
+};
 
 // ================================================================
 // POMODORO
 // ================================================================
-function setPomoMode(mode) {
-    pomoMode = mode;
-    if (pomoTimer) { clearInterval(pomoTimer); pomoRunning = false; }
-    document.querySelectorAll('.pomo-mode-btn').forEach(b => {
-        b.classList.toggle('active', b.dataset.mode === mode);
-    });
-    if (mode === 'work') pomoSeconds = 25 * 60;
-    if (mode === 'shortBreak') pomoSeconds = 5 * 60;
-    if (mode === 'longBreak') pomoSeconds = 15 * 60;
-    updatePomoDisplay();
-    document.getElementById('pomoStart').classList.remove('hidden');
-    document.getElementById('pomoPause').classList.add('hidden');
-    document.getElementById('pomoStatus').innerText = t('readyToFocus');
-}
+let pomoSeconds = 25 * 60;
+let pomoTimer = null;
+let pomoRunning = false;
+let pomoMode = 'work';
+
+window.setPomoMode = function(mode) {
+  pomoMode = mode;
+  if (pomoTimer) { clearInterval(pomoTimer); pomoRunning = false; }
+  document.querySelectorAll('.pomo-mode-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === mode);
+  });
+  if (mode === 'work') pomoSeconds = 25 * 60;
+  if (mode === 'shortBreak') pomoSeconds = 5 * 60;
+  if (mode === 'longBreak') pomoSeconds = 15 * 60;
+  updatePomoDisplay();
+  document.getElementById('pomoStart').classList.remove('hidden');
+  document.getElementById('pomoPause').classList.add('hidden');
+  document.getElementById('pomoStatus').innerText = '집중할 준비 완료';
+};
 
 function updatePomoDisplay() {
-    const m = Math.floor(pomoSeconds / 60);
-    const s = pomoSeconds % 60;
-    document.getElementById('pomoClock').innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    document.getElementById('pomoCount').innerText = pomoCount;
+  const m = Math.floor(pomoSeconds / 60);
+  const s = pomoSeconds % 60;
+  document.getElementById('pomoClock').innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  document.getElementById('pomoCount').innerText = pomoCount;
 }
 
-function startPomodoro() {
-    if (pomoRunning) return;
-    pomoRunning = true;
-    document.getElementById('pomoStart').classList.add('hidden');
-    document.getElementById('pomoPause').classList.remove('hidden');
-    document.getElementById('pomoStatus').innerText = pomoMode === 'work' ? t('focusMsg') : t('breakMsg');
-    pomoTimer = setInterval(() => {
-        pomoSeconds--;
-        updatePomoDisplay();
-        if (pomoSeconds <= 0) {
-            clearInterval(pomoTimer);
-            pomoRunning = false;
-            playChime();
-            if (pomoMode === 'work') {
-                pomoCount++;
-                localStorage.setItem(STORAGE.pomoCount, pomoCount);
-                showToast('🎉 Focus complete! Take a break.');
-                setPomoMode('shortBreak');
-            } else {
-                showToast('☕ Break over! Ready to focus?');
-                setPomoMode('work');
-            }
-        }
-    }, 1000);
-}
+window.startPomodoro = function() {
+  if (pomoRunning) return;
+  pomoRunning = true;
+  document.getElementById('pomoStart').classList.add('hidden');
+  document.getElementById('pomoPause').classList.remove('hidden');
+  document.getElementById('pomoStatus').innerText = pomoMode === 'work' ? '집중할 시간!' : '휴식 시간!';
+  pomoTimer = setInterval(() => {
+    pomoSeconds--;
+    updatePomoDisplay();
+    if (pomoSeconds <= 0) {
+      clearInterval(pomoTimer);
+      pomoRunning = false;
+      playChime();
+      if (pomoMode === 'work') {
+        pomoCount++;
+        saveToLocal();
+        triggerCloudSync();
+        showToast('🎉 집중 완료! 휴식하세요.');
+        setPomoMode('shortBreak');
+      } else {
+        showToast('☕ 휴식 끝! 다시 집중해볼까요?');
+        setPomoMode('work');
+      }
+    }
+  }, 1000);
+};
 
-function pausePomodoro() {
-    if (!pomoRunning) return;
-    clearInterval(pomoTimer);
-    pomoRunning = false;
-    document.getElementById('pomoStart').classList.remove('hidden');
-    document.getElementById('pomoPause').classList.add('hidden');
-    document.getElementById('pomoStatus').innerText = 'Paused';
-}
+window.pausePomodoro = function() {
+  if (!pomoRunning) return;
+  clearInterval(pomoTimer);
+  pomoRunning = false;
+  document.getElementById('pomoStart').classList.remove('hidden');
+  document.getElementById('pomoPause').classList.add('hidden');
+  document.getElementById('pomoStatus').innerText = '일시정지';
+};
 
-function resetPomodoro() {
-    if (pomoTimer) { clearInterval(pomoTimer); pomoRunning = false; }
-    setPomoMode(pomoMode);
-}
+window.resetPomodoro = function() {
+  if (pomoTimer) { clearInterval(pomoTimer); pomoRunning = false; }
+  setPomoMode(pomoMode);
+};
 
 function playChime() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + 1.3);
+  } catch (e) {}
+}
+
+// ================================================================
+// BACKUP / RESTORE / RESET
+// ================================================================
+window.exportAllWorkspaceJSON = function() {
+  autoSaveActiveDoc();
+  const workspace = {
+    documents, tasks, calendarEvents, userMood, pomoCount,
+    exportDate: new Date().toISOString()
+  };
+  download(
+    `마이데스크_backup_${new Date().toISOString().slice(0, 10)}.json`,
+    JSON.stringify(workspace, null, 2),
+    'application/json'
+  );
+  showToast('✅ 백업 파일을 다운로드했습니다.');
+};
+
+window.importWorkspaceJSON = function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
     try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.frequency.value = 880;
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(); osc.stop(ctx.currentTime + 1.3);
-    } catch (e) {}
-}
+      const data = JSON.parse(e.target.result);
+      if (!data.documents || !Array.isArray(data.documents)) throw new Error('Invalid backup');
+      documents = data.documents;
+      tasks = data.tasks || [];
+      calendarEvents = data.calendarEvents || {};
+      userMood = data.userMood || '';
+      pomoCount = data.pomoCount || 0;
+      activeDocId = documents[0]?.id || null;
+      saveToLocal();
+      renderDocTree(); loadActiveDoc(); renderTasks(); renderCalendar(); updatePomoDisplay();
+      const moodInput = document.getElementById('userMood');
+      if (moodInput) moodInput.value = userMood;
+      triggerCloudSync();
+      showToast('✅ 백업을 복원했습니다.');
+    } catch (err) {
+      console.error(err);
+      showToast('❌ 올바른 백업 파일이 아닙니다.');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+};
 
-// ================================================================
-// BACKUP / RESTORE
-// ================================================================
-function exportAllWorkspaceJSON() {
-    autoSaveActiveDoc();
-    const workspace = {
-        documents, tasks, calendarEvents, userMood, pomoCount,
-        exportDate: new Date().toISOString()
-    };
-    download(`마이데스크_backup_${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(workspace, null, 2), 'application/json');
-    showToast('✅ Backup downloaded');
-}
-
-function importWorkspaceJSON(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        try {
-            const data = JSON.parse(e.target.result);
-            if (!data.documents || !Array.isArray(data.documents)) throw new Error('Invalid backup');
-            documents = data.documents;
-            tasks = data.tasks || [];
-            calendarEvents = data.calendarEvents || {};
-            userMood = data.userMood || '';
-            pomoCount = data.pomoCount || 0;
-            activeDocId = documents[0]?.id || 'doc-welcome';
-            saveDocs(); saveTasks();
-            localStorage.setItem(STORAGE.calendar, JSON.stringify(calendarEvents));
-            localStorage.setItem(STORAGE.mood, userMood);
-            localStorage.setItem(STORAGE.pomoCount, pomoCount);
-            document.getElementById('userMood').value = userMood;
-            switchTab('documents');
-            renderCalendar();
-            showToast('✅ Backup restored');
-        } catch (err) {
-            console.error(err);
-            showToast('❌ Invalid backup file');
-        }
-    };
-    reader.readAsText(file);
-    event.target.value = '';
-}
-
-function resetWorkspace() {
-    if (!confirm('Reset everything to defaults? This cannot be undone.')) return;
-    if (!confirm('Are you really sure? All your data will be lost.')) return;
-    localStorage.clear();
-    location.reload();
-}
+window.resetWorkspace = function() {
+  if (!confirm('정말 모든 데이터를 초기화하시겠어요? 되돌릴 수 없습니다.')) return;
+  if (!confirm('한 번 더 확인합니다. 모든 데이터가 삭제됩니다.')) return;
+  localStorage.clear();
+  location.reload();
+};
 
 // ================================================================
 // HELPERS
 // ================================================================
-function escapeHtml(str) {
-    if (!str) return '';
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
+window.escapeHtml = function(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+};
 
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    if (!t) return;
-    t.innerText = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-}
+window.showToast = function(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.innerText = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+};
 
-// Close modals on overlay click
-document.querySelectorAll('.modal-overlay').forEach(m => {
-    m.addEventListener('click', (e) => { if (e.target === m) m.classList.add('hidden'); });
-});
-
-// ESC to close modals
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden'));
-    }
-});
-</script>
-
-<footer class="site-footer">
-    <p class="footer-dev-link" style="font-size: 10px; color: #BBBBBB; margin-top: 8px;">
-        제 웹사이트: <a href="https://jimjimmabi.github.io/home/" target="_blank" style="color: #0066CC;">웹사이트로 이동해 주세요.</a>
-    </p>
-</footer>
-
-</body>
-</html>
+window.saveMood = function(val) {
+  userMood = val;
+  saveToLocal();
+  triggerCloudSync();
+};
