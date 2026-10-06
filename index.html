@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyDesk • Dotorisup Tools</title>
+    <title>마이데스크 • Dotorisup Tools</title>
     
     <!-- Fonts from Dotorisup -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -706,7 +706,7 @@
     <header class="app-header">
         <div class="brand">
             <i class="fa-solid fa-desktop"></i>
-            MyDesk
+            마이데스크
         </div>
         <div class="header-right">
             <span class="status-chip"><i class="fa-regular fa-circle-check"></i> Saved locally</span>
@@ -1005,7 +1005,7 @@
             <button class="modal-close" onclick="closeMicModal()">✕</button>
         </div>
         <div class="modal-body" style="text-align:center;">
-            <p style="font-size:13px;margin-bottom:12px;">MyDesk needs microphone access to record voice notes.</p>
+            <p style="font-size:13px;margin-bottom:12px;">마이데스크 needs microphone access to record voice notes.</p>
             <div style="background:var(--cream);border:1px solid var(--cream-dark);border-radius:6px;padding:14px;font-size:11px;text-align:left;line-height:1.6;">
                 <b>How to enable:</b>
                 <ol style="margin-left:16px;margin-top:6px;">
@@ -1031,24 +1031,24 @@
 // STATE & STORAGE
 // ================================================================
 const STORAGE = {
-    docs: 'mydesk_docs',
-    tasks: 'mydesk_tasks',
-    calendar: 'mydesk_calendar',
-    mood: 'mydesk_mood',
-    pomoCount: 'mydesk_pomo_count',
-    pomoMode: 'mydesk_pomo_mode',
-    lang: 'mydesk_lang'
+    docs: '마이데스크_docs',
+    tasks: '마이데스크_tasks',
+    calendar: '마이데스크_calendar',
+    mood: '마이데스크_mood',
+    pomoCount: '마이데스크_pomo_count',
+    pomoMode: '마이데스크_pomo_mode',
+    lang: '마이데스크_lang'
 };
 
 const defaultDocs = [{
     id: 'doc-welcome',
-    title: 'Welcome to MyDesk ✨',
+    title: 'Welcome to 마이데스크 ✨',
     html: '<h1>Hello there! 👋</h1><p>Welcome to your personal <b>2008-style Notion</b> workspace.</p><h2>🎯 What you can do</h2><ul><li><b>Docs</b> — write rich notes with bold, lists, tables, images, and audio</li><li><b>Tasks</b> — manage your to-dos with priorities</li><li><b>Calendar</b> — keep track of events and diary entries, and import/export .ics files</li><li><b>Focus</b> — use the Pomodoro timer to stay productive</li></ul><blockquote class="callout">💡 Everything is saved locally in your browser. Use the <b>Backup</b> button in the sidebar to export your data.</blockquote>',
-    text: 'Welcome to MyDesk'
+    text: 'Welcome to 마이데스크'
 }];
 
 const defaultTasks = [
-    { id: 'task-1', title: 'Explore MyDesk features', priority: 'High', category: 'Fun', completed: false, due: 'Today' },
+    { id: 'task-1', title: 'Explore 마이데스크 features', priority: 'High', category: 'Fun', completed: false, due: 'Today' },
     { id: 'task-2', title: 'Write my first note', priority: 'Medium', category: 'Writing', completed: false, due: 'This week' }
 ];
 
@@ -1739,15 +1739,15 @@ function exportCalendarICS() {
     let ics = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
-        'PRODID:-//MyDesk//Calendar//EN',
+        'PRODID:-//마이데스크//Calendar//EN',
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
-        `X-WR-CALNAME:MyDesk Calendar — ${MONTHS[calMonth]} ${calYear}`,
+        `X-WR-CALNAME:마이데스크 Calendar — ${MONTHS[calMonth]} ${calYear}`,
         'X-WR-TIMEZONE:UTC'
     ];
 
     events.forEach(([dateKey, text]) => {
-        const uid = `mydesk-${dateKey}-${Math.random().toString(36).slice(2, 9)}@mydesk.local`;
+        const uid = `마이데스크-${dateKey}-${Math.random().toString(36).slice(2, 9)}@마이데스크.local`;
         // We use all-day events (DATE value, no time)
         // DTEND is exclusive for all-day events, so we add one day
         const [y, m, d] = dateKey.split('-').map(Number);
@@ -1770,7 +1770,7 @@ function exportCalendarICS() {
     ics.push('END:VCALENDAR');
 
     const content = ics.join('\r\n');
-    const filename = `mydesk_${calYear}-${pad2(calMonth + 1)}.ics`;
+    const filename = `마이데스크_${calYear}-${pad2(calMonth + 1)}.ics`;
     download(filename, content, 'text/calendar');
     showToast(`📤 Exported ${events.length} event${events.length === 1 ? '' : 's'} as .ics`);
 }
@@ -1982,7 +1982,7 @@ function exportAllWorkspaceJSON() {
         documents, tasks, calendarEvents, userMood, pomoCount,
         exportDate: new Date().toISOString()
     };
-    download(`mydesk_backup_${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(workspace, null, 2), 'application/json');
+    download(`마이데스크_backup_${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(workspace, null, 2), 'application/json');
     showToast('✅ Backup downloaded');
 }
 
