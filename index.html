@@ -858,15 +858,26 @@
             <div id="view-calendar" class="workspace-view" style="display:none;flex-direction:column;flex:1;min-height:0;">
                 <div class="panel-header">
                     <div class="panel-title"><i class="fa-solid fa-calendar-days"></i> Calendar</div>
-                    <div style="display:flex;gap:6px;align-items:center;">
+                    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
                         <button class="btn" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
                         <span id="calMonthTitle" style="font-weight:bold;font-size:13px;color:var(--acorn-dark);min-width:130px;text-align:center;">October 2026</span>
                         <button class="btn" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                        <span class="divider" style="width:1px;height:20px;background:var(--border);margin:0 4px;"></span>
+                        <button class="btn" onclick="exportCalendarICS()" title="Export this month to .ics"><i class="fa-solid fa-file-export" style="color:#4CAF50;"></i> .ics</button>
+                        <label class="btn" style="cursor:pointer;" title="Import .ics file">
+                            <i class="fa-solid fa-file-import" style="color:#2196F3;"></i> .ics
+                            <input type="file" id="icsInput" accept=".ics" onchange="importCalendarICS(event)" class="hidden">
+                        </label>
                     </div>
                 </div>
                 <div class="panel-body" style="display:flex;flex-direction:column;gap:12px;">
                     <div class="cal-grid" id="calGrid"></div>
-                    <div style="font-size:11px;color:var(--text-light);text-align:center;">Click any date to add a diary entry or event.</div>
+                    <div style="font-size:11px;color:var(--text-light);text-align:center;">
+                        Click any date to add a diary entry or event.
+                        <br>
+                        <i class="fa-solid fa-file-export" style="color:#4CAF50;"></i> Export this month as .ics &nbsp;·&nbsp;
+                        <i class="fa-solid fa-file-import" style="color:#2196F3;"></i> Import events from .ics
+                    </div>
                 </div>
             </div>
 
@@ -1032,7 +1043,7 @@ const STORAGE = {
 const defaultDocs = [{
     id: 'doc-welcome',
     title: 'Welcome to MyDesk ✨',
-    html: '<h1>Hello there! 👋</h1><p>Welcome to your personal <b>2008-style Notion</b> workspace.</p><h2>🎯 What you can do</h2><ul><li><b>Docs</b> — write rich notes with bold, lists, tables, images, and audio</li><li><b>Tasks</b> — manage your to-dos with priorities</li><li><b>Calendar</b> — keep track of events and diary entries</li><li><b>Focus</b> — use the Pomodoro timer to stay productive</li></ul><blockquote class="callout">💡 Everything is saved locally in your browser. Use the <b>Backup</b> button in the sidebar to export your data.</blockquote>',
+    html: '<h1>Hello there! 👋</h1><p>Welcome to your personal <b>2008-style Notion</b> workspace.</p><h2>🎯 What you can do</h2><ul><li><b>Docs</b> — write rich notes with bold, lists, tables, images, and audio</li><li><b>Tasks</b> — manage your to-dos with priorities</li><li><b>Calendar</b> — keep track of events and diary entries, and import/export .ics files</li><li><b>Focus</b> — use the Pomodoro timer to stay productive</li></ul><blockquote class="callout">💡 Everything is saved locally in your browser. Use the <b>Backup</b> button in the sidebar to export your data.</blockquote>',
     text: 'Welcome to MyDesk'
 }];
 
@@ -1067,36 +1078,22 @@ let recording = false;
 let micStream = null;
 let recordingStart = 0;
 let recordingInterval = null;
-let audioCtx = null;
-let bgmPlaying = false;
-let bgmTimer = null;
 
 // ================================================================
 // INIT
 // ================================================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Set mood
     const moodInput = document.getElementById('userMood');
     if (moodInput) moodInput.value = userMood;
 
-    // Init language
     updateLangButtons();
     applyLanguage(currentLang);
-
-    // Init tabs
     switchTab('documents');
-
-    // Init editor
     initEditor();
-
-    // Init pomodoro display
     updatePomoDisplay();
     document.getElementById('pomoCount').innerText = pomoCount;
-
-    // Check mic permission on load
     checkMicPermission();
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
         if (e.ctrlKey || e.metaKey) {
             if (e.key === 'b') { e.preventDefault(); rteExec('bold'); }
@@ -1170,21 +1167,10 @@ function updateLangButtons() {
 }
 
 function applyLanguage(lang) {
-    // Update UI labels
     document.querySelectorAll('.sidebar-tab').forEach((tab, i) => {
         const keys = ['docs', 'tasks', 'calendar', 'pomo'];
         if (tab.querySelector('span')) tab.querySelector('span').innerText = t(keys[i]);
     });
-    document.querySelectorAll('label').forEach(el => {
-        const key = el.dataset.i18n;
-        if (key) el.innerText = t(key);
-    });
-    // Update modal labels
-    const labels = {
-        'taskModalTitle': 'addTask',
-        'calModalTitle': 'calEvent'
-    };
-    // No need to over-engineer; the static English labels are fine
 }
 
 function saveMood(val) {
@@ -1196,21 +1182,17 @@ function saveMood(val) {
 // TAB SWITCHING
 // ================================================================
 function switchTab(tab) {
-    // Tabs
     document.querySelectorAll('.sidebar-tab').forEach(t => {
         t.classList.toggle('active', t.dataset.tab === tab);
     });
-    // Views
     document.querySelectorAll('.workspace-view').forEach(v => {
         v.style.display = 'none';
     });
     const view = document.getElementById('view-' + tab);
     if (view) view.style.display = 'flex';
 
-    // Render sidebar context
     renderSidebarContext(tab);
 
-    // Refresh content
     if (tab === 'documents') { renderDocTree(); loadActiveDoc(); }
     if (tab === 'todo') renderTasks();
     if (tab === 'calendar') renderCalendar();
@@ -1255,6 +1237,11 @@ function renderSidebarContext(tab) {
                     <button class="btn" style="padding:3px 8px;font-size:10px;" onclick="jumpMonth(1)">+1m</button>
                     <button class="btn" style="padding:3px 8px;font-size:10px;" onclick="jumpMonth(12)">+1y</button>
                 </div>
+            </div>
+            <div style="margin-top:12px;font-size:11px;font-weight:bold;color:var(--acorn-dark);">.ics File</div>
+            <div style="background:var(--cream);padding:10px;border-radius:6px;border:1px solid var(--cream-dark);font-size:10px;line-height:1.7;color:var(--text-light);">
+                <div><i class="fa-solid fa-file-export" style="color:#4CAF50;"></i> <b>Export</b> — download this month's events</div>
+                <div style="margin-top:4px;"><i class="fa-solid fa-file-import" style="color:#2196F3;"></i> <b>Import</b> — add events from a .ics file</div>
             </div>
         `;
     } else if (tab === 'pomodoro') {
@@ -1357,8 +1344,7 @@ function deleteActiveDocument() {
 function exportDocTxt() {
     const doc = documents.find(d => d.id === activeDocId);
     if (!doc) return;
-    const text = `${doc.title}\n\n${doc.text || ''}`;
-    download(`${sanitize(doc.title)}.txt`, text, 'text/plain');
+    download(`${sanitize(doc.title)}.txt`, `${doc.title}\n\n${doc.text || ''}`, 'text/plain');
 }
 
 function exportDocHtml() {
@@ -1394,14 +1380,6 @@ function initEditor() {
     if (!editor) return;
     editor.addEventListener('input', () => { autoSaveActiveDoc(); });
     editor.addEventListener('blur', () => { autoSaveActiveDoc(); });
-    editor.addEventListener('keydown', (e) => {
-        if (e.ctrlKey || e.metaKey) {
-            if (e.key === 'b') { e.preventDefault(); rteExec('bold'); }
-            if (e.key === 'i') { e.preventDefault(); rteExec('italic'); }
-            if (e.key === 'u') { e.preventDefault(); rteExec('underline'); }
-            if (e.key === 'k') { e.preventDefault(); rteInsertLink(); }
-        }
-    });
 }
 
 function rteExec(cmd, val = null) {
@@ -1651,10 +1629,9 @@ function deleteTask(id) {
 }
 
 // ================================================================
-// CALENDAR
+// CALENDAR + ICS
 // ================================================================
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 function renderCalendar() {
     const grid = document.getElementById('calGrid');
@@ -1663,7 +1640,6 @@ function renderCalendar() {
     title.innerText = `${MONTHS[calMonth]} ${calYear}`;
     grid.innerHTML = '';
 
-    // Headers
     ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
         const h = document.createElement('div');
         h.className = 'cal-header';
@@ -1675,14 +1651,12 @@ function renderCalendar() {
     const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
     const todayStr = new Date().toISOString().split('T')[0];
 
-    // Empty cells
     for (let i = 0; i < firstDay; i++) {
         const e = document.createElement('div');
         e.className = 'cal-cell empty';
         grid.appendChild(e);
     }
 
-    // Day cells
     for (let d = 1; d <= daysInMonth; d++) {
         const key = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
         const cell = document.createElement('div');
@@ -1729,6 +1703,196 @@ function saveCalEvent() {
     else delete calendarEvents[key];
     localStorage.setItem(STORAGE.calendar, JSON.stringify(calendarEvents));
     closeCalModal(); renderCalendar();
+}
+
+// ----------------------------------------------------------------
+// ICS EXPORT
+// ----------------------------------------------------------------
+function pad2(n) { return String(n).padStart(2, '0'); }
+
+function formatICSDate(dateStr) {
+    // dateStr is YYYY-MM-DD, output is YYYYMMDD
+    return dateStr.replace(/-/g, '');
+}
+
+function escapeICSText(text) {
+    return String(text)
+        .replace(/\\/g, '\\\\')
+        .replace(/\n/g, '\\n')
+        .replace(/,/g, '\\,')
+        .replace(/;/g, '\\;');
+}
+
+function exportCalendarICS() {
+    // Collect all events in the current visible month
+    const monthPrefix = `${calYear}-${pad2(calMonth + 1)}-`;
+    const events = Object.entries(calendarEvents).filter(([key]) => key.startsWith(monthPrefix));
+
+    if (events.length === 0) {
+        showToast('⚠️ No events to export for this month');
+        return;
+    }
+
+    const now = new Date();
+    const dtstamp = `${now.getUTCFullYear()}${pad2(now.getUTCMonth() + 1)}${pad2(now.getUTCDate())}T${pad2(now.getUTCHours())}${pad2(now.getUTCMinutes())}${pad2(now.getUTCSeconds())}Z`;
+
+    let ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//MyDesk//Calendar//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        `X-WR-CALNAME:MyDesk Calendar — ${MONTHS[calMonth]} ${calYear}`,
+        'X-WR-TIMEZONE:UTC'
+    ];
+
+    events.forEach(([dateKey, text]) => {
+        const uid = `mydesk-${dateKey}-${Math.random().toString(36).slice(2, 9)}@mydesk.local`;
+        // We use all-day events (DATE value, no time)
+        // DTEND is exclusive for all-day events, so we add one day
+        const [y, m, d] = dateKey.split('-').map(Number);
+        const dtstart = formatICSDate(dateKey);
+        const nextDay = new Date(y, m - 1, d + 1);
+        const dtend = `${nextDay.getFullYear()}${pad2(nextDay.getMonth() + 1)}${pad2(nextDay.getDate())}`;
+
+        ics.push('BEGIN:VEVENT');
+        ics.push(`UID:${uid}`);
+        ics.push(`DTSTAMP:${dtstamp}`);
+        ics.push(`DTSTART;VALUE=DATE:${dtstart}`);
+        ics.push(`DTEND;VALUE=DATE:${dtend}`);
+        ics.push(`SUMMARY:${escapeICSText(text.substring(0, 75))}`);
+        if (text.length > 75) {
+            ics.push(`DESCRIPTION:${escapeICSText(text)}`);
+        }
+        ics.push('END:VEVENT');
+    });
+
+    ics.push('END:VCALENDAR');
+
+    const content = ics.join('\r\n');
+    const filename = `mydesk_${calYear}-${pad2(calMonth + 1)}.ics`;
+    download(filename, content, 'text/calendar');
+    showToast(`📤 Exported ${events.length} event${events.length === 1 ? '' : 's'} as .ics`);
+}
+
+// ----------------------------------------------------------------
+// ICS IMPORT
+// ----------------------------------------------------------------
+function unescapeICSText(text) {
+    return String(text)
+        .replace(/\\n/g, '\n')
+        .replace(/\\,/g, ',')
+        .replace(/\\;/g, ';')
+        .replace(/\\\\/g, '\\');
+}
+
+function parseICSDate(value) {
+    // Handles: YYYYMMDD, YYYYMMDDTHHMMSSZ, YYYYMMDDTHHMMSS
+    // We only use the date part.
+    const cleaned = value.trim().replace(/[TZ]/g, '');
+    const datePart = cleaned.substring(0, 8);
+    if (datePart.length !== 8) return null;
+    const y = datePart.substring(0, 4);
+    const m = datePart.substring(4, 6);
+    const d = datePart.substring(6, 8);
+    return `${y}-${m}-${d}`;
+}
+
+function unfoldICSLines(raw) {
+    // ICS uses CRLF and line folding: continuation lines start with a space or tab
+    const lines = raw.split(/\r\n|\n|\r/);
+    const unfolded = [];
+    for (const line of lines) {
+        if (line.startsWith(' ') || line.startsWith('\t')) {
+            if (unfolded.length > 0) {
+                unfolded[unfolded.length - 1] += line.substring(1);
+            }
+        } else {
+            unfolded.push(line);
+        }
+    }
+    return unfolded;
+}
+
+function importCalendarICS(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const raw = e.target.result;
+            const lines = unfoldICSLines(raw);
+
+            let inEvent = false;
+            let currentEvent = {};
+            const importedEvents = [];
+
+            for (const line of lines) {
+                if (line === 'BEGIN:VEVENT') {
+                    inEvent = true;
+                    currentEvent = {};
+                } else if (line === 'END:VEVENT') {
+                    inEvent = false;
+                    if (currentEvent.dtstart) {
+                        // Only import events with a start date
+                        const dateKey = currentEvent.dtstart;
+                        let summary = currentEvent.summary || '';
+                        if (currentEvent.description) {
+                            summary = currentEvent.description;
+                        }
+                        if (summary) {
+                            importedEvents.push({ dateKey, summary: summary.trim() });
+                        }
+                    }
+                } else if (inEvent) {
+                    // Parse property
+                    const colonIdx = line.indexOf(':');
+                    if (colonIdx === -1) continue;
+                    const propPart = line.substring(0, colonIdx);
+                    const value = line.substring(colonIdx + 1);
+                    const propName = propPart.split(';')[0].toUpperCase();
+
+                    if (propName === 'DTSTART') {
+                        const parsed = parseICSDate(value);
+                        if (parsed) currentEvent.dtstart = parsed;
+                    } else if (propName === 'SUMMARY') {
+                        currentEvent.summary = unescapeICSText(value);
+                    } else if (propName === 'DESCRIPTION') {
+                        currentEvent.description = unescapeICSText(value);
+                    }
+                }
+            }
+
+            if (importedEvents.length === 0) {
+                showToast('⚠️ No valid events found in .ics file');
+                return;
+            }
+
+            // Merge into calendarEvents (existing events are overwritten if same date)
+            let importedCount = 0;
+            importedEvents.forEach(({ dateKey, summary }) => {
+                const existing = calendarEvents[dateKey];
+                if (existing) {
+                    // Append if there's already an event, separated by a newline
+                    calendarEvents[dateKey] = existing + '\n' + summary;
+                } else {
+                    calendarEvents[dateKey] = summary;
+                }
+                importedCount++;
+            });
+
+            localStorage.setItem(STORAGE.calendar, JSON.stringify(calendarEvents));
+            renderCalendar();
+            renderSidebarContext('calendar');
+            showToast(`📥 Imported ${importedCount} event${importedCount === 1 ? '' : 's'} from .ics`);
+
+        } catch (err) {
+            console.error('ICS import error:', err);
+            showToast('❌ Failed to parse .ics file');
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
 }
 
 // ================================================================
@@ -1875,48 +2039,6 @@ function showToast(msg) {
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
 }
-
-// Link auto-detection
-document.addEventListener('DOMContentLoaded', () => {
-    const editor = document.getElementById('rteEditor');
-    if (!editor) return;
-    editor.addEventListener('input', (e) => {
-        // Simple link detection on space
-        if (e.inputType === 'insertText' && e.data === ' ') {
-            const sel = window.getSelection();
-            if (!sel || !sel.rangeCount) return;
-            const range = sel.getRangeAt(0);
-            const node = range.startContainer;
-            if (node.nodeType !== Node.TEXT_NODE) return;
-            const text = node.textContent;
-            const offset = range.startOffset;
-            const before = text.substring(0, offset - 1);
-            const match = before.match(/(https?:\/\/[^\s]+)$/i);
-            if (match) {
-                const url = match[1];
-                // Replace text node with link
-                const start = before.lastIndexOf(url);
-                const beforeText = text.substring(0, start);
-                const afterText = text.substring(offset);
-                const link = document.createElement('a');
-                link.href = url;
-                link.target = '_blank';
-                link.rel = 'noopener';
-                link.textContent = url;
-                node.textContent = beforeText;
-                node.parentNode.insertBefore(link, node.nextSibling);
-                if (afterText) node.parentNode.insertBefore(document.createTextNode(afterText), link.nextSibling);
-                // Move cursor after link
-                const newRange = document.createRange();
-                newRange.setStartAfter(link);
-                newRange.collapse(true);
-                sel.removeAllRanges();
-                sel.addRange(newRange);
-                autoSaveActiveDoc();
-            }
-        }
-    });
-});
 
 // Close modals on overlay click
 document.querySelectorAll('.modal-overlay').forEach(m => {
