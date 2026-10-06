@@ -10,7 +10,7 @@ const sb = window.supabase.createClient(
   window.SUPABASE_ANON_KEY || SUPABASE_ANON_KEY_FALLBACK
 );
 
-// ---------- Auth (uses the same dotori_my_id as Dotorisup) ----------
+// ---------- Auth ----------
 
 async function getMyAcorn() {
   const myId = localStorage.getItem('dotori_my_id');
@@ -26,8 +26,33 @@ async function getMyAcorn() {
   return data;
 }
 
-async function getProfile() {
-  return getMyAcorn();
+async function loginByDotoriId(dotoriId) {
+  const cleaned = String(dotoriId).trim().toLowerCase();
+
+  const { data: profile, error } = await sb
+    .from('profiles')
+    .select('*')
+    .eq('dotori_id', cleaned)
+    .single();
+
+  if (error || !profile) return null;
+
+  // Ensure we have an anonymous session so RLS works
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    const { error: authError } = await sb.auth.signInAnonymously();
+    if (authError) throw authError;
+  }
+
+  localStorage.setItem('dotori_my_id', profile.dotori_id);
+  localStorage.setItem('dotori_session', JSON.stringify({
+    loggedIn: true,
+    dotori_id: profile.dotori_id,
+    user_id: profile.id,
+    is_owner: true
+  }));
+
+  return profile;
 }
 
 async function logout() {
@@ -74,7 +99,7 @@ async function saveMyDeskBackup(workspaceData) {
 // ---------- Expose ----------
 window.DotoriStorage = {
   getMyAcorn,
-  getProfile,
+  loginByDotoriId,
   logout,
   loadMyDeskBackup,
   saveMyDeskBackup

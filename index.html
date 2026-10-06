@@ -656,7 +656,36 @@
 </head>
 <body>
 
-<div class="container">
+<!-- WELCOME / LOGIN SCREEN -->
+<div id="welcome-screen">
+    <div class="welcome-box">
+        <div class="welcome-logo">
+            <span class="acorn">🌰</span>
+            <h1>마이데스크</h1>
+            <p class="welcome-sub">MyDesk</p>
+        </div>
+        <p class="welcome-tagline">도토리숲의 조용한 책상.</p>
+
+        <div class="welcome-form">
+            <label for="dotori-id-input">도토리 ID</label>
+            <input type="text" id="dotori-id-input" maxlength="20"
+                   placeholder="dotori-xxxx" autocomplete="off">
+            <button id="login-btn">🌰 들어가기</button>
+        </div>
+
+        <div class="welcome-load">
+            <span>아직 도토리가 없나요?</span>
+            <a href="https://jimjimmabi.github.io/-/" class="link-btn">도토리숲에서 만들기 →</a>
+        </div>
+
+        <p class="welcome-dedication">
+            도토리숲에서 만든 계정으로 그대로 사용할 수 있어요.
+        </p>
+    </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="container" id="main-container" style="display:none;">
 
     <header class="app-header">
         <div class="brand">
@@ -665,6 +694,7 @@
         </div>
         <div class="header-right">
             <span class="status-chip" id="syncStatus"><i class="fa-solid fa-wifi" style="color:#999;"></i> 오프라인 모드</span>
+            <button class="lang-btn" onclick="logoutMyDesk()" title="로그아웃" style="margin-left: 6px;">⏻</button>
             <div class="lang-selector">
                 <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
                 <button class="lang-btn" data-lang="ko" onclick="setLanguage('ko')">한</button>

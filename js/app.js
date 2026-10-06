@@ -23,16 +23,79 @@ let cloudSyncTimeout = null;
 // INIT
 // ================================================================
 document.addEventListener('DOMContentLoaded', async () => {
-  await initAuth();
-  initEditor();
-  renderDocTree();
-  loadActiveDoc();
-  renderTasks();
-  renderCalendar();
-  updatePomoDisplay();
+  const welcomeScreen = document.getElementById('welcome-screen');
+  const mainContainer = document.getElementById('main-container');
+  const idInput = document.getElementById('dotori-id-input');
+  const loginBtn = document.getElementById('login-btn');
 
-  const moodInput = document.getElementById('userMood');
-  if (moodInput) moodInput.value = userMood;
+  // Check for existing session
+  let profile = null;
+  try { profile = await DotoriStorage.getMyAcorn(); } catch (e) {}
+
+  if (profile) {
+    welcomeScreen.style.display = 'none';
+    mainContainer.style.display = 'block';
+    bootApp();
+  } else {
+    welcomeScreen.style.display = 'flex';
+    mainContainer.style.display = 'none';
+
+    async function attemptLogin() {
+      const id = idInput.value.trim().toLowerCase();
+      if (!id) { alert('도토리 ID를 입력해주세요.'); return; }
+
+      loginBtn.disabled = true;
+      loginBtn.innerText = '불러오는 중...';
+
+      try {
+        const result = await DotoriStorage.loginByDotoriId(id);
+        if (result) {
+          welcomeScreen.style.display = 'none';
+          mainContainer.style.display = 'block';
+          bootApp();
+        } else {
+          alert('그런 도토리를 찾을 수 없어요: ' + id);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('로그인 실패: ' + (err.message || '알 수 없는 오류'));
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerText = '🌰 들어가기';
+      }
+    }
+
+    loginBtn.addEventListener('click', attemptLogin);
+    idInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') attemptLogin();
+    });
+    idInput.focus();
+  }
+
+  function bootApp() {
+    updateLangButtons();
+    applyLanguage(currentLang);
+    initAuth();
+    initEditor();
+    renderDocTree();
+    loadActiveDoc();
+    renderTasks();
+    renderCalendar();
+    updatePomoDisplay();
+
+    const moodInput = document.getElementById('userMood');
+    if (moodInput) moodInput.value = userMood;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden'));
+      }
+    });
+
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+      m.addEventListener('click', (e) => { if (e.target === m) m.classList.add('hidden'); });
+    });
+  }
 });
 
 async function initAuth() {
@@ -558,4 +621,12 @@ window.saveMood = function(val) {
   userMood = val;
   saveToLocal();
   triggerCloudSync();
+};
+
+window.logoutMyDesk = async function() {
+  if (!confirm('로그아웃하시겠어요?')) return;
+  try { await DotoriStorage.logout(); } catch (e) {}
+  localStorage.removeItem('dotori_my_id');
+  localStorage.removeItem('dotori_session');
+  location.reload();
 };
