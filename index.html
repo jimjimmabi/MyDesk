@@ -1661,7 +1661,10 @@ function renderCalendar() {
         const key = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
         const cell = document.createElement('div');
         cell.className = `cal-cell ${key === todayStr ? 'today' : ''}`;
-        const event = calendarEvents[key] || '';
+        
+        // FIX: Ensure we always treat the event as a string
+        const event = calendarEvents[key] ? String(calendarEvents[key]) : '';
+        
         cell.innerHTML = `
             <div class="cal-day-num">${d}</div>
             ${event ? `<div class="cal-dot"></div><div class="cal-event">${escapeHtml(event)}</div>` : ''}
@@ -1689,7 +1692,7 @@ function jumpToday() {
 function openCalModal(key) {
     document.getElementById('calDateKey').value = key;
     document.getElementById('calModalTitle').innerText = key;
-    document.getElementById('calText').value = calendarEvents[key] || '';
+    document.getElementById('calText').value = calendarEvents[key] ? String(calendarEvents[key]) : '';
     document.getElementById('calModal').classList.remove('hidden');
     setTimeout(() => document.getElementById('calText').focus(), 50);
 }
@@ -1711,7 +1714,6 @@ function saveCalEvent() {
 function pad2(n) { return String(n).padStart(2, '0'); }
 
 function formatICSDate(dateStr) {
-    // dateStr is YYYY-MM-DD, output is YYYYMMDD
     return dateStr.replace(/-/g, '');
 }
 
@@ -1724,7 +1726,6 @@ function escapeICSText(text) {
 }
 
 function exportCalendarICS() {
-    // Collect all events in the current visible month
     const monthPrefix = `${calYear}-${pad2(calMonth + 1)}-`;
     const events = Object.entries(calendarEvents).filter(([key]) => key.startsWith(monthPrefix));
 
@@ -1747,9 +1748,8 @@ function exportCalendarICS() {
     ];
 
     events.forEach(([dateKey, text]) => {
+        const firstLineText = String(text).split('\n')[0];
         const uid = `마이데스크-${dateKey}-${Math.random().toString(36).slice(2, 9)}@마이데스크.local`;
-        // We use all-day events (DATE value, no time)
-        // DTEND is exclusive for all-day events, so we add one day
         const [y, m, d] = dateKey.split('-').map(Number);
         const dtstart = formatICSDate(dateKey);
         const nextDay = new Date(y, m - 1, d + 1);
@@ -1760,9 +1760,9 @@ function exportCalendarICS() {
         ics.push(`DTSTAMP:${dtstamp}`);
         ics.push(`DTSTART;VALUE=DATE:${dtstart}`);
         ics.push(`DTEND;VALUE=DATE:${dtend}`);
-        ics.push(`SUMMARY:${escapeICSText(text.substring(0, 75))}`);
-        if (text.length > 75) {
-            ics.push(`DESCRIPTION:${escapeICSText(text)}`);
+        ics.push(`SUMMARY:${escapeICSText(firstLineText.substring(0, 75))}`);
+        if (firstLineText.length > 75) {
+            ics.push(`DESCRIPTION:${escapeICSText(firstLineText)}`);
         }
         ics.push('END:VEVENT');
     });
@@ -1776,7 +1776,7 @@ function exportCalendarICS() {
 }
 
 // ----------------------------------------------------------------
-// ICS IMPORT
+// ICS IMPORT (FIXED)
 // ----------------------------------------------------------------
 function unescapeICSText(text) {
     return String(text)
@@ -1787,8 +1787,6 @@ function unescapeICSText(text) {
 }
 
 function parseICSDate(value) {
-    // Handles: YYYYMMDD, YYYYMMDDTHHMMSSZ, YYYYMMDDTHHMMSS
-    // We only use the date part.
     const cleaned = value.trim().replace(/[TZ]/g, '');
     const datePart = cleaned.substring(0, 8);
     if (datePart.length !== 8) return null;
@@ -1799,10 +1797,10 @@ function parseICSDate(value) {
 }
 
 function unfoldICSLines(raw) {
-    // ICS uses CRLF and line folding: continuation lines start with a space or tab
     const lines = raw.split(/\r\n|\n|\r/);
     const unfolded = [];
-    for (const line of lines) {
+    for (let line of lines) {
+        line = line.replace(/\r$/, '');
         if (line.startsWith(' ') || line.startsWith('\t')) {
             if (unfolded.length > 0) {
                 unfolded[unfolded.length - 1] += line.substring(1);
@@ -1834,7 +1832,6 @@ function importCalendarICS(event) {
                 } else if (line === 'END:VEVENT') {
                     inEvent = false;
                     if (currentEvent.dtstart) {
-                        // Only import events with a start date
                         const dateKey = currentEvent.dtstart;
                         let summary = currentEvent.summary || '';
                         if (currentEvent.description) {
@@ -1845,7 +1842,6 @@ function importCalendarICS(event) {
                         }
                     }
                 } else if (inEvent) {
-                    // Parse property
                     const colonIdx = line.indexOf(':');
                     if (colonIdx === -1) continue;
                     const propPart = line.substring(0, colonIdx);
@@ -1868,12 +1864,10 @@ function importCalendarICS(event) {
                 return;
             }
 
-            // Merge into calendarEvents (existing events are overwritten if same date)
             let importedCount = 0;
             importedEvents.forEach(({ dateKey, summary }) => {
-                const existing = calendarEvents[dateKey];
+                const existing = calendarEvents[dateKey] ? String(calendarEvents[dateKey]) : '';
                 if (existing) {
-                    // Append if there's already an event, separated by a newline
                     calendarEvents[dateKey] = existing + '\n' + summary;
                 } else {
                     calendarEvents[dateKey] = summary;
@@ -1882,6 +1876,7 @@ function importCalendarICS(event) {
             });
 
             localStorage.setItem(STORAGE.calendar, JSON.stringify(calendarEvents));
+            
             renderCalendar();
             renderSidebarContext('calendar');
             showToast(`📥 Imported ${importedCount} event${importedCount === 1 ? '' : 's'} from .ics`);
