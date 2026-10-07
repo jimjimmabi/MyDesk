@@ -73,9 +73,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function bootApp() {
-    updateLangButtons();
-    applyLanguage(currentLang);
     initAuth();
+    updateProfileChip();
     initEditor();
     renderDocTree();
     loadActiveDoc();
@@ -630,3 +629,20 @@ window.logoutMyDesk = async function() {
   localStorage.removeItem('dotori_session');
   location.reload();
 };
+
+async function updateProfileChip() {
+  const chip = document.getElementById('profileChip');
+  if (!chip) return;
+  try {
+    const profile = await DotoriStorage.getMyAcorn();
+    if (profile) {
+      const emoji = profile.mini_me || '🌰';
+      chip.innerText = `${emoji} ${profile.nickname}`;
+      chip.title = profile.dotori_id;
+    } else {
+      chip.style.display = 'none';
+    }
+  } catch (e) {
+    chip.style.display = 'none';
+  }
+}
