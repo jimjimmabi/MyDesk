@@ -351,6 +351,28 @@ window.rteInsertCallout = function() {
   rteExec('insertHTML', '<blockquote class="callout">💡 메모: 여기에 팁을 적어보세요...</blockquote><p><br></p>');
 };
 
+window.rteInsertHR = function() {
+  rteExec('insertHTML', '<hr style="border:none;border-top:1px solid #CCCCCC;margin:1em 0;"><p><br></p>');
+};
+
+// Update toolbar button active states
+document.addEventListener('selectionchange', () => {
+  const editor = document.getElementById('rteEditor');
+  if (!editor) return;
+
+  const sel = window.getSelection();
+  if (!sel || !sel.rangeCount) return;
+
+  // Only update if selection is inside the editor
+  const range = sel.getRangeAt(0);
+  if (!editor.contains(range.commonAncestorContainer)) return;
+
+  ['bold', 'italic', 'underline', 'strikeThrough'].forEach(cmd => {
+    const btn = document.querySelector(`.rte-toolbar button[onclick*="${cmd}"]`);
+    if (btn) btn.classList.toggle('active', document.queryCommandState(cmd));
+  });
+});
+
 // ================================================================
 // TASKS
 // ================================================================

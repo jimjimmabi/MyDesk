@@ -289,36 +289,98 @@ body {
 /* ============================================
    RICH TEXT EDITOR
    ============================================ */
+/* Word-style toolbar */
 .rte-toolbar {
     background: #fafcff;
     border-bottom: 1px solid var(--border);
-    padding: 6px 10px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rte-row {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
     align-items: center;
 }
-.rte-toolbar button, .rte-toolbar select {
+
+.rte-toolbar button {
     background: #fff;
     border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 4px 8px;
-    font-size: 11px;
+    border-radius: 4px;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    font-size: 13px;
     cursor: pointer;
     font-family: inherit;
     transition: all 0.1s;
     color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
-.rte-toolbar button:hover, .rte-toolbar select:hover {
+
+.rte-toolbar button:hover {
     background: var(--cream);
     border-color: var(--pink);
 }
+
+.rte-toolbar button:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
 .rte-toolbar button.active {
     background: var(--acorn-dark);
     color: #fff;
     border-color: var(--acorn-dark);
 }
-.rte-toolbar .divider { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+
+.rte-select {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    height: 32px;
+    padding: 0 10px;
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.1s;
+}
+
+.rte-select:hover {
+    background: var(--cream);
+    border-color: var(--pink);
+}
+
+.rte-select:focus {
+    outline: none;
+    border-color: var(--pink);
+}
+
+.rte-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .rte-toolbar button {
+        min-width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+    .rte-select {
+        height: 36px;
+        font-size: 13px;
+    }
+}
 
 .rte-editor {
     flex: 1;

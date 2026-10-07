@@ -109,33 +109,88 @@
                 </div>
 
                 <div class="rte-toolbar">
-                    <select onchange="rteExec('formatBlock', this.value); this.selectedIndex=0;">
-                        <option value="">Paragraph</option>
-                        <option value="h1">Heading 1</option>
-                        <option value="h2">Heading 2</option>
-                        <option value="h3">Heading 3</option>
-                        <option value="p">Paragraph</option>
-                        <option value="pre">Code Block</option>
-                        <option value="blockquote">Quote</option>
-                    </select>
-                    <span class="divider"></span>
-                    <button onclick="rteExec('bold')" title="Bold"><i class="fa-solid fa-bold"></i></button>
-                    <button onclick="rteExec('italic')" title="Italic"><i class="fa-solid fa-italic"></i></button>
-                    <button onclick="rteExec('underline')" title="Underline"><i class="fa-solid fa-underline"></i></button>
-                    <button onclick="rteExec('strikeThrough')" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
-                    <span class="divider"></span>
-                    <button onclick="rteExec('insertUnorderedList')" title="Bullet list"><i class="fa-solid fa-list-ul"></i></button>
-                    <button onclick="rteExec('insertOrderedList')" title="Numbered list"><i class="fa-solid fa-list-ol"></i></button>
-                    <button onclick="rteInsertCallout()" title="Callout"><i class="fa-solid fa-lightbulb" style="color:#f59e0b;"></i></button>
-                    <span class="divider"></span>
-                    <button onclick="rteInsertLink()" title="Insert link"><i class="fa-solid fa-link" style="color:var(--link);"></i></button>
-                    <button onclick="document.getElementById('rteImageInput').click()" title="Insert image"><i class="fa-solid fa-image" style="color:#4CAF50;"></i></button>
-                    <button onclick="rteInsertTable()" title="Insert table"><i class="fa-solid fa-table" style="color:#9C27B0;"></i></button>
-                    <button onclick="rteExec('undo')" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
-                    <button onclick="rteExec('redo')" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
-                    <button onclick="rteExec('removeFormat')" title="Clear format"><i class="fa-solid fa-eraser"></i></button>
+                    <!-- Row 1: Text style + Font + Size + Basic formatting -->
+                    <div class="rte-row">
+                        <select class="rte-select" onchange="rteExec('formatBlock', this.value); this.selectedIndex=0;">
+                            <option value="">본문</option>
+                            <option value="h1">제목 1</option>
+                            <option value="h2">제목 2</option>
+                            <option value="h3">제목 3</option>
+                            <option value="p">본문</option>
+                            <option value="pre">코드 블록</option>
+                            <option value="blockquote">인용</option>
+                        </select>
 
-                    <input type="file" id="rteImageInput" accept="image/*" class="hidden" onchange="handleRteImage(event)">
+                        <span class="rte-divider"></span>
+
+                        <select class="rte-select" onchange="rteExec('fontName', this.value); this.selectedIndex=0;">
+                            <option value="">글꼴</option>
+                            <option value="'Nanum Gothic', sans-serif">나눔고딕</option>
+                            <option value="'Gaegu', cursive">개구</option>
+                            <option value="'DotGothic16', sans-serif">도트고딕</option>
+                            <option value="'Share Tech Mono', monospace">고정폭</option>
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="Georgia, serif">Georgia</option>
+                        </select>
+
+                        <select class="rte-select" onchange="rteExec('fontSize', this.value); this.selectedIndex=0;">
+                            <option value="">크기</option>
+                            <option value="1">아주 작게</option>
+                            <option value="2">작게</option>
+                            <option value="3">보통</option>
+                            <option value="4">크게</option>
+                            <option value="5">아주 크게</option>
+                            <option value="6">제목</option>
+                            <option value="7">대제목</option>
+                        </select>
+
+                        <span class="rte-divider"></span>
+
+                        <button onclick="rteExec('bold')" title="굵게 (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+                        <button onclick="rteExec('italic')" title="기울임 (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+                        <button onclick="rteExec('underline')" title="밑줄 (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
+                        <button onclick="rteExec('strikeThrough')" title="취소선"><i class="fa-solid fa-strikethrough"></i></button>
+
+                        <span class="rte-divider"></span>
+
+                        <button onclick="rteExec('foreColor', '#C04040')" title="빨강" style="color:#C04040;font-weight:bold;">A</button>
+                        <button onclick="rteExec('foreColor', '#0066CC')" title="파랑" style="color:#0066CC;font-weight:bold;">A</button>
+                        <button onclick="rteExec('foreColor', '#8B5E2E')" title="갈색" style="color:#8B5E2E;font-weight:bold;">A</button>
+                        <button onclick="rteExec('foreColor', '#333333')" title="검정" style="color:#333333;font-weight:bold;">A</button>
+                        <button onclick="rteExec('hiliteColor', '#FFE9A8')" title="형광펜" style="background:#FFE9A8;">🖍</button>
+                        <button onclick="rteExec('hiliteColor', 'transparent')" title="형광펜 지우기">⌫</button>
+                    </div>
+
+                    <!-- Row 2: Alignment + Lists + Indent + Insert -->
+                    <div class="rte-row">
+                        <button onclick="rteExec('justifyLeft')" title="왼쪽 정렬"><i class="fa-solid fa-align-left"></i></button>
+                        <button onclick="rteExec('justifyCenter')" title="가운데 정렬"><i class="fa-solid fa-align-center"></i></button>
+                        <button onclick="rteExec('justifyRight')" title="오른쪽 정렬"><i class="fa-solid fa-align-right"></i></button>
+                        <button onclick="rteExec('justifyFull')" title="양쪽 정렬"><i class="fa-solid fa-align-justify"></i></button>
+
+                        <span class="rte-divider"></span>
+
+                        <button onclick="rteExec('insertUnorderedList')" title="글머리 기호"><i class="fa-solid fa-list-ul"></i></button>
+                        <button onclick="rteExec('insertOrderedList')" title="번호 매기기"><i class="fa-solid fa-list-ol"></i></button>
+                        <button onclick="rteExec('outdent')" title="내어쓰기"><i class="fa-solid fa-outdent"></i></button>
+                        <button onclick="rteExec('indent')" title="들여쓰기"><i class="fa-solid fa-indent"></i></button>
+
+                        <span class="rte-divider"></span>
+
+                        <button onclick="rteInsertLink()" title="링크 삽입"><i class="fa-solid fa-link"></i></button>
+                        <button onclick="document.getElementById('rteImageInput').click()" title="이미지 삽입"><i class="fa-solid fa-image"></i></button>
+                        <button onclick="rteInsertTable()" title="표 삽입"><i class="fa-solid fa-table"></i></button>
+                        <button onclick="rteInsertCallout()" title="메모 상자"><i class="fa-solid fa-lightbulb"></i></button>
+                        <button onclick="rteInsertHR()" title="구분선"><i class="fa-solid fa-minus"></i></button>
+
+                        <span class="rte-divider"></span>
+
+                        <button onclick="rteExec('undo')" title="실행 취소 (Ctrl+Z)"><i class="fa-solid fa-rotate-left"></i></button>
+                        <button onclick="rteExec('redo')" title="다시 실행 (Ctrl+Y)"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button onclick="rteExec('removeFormat')" title="서식 지우기"><i class="fa-solid fa-eraser"></i></button>
+
+                        <input type="file" id="rteImageInput" accept="image/*" class="hidden" onchange="handleRteImage(event)">
+                    </div>
                 </div>
 
                 <div id="rteEditor" class="rte-editor" contenteditable="true" data-placeholder="Start writing your notes..."></div>
