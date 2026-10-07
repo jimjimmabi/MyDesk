@@ -872,3 +872,68 @@ body {
 .workspace-view {
     animation: none !important;
 }
+
+/* ============================================
+   Word-style color pickers
+   ============================================ */
+.rte-color-btn {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 2px 8px 4px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.1s;
+    user-select: none;
+    overflow: hidden;
+}
+
+.rte-color-btn:hover {
+    background: var(--cream);
+    border-color: var(--pink);
+}
+
+.rte-color-btn:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.rte-color-letter {
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+.rte-color-bar {
+    width: 18px;
+    height: 4px;
+    border-radius: 2px;
+    margin-top: 2px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Hide the actual color input inside the label */
+.rte-color-btn input[type="color"] {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+    .rte-color-btn {
+        min-width: 36px;
+        height: 36px;
+    }
+}

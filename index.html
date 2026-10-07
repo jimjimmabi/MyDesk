@@ -153,12 +153,21 @@
 
                         <span class="rte-divider"></span>
 
-                        <button onclick="rteExec('foreColor', '#C04040')" title="빨강" style="color:#C04040;font-weight:bold;">A</button>
-                        <button onclick="rteExec('foreColor', '#0066CC')" title="파랑" style="color:#0066CC;font-weight:bold;">A</button>
-                        <button onclick="rteExec('foreColor', '#8B5E2E')" title="갈색" style="color:#8B5E2E;font-weight:bold;">A</button>
-                        <button onclick="rteExec('foreColor', '#333333')" title="검정" style="color:#333333;font-weight:bold;">A</button>
-                        <button onclick="rteExec('hiliteColor', '#FFE9A8')" title="형광펜" style="background:#FFE9A8;">🖍</button>
-                        <button onclick="rteExec('hiliteColor', 'transparent')" title="형광펜 지우기">⌫</button>
+                        <!-- Text color picker -->
+                        <label class="rte-color-btn" title="글자 색">
+                            <span class="rte-color-letter" id="textColorLetter" style="color:#333333;">A</span>
+                            <span class="rte-color-bar" id="textColorBar" style="background:#333333;"></span>
+                            <input type="color" id="textColorInput" value="#333333" onchange="applyTextColor(this.value)">
+                        </label>
+
+                        <!-- Highlight color picker -->
+                        <label class="rte-color-btn" title="형광펜 색">
+                            <span class="rte-color-letter" style="color:#333333;">🖍</span>
+                            <span class="rte-color-bar" id="highlightColorBar" style="background:#FFE9A8;"></span>
+                            <input type="color" id="highlightColorInput" value="#FFE9A8" onchange="applyHighlightColor(this.value)">
+                        </label>
+
+                        <button onclick="rteExec('hiliteColor', 'transparent')" title="형광펜 지우기"><i class="fa-solid fa-eraser"></i></button>
                     </div>
 
                     <!-- Row 2: Alignment + Lists + Indent + Insert -->

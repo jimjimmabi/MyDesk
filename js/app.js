@@ -691,3 +691,32 @@ async function updateSidebarAvatar() {
     // Keep the default emoji
   }
 }
+
+// ================================================================
+// COLOR PICKERS
+// ================================================================
+window.applyTextColor = function(hex) {
+  // Update the small bar so we remember the last color used
+  const bar = document.getElementById('textColorBar');
+  if (bar) bar.style.background = hex;
+
+  const letter = document.getElementById('textColorLetter');
+  if (letter) letter.style.color = hex;
+
+  // Apply to current selection
+  document.getElementById('rteEditor').focus();
+  document.execCommand('foreColor', false, hex);
+  autoSaveActiveDoc();
+};
+
+window.applyHighlightColor = function(hex) {
+  const bar = document.getElementById('highlightColorBar');
+  if (bar) bar.style.background = hex;
+
+  document.getElementById('rteEditor').focus();
+  // Firefox uses backColor instead of hiliteColor
+  if (!document.execCommand('hiliteColor', false, hex)) {
+    document.execCommand('backColor', false, hex);
+  }
+  autoSaveActiveDoc();
+};
