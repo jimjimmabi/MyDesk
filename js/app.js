@@ -75,12 +75,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   function bootApp() {
     initAuth();
     updateProfileChip();
+    updateSidebarAvatar();
     initEditor();
     renderDocTree();
     loadActiveDoc();
     renderTasks();
     renderCalendar();
     updatePomoDisplay();
+
+    // Redraw once more after first paint to prevent flicker
+    requestAnimationFrame(() => {
+      renderCalendar();
+    });
 
     const moodInput = document.getElementById('userMood');
     if (moodInput) moodInput.value = userMood;
@@ -161,12 +167,12 @@ function triggerCloudSync() {
         statusChip.innerHTML = '<i class="fa-regular fa-circle-check" style="color:#4CAF50;"></i> 클라우드 동기화됨';
         setTimeout(() => {
           statusChip.innerHTML = '<i class="fa-regular fa-circle-check"></i> 로컬 저장됨';
-        }, 2000);
+        }, 500);
       } else {
         statusChip.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#C04040;"></i> 동기화 실패';
       }
     }
-  }, 2000);
+  }, 500);
 }
 
 function saveToLocal() {
@@ -644,5 +650,22 @@ async function updateProfileChip() {
     }
   } catch (e) {
     chip.style.display = 'none';
+  }
+}
+
+async function updateSidebarAvatar() {
+  const box = document.getElementById('avatarBox');
+  if (!box) return;
+  try {
+    const profile = await DotoriStorage.getMyAcorn();
+    if (!profile) return;
+
+    if (profile.mini_me_image_url) {
+      box.innerHTML = '<img src="' + profile.mini_me_image_url + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;">';
+    } else if (profile.mini_me) {
+      box.innerText = profile.mini_me;
+    }
+  } catch (e) {
+    // Keep the default emoji
   }
 }

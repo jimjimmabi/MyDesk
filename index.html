@@ -60,7 +60,7 @@
 
         <aside class="sidebar">
             <div class="sidebar-profile">
-                <div class="avatar-box">👩‍💻</div>
+                <div class="avatar-box" id="avatarBox">👩‍💻</div>
                 <input type="text" id="userMood" placeholder="What's your mood?" onchange="saveMood(this.value)">
             </div>
 
@@ -86,16 +86,10 @@
             <div class="sidebar-context" id="sidebarContext"></div>
 
             <div class="sidebar-footer">
-                <button class="btn w-full" onclick="exportAllWorkspaceJSON()">
-                    <i class="fa-solid fa-download"></i> Backup
-                </button>
-                <label class="btn w-full" style="cursor:pointer;">
-                    <i class="fa-solid fa-upload"></i> Restore
-                    <input type="file" id="importFile" accept=".json" onchange="importWorkspaceJSON(event)" class="hidden">
-                </label>
-                <button class="btn w-full btn-danger" onclick="resetWorkspace()">
-                    <i class="fa-solid fa-trash"></i> Reset All
-                </button>
+                <div style="font-size:10px;color:var(--text-light);text-align:center;padding:4px 0;line-height:1.6;">
+                    <i class="fa-solid fa-cloud"></i><br>
+                    자동으로 클라우드에 저장돼요
+                </div>
             </div>
         </aside>
 

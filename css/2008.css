@@ -783,3 +783,30 @@ body {
 .mb-2 { margin-bottom: 8px; }
 .w-full { width: 100%; }
 .gap-2 { gap: 8px; }
+
+/* ============================================
+   Anti-flicker
+   ============================================ */
+.cal-cell,
+.task-item,
+#docTree > div,
+.panel,
+.sidebar,
+.main-content {
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: auto;
+}
+
+/* Prevent text selection flash on click */
+.sidebar-tab,
+.cal-cell,
+.task-item {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Smooth transitions */
+.workspace-view {
+    animation: none !important;
+}
